@@ -15,6 +15,7 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor.blue //That's right
         // hello
         //Steve is funny looking
+        // goodbye
     }
 
     override func didReceiveMemoryWarning() {
