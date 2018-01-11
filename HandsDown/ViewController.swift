@@ -10,6 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    // Mark: Outlets
+    @IBOutlet weak var groupsButton: UIButton!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.blue //That's right
@@ -18,10 +22,10 @@ class ViewController: UIViewController {
         // hello
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
+    
+
+    
 
 
 }
