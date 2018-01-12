@@ -14,3 +14,8 @@ struct Group {
     var items: [Item]
     // consider adding things like images, themes, etc.  
 }
+
+class Class
+{
+    
+}
