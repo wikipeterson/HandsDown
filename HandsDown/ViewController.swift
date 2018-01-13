@@ -16,8 +16,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var myPickerView: UIPickerView!
     @IBOutlet weak var shuffleButton: UIButton!
     @IBOutlet weak var myStackView: UIStackView!
+    @IBOutlet weak var manageClassesButton: UIButton!
+    @IBOutlet weak var manageGroupsButton: UIButton!
+    @IBOutlet weak var settingsButton: UIButton!
     
-
     let pickerData = ["Cindy", "Jan", "Marsha", "Bobby", "Peter", "Greg"]
     var screenWidth : CGFloat = 0.0
     var screenHeight: CGFloat = 0.0
@@ -43,7 +45,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         classNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.05)
         classNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.12)
         
-        studentNameLabel.text = ""
+        studentNameLabel.text = "?"
         studentNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.18)
         studentNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.2)
         studentNameLabel.font = UIFont(name: studentNameLabel.font.fontName, size: screenHeight / 10)
@@ -55,13 +57,15 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         myPickerView.center = CGPoint(x: screenWidth * 3/4, y: screenHeight * 0.5)
         
         shuffleButton.frame = CGRect(x: 0, y: 0, width: screenWidth / 2, height: screenHeight * 0.15)
-        shuffleButton.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.8)
+        shuffleButton.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.85)
         
         
-        myStackView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.1)
-        myStackView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.95)
+        myStackView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.06)
+        myStackView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.97)
         
-
+        manageClassesButton.titleLabel?.font = UIFont(name: manageClassesButton.titleLabel!.font.fontName, size: screenHeight / 25)
+        manageGroupsButton.titleLabel?.font = UIFont(name: manageClassesButton.titleLabel!.font.fontName, size: screenHeight / 25)
+        settingsButton.titleLabel?.font = UIFont(name: manageClassesButton.titleLabel!.font.fontName, size: screenHeight / 25)
     }
     
     
@@ -116,8 +120,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     
-    // for best use with multitasking , dont use a constant here.
-    //this is for demonstration purposes only.
     func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
         return myPickerView.frame.width
     }

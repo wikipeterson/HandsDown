@@ -9,10 +9,10 @@
 import UIKit
 
 class ClassesVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+    
     
     // MARK: Outlets
-
+    
     
     
     // MARK: Properties
@@ -20,11 +20,13 @@ class ClassesVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
+        
+        
     }
-
-
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return classes.count
     }
@@ -35,13 +37,13 @@ class ClassesVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         // grab the group from the array of groups that matches the cell row
         let thisClass = classes[indexPath.row]
         
-        // add more here to make cell and table view look better.  
+        // add more here to make cell and table view look better.
         cell.textLabel?.text = thisClass.name
         
         return cell
     }
     
-
-   
-
+    
+    
+    
 }
