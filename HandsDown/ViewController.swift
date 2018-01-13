@@ -20,7 +20,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var manageGroupsButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     
-    let pickerData = ["Cindy", "Jan", "Marsha", "Bobby", "Peter", "Greg"]
+    var demoClass = Class()
+    var currentClass = Class()
+    //let pickerData = ["Cindy", "Jan", "Marsha", "Bobby", "Peter", "Greg"]
     var screenWidth : CGFloat = 0.0
     var screenHeight: CGFloat = 0.0
     
@@ -30,8 +32,20 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         myPickerView.dataSource = self
         myPickerView.delegate = self
         
+        //create demo class
+        var student1 = Student(name: "Marsha", picture: #imageLiteral(resourceName: "foxImage"))
+        var student2 = Student(name: "Jan", picture: #imageLiteral(resourceName: "beeImage"))
+        var student3 = Student(name: "Cindy", picture: #imageLiteral(resourceName: "pigTailGirl"))
+        var student4 = Student(name: "Greg", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
+        var student5 = Student(name: "Peter", picture: #imageLiteral(resourceName: "elmoImage"))
+        var student6 = Student(name: "Bobby", picture: #imageLiteral(resourceName: "sampleStudentImage"))
+        
+        demoClass.students = [student1, student2, student3, student4, student5, student6]
+        
+        currentClass = demoClass
+        
         // set a random starting point on PickerView
-        let randomStaringRow = Int(arc4random_uniform(1000)) + pickerData.count
+        let randomStaringRow = Int(arc4random_uniform(1000)) + currentClass.students.count
         myPickerView.selectRow(randomStaringRow, inComponent:0, animated:true)
         
         //Place UI elements
@@ -71,10 +85,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBAction func shuffleButtonTapped(_ sender: UIButton)
     {
-        let randomPickerViewRow = arc4random_uniform(UInt32(1000 * pickerData.count))
+        let randomPickerViewRow = Int(arc4random_uniform(UInt32(1000 * currentClass.students.count)))
         
-        myPickerView.selectRow(Int(randomPickerViewRow), inComponent:0, animated:true)
-        studentNameLabel.text = pickerData[Int(randomPickerViewRow) % pickerData.count]
+        myPickerView.selectRow(randomPickerViewRow, inComponent:0, animated:true)
+        setStudent(row: randomPickerViewRow)
     }
     
     
@@ -84,17 +98,18 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 1000 * pickerData.count
+        return 1000 * currentClass.students.count
     }
     
     
     //MARK: Delegates
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerData[row % pickerData.count]
+        return currentClass.students[row % currentClass.students.count].name
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        studentNameLabel.text = pickerData[row % pickerData.count] + "!"
+        setStudent(row: row)
+        
     }
     
     
@@ -103,10 +118,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         if view == nil {  //if no label there yet
             pickerLabel = UILabel()
             //color the label's background
-            let hue = CGFloat(row)/CGFloat(pickerData.count)
+            let hue = CGFloat(row)/CGFloat(currentClass.students.count)
             pickerLabel?.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         }
-        let titleData = pickerData[row % pickerData.count]
+        let titleData = currentClass.students[row % currentClass.students.count].name
         let myTitle = NSAttributedString(string: titleData, attributes: [NSAttributedStringKey.font:UIFont(name: "Chalkboard SE", size: screenHeight / 24)!,NSAttributedStringKey.foregroundColor:UIColor.black])
         pickerLabel!.attributedText = myTitle
         pickerLabel!.textAlignment = .center
@@ -124,7 +139,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         return myPickerView.frame.width
     }
     
-    
+    func setStudent(row: Int)
+    {
+        studentNameLabel.text = currentClass.students[row % currentClass.students.count].name + "!"
+        myImageView.image = currentClass.students[row % currentClass.students.count].picture
+    }
     
 }
 

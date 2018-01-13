@@ -8,9 +8,10 @@
 
 import UIKit
 
-class Class: NSObject {
+struct Class
+{
     
     var name : String = ""
-    
+    var students = [Student]()
 
 }

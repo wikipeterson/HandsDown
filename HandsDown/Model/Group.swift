@@ -11,7 +11,7 @@ import Foundation
 
 struct Group {
     var name: String
-    var items: [Item]
+    var items: [Student]
     // consider adding things like images, themes, etc.  
 }
 
