@@ -8,6 +8,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="ChalkboardSE.ttc">
+            <string>ChalkboardSE-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Hands Down-->
         <scene sceneID="tne-QT-ifu">
@@ -17,18 +22,55 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Class Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZT-bH-pnd">
+                                <rect key="frame" x="299" y="77" width="219" height="90"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Student Name Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7HH-J3-KZJ">
+                                <rect key="frame" x="306" y="192" width="156" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="17"/>
+                                <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="sampleStudentImage" translatesAutoresizingMaskIntoConstraints="NO" id="iYY-4l-PPW">
+                                <rect key="frame" x="271" y="286" width="205" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            </imageView>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pmC-Xw-ZWR">
-                                <rect key="frame" x="0.0" y="286" width="768" height="217"/>
+                                <rect key="frame" x="283" y="435" width="181" height="113"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             </pickerView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iYY-4l-PPW">
-                                <rect key="frame" x="264" y="88" width="240" height="190"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wv9-xY-iNv">
-                                <rect key="frame" x="320" y="551" width="129" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Shuffle Button"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="FEy-jl-mBo">
+                                <rect key="frame" x="5" y="771" width="806" height="410"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fnn-UN-bDD">
+                                        <rect key="frame" x="0.0" y="0.0" width="194" height="410"/>
+                                        <color key="backgroundColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="823-YO-A67">
+                                        <rect key="frame" x="204" y="0.0" width="194" height="410"/>
+                                        <color key="backgroundColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0gD-LL-W58">
+                                        <rect key="frame" x="408" y="0.0" width="194" height="410"/>
+                                        <color key="backgroundColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RRs-jW-Uf8">
+                                        <rect key="frame" x="612" y="0.0" width="194" height="410"/>
+                                        <color key="backgroundColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.55686277149999996" green="0.35294118520000001" blue="0.96862745289999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wv9-xY-iNv">
+                                <rect key="frame" x="167" y="573" width="435" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="shuffleImageTemp"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.10692400482786391" green="0.69110806993296026" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -36,14 +78,17 @@
                     </view>
                     <navigationItem key="navigationItem" title="Hands Down" id="iPx-sj-HPF"/>
                     <connections>
+                        <outlet property="classNameLabel" destination="RZT-bH-pnd" id="zTS-Da-nmR"/>
                         <outlet property="myImageView" destination="iYY-4l-PPW" id="ZZt-Nf-GJh"/>
                         <outlet property="myPickerView" destination="pmC-Xw-ZWR" id="92Y-ni-uaS"/>
+                        <outlet property="myStackView" destination="FEy-jl-mBo" id="R1d-zF-gFa"/>
                         <outlet property="shuffleButton" destination="Wv9-xY-iNv" id="CAY-RN-Srg"/>
+                        <outlet property="studentNameLabel" destination="7HH-J3-KZJ" id="VH4-f6-wJy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="601" y="112"/>
+            <point key="canvasLocation" x="541" y="-357"/>
         </scene>
         <!--Manage Classes-->
         <scene sceneID="q2H-tT-2li">
@@ -220,6 +265,10 @@
             <point key="canvasLocation" x="-417" y="132"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="sampleStudentImage" width="270" height="186"/>
+        <image name="shuffleImageTemp" width="450" height="410"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="oZs-GE-0n5"/>
     </inferredMetricsTieBreakers>

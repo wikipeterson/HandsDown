@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		83519FAB2006529E00214DA3 /* ClassesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FAA2006529E00214DA3 /* ClassesVC.swift */; };
-		83519FAD200652B000214DA3 /* itemsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FAC200652B000214DA3 /* itemsVC.swift */; };
+		83519FAD200652B000214DA3 /* studentsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FAC200652B000214DA3 /* studentsVC.swift */; };
 		83519FAF2006544800214DA3 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FAE2006544800214DA3 /* Group.swift */; };
 		83519FB12006548400214DA3 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FB02006548400214DA3 /* Item.swift */; };
 		F124C6F820055B8C0026C7CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C6F720055B8C0026C7CB /* AppDelegate.swift */; };
@@ -41,7 +41,7 @@
 
 /* Begin PBXFileReference section */
 		83519FAA2006529E00214DA3 /* ClassesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesVC.swift; sourceTree = "<group>"; };
-		83519FAC200652B000214DA3 /* itemsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = itemsVC.swift; sourceTree = "<group>"; };
+		83519FAC200652B000214DA3 /* studentsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = studentsVC.swift; sourceTree = "<group>"; };
 		83519FAE2006544800214DA3 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		83519FB02006548400214DA3 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F124C6F420055B8B0026C7CB /* HandsDown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HandsDown.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,7 +123,7 @@
 				F124C6F720055B8C0026C7CB /* AppDelegate.swift */,
 				F124C6F920055B8C0026C7CB /* ViewController.swift */,
 				83519FAA2006529E00214DA3 /* ClassesVC.swift */,
-				83519FAC200652B000214DA3 /* itemsVC.swift */,
+				83519FAC200652B000214DA3 /* studentsVC.swift */,
 				F124C6FB20055B8C0026C7CB /* Main.storyboard */,
 				F124C70120055B8D0026C7CB /* Assets.xcassets */,
 				F124C70320055B8D0026C7CB /* LaunchScreen.storyboard */,
@@ -285,7 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83519FAD200652B000214DA3 /* itemsVC.swift in Sources */,
+				83519FAD200652B000214DA3 /* studentsVC.swift in Sources */,
 				F124C70020055B8C0026C7CB /* HandsDown.xcdatamodeld in Sources */,
 				F124C6FA20055B8C0026C7CB /* ViewController.swift in Sources */,
 				83519FAF2006544800214DA3 /* Group.swift in Sources */,

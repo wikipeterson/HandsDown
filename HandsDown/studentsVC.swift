@@ -8,7 +8,7 @@
 
 import UIKit
 
-class itemsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class studentsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     // Mark: outlets
     @IBOutlet weak var titleTextField: UITextField!
