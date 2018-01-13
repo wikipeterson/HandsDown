@@ -8,14 +8,15 @@
 
 import UIKit
 
-class GroupsVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ClassesVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     
     // MARK: Outlets
-    @IBOutlet weak var groupsTableView: UITableView!
+
+    
     
     // MARK: Properties
-    var groups: [Group] = [Group]()
+    var classes: [Class] = [Class]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,17 +26,17 @@ class GroupsVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groups.count
+        return classes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "groupCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "classCell", for: indexPath)
         
         // grab the group from the array of groups that matches the cell row
-        let group = groups[indexPath.row]
+        let thisClass = classes[indexPath.row]
         
         // add more here to make cell and table view look better.  
-        cell.textLabel?.text = group.name
+        cell.textLabel?.text = thisClass.name
         
         return cell
     }

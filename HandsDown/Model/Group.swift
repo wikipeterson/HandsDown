@@ -15,7 +15,4 @@ struct Group {
     // consider adding things like images, themes, etc.  
 }
 
-class Class
-{
-    
-}
+
