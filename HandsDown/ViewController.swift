@@ -27,7 +27,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         super.viewDidLoad()
         myPickerView.dataSource = self
         myPickerView.delegate = self
-        myPickerView.selectRow(Int(arc4random()) % pickerData.count, inComponent:0, animated:true)
+        
+        // set a random starting point on PickerView
+        let randomStaringRow = Int(arc4random_uniform(1000)) + pickerData.count
+        myPickerView.selectRow(randomStaringRow, inComponent:0, animated:true)
         
         //Place UI elements
         
@@ -38,7 +41,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         classNameLabel.text = "Demo Class"
         classNameLabel.font = UIFont(name: classNameLabel.font.fontName, size: screenHeight / 24)
         classNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.05)
-        classNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.1)
+        classNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.12)
         
         studentNameLabel.text = ""
         studentNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.18)
@@ -58,8 +61,18 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         myStackView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.1)
         myStackView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.95)
         
-        
+
     }
+    
+    
+    @IBAction func shuffleButtonTapped(_ sender: UIButton)
+    {
+        let randomPickerViewRow = arc4random_uniform(UInt32(1000 * pickerData.count))
+        
+        myPickerView.selectRow(Int(randomPickerViewRow), inComponent:0, animated:true)
+        studentNameLabel.text = pickerData[Int(randomPickerViewRow) % pickerData.count]
+    }
+    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1

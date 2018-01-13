@@ -71,6 +71,9 @@
                                 <rect key="frame" x="167" y="573" width="435" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="shuffleImageTemp"/>
+                                <connections>
+                                    <action selector="shuffleButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KwD-ua-Qmp"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.10692400482786391" green="0.69110806993296026" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -88,7 +91,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="541" y="-357"/>
+            <point key="canvasLocation" x="160" y="-377"/>
         </scene>
         <!--Manage Classes-->
         <scene sceneID="q2H-tT-2li">
