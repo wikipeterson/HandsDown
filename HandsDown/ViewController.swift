@@ -33,12 +33,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         myPickerView.delegate = self
         
         //create demo class
-        var student1 = Student(name: "Marsha", picture: #imageLiteral(resourceName: "foxImage"))
-        var student2 = Student(name: "Jan", picture: #imageLiteral(resourceName: "beeImage"))
-        var student3 = Student(name: "Cindy", picture: #imageLiteral(resourceName: "pigTailGirl"))
-        var student4 = Student(name: "Greg", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
-        var student5 = Student(name: "Peter", picture: #imageLiteral(resourceName: "elmoImage"))
-        var student6 = Student(name: "Bobby", picture: #imageLiteral(resourceName: "sampleStudentImage"))
+        var student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
+        var student2 = Student(name: "Grammy", picture: #imageLiteral(resourceName: "beeImage"))
+        var student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
+        var student4 = Student(name: "Pop-pop", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
+        var student5 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "elmoImage"))
+        var student6 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "sampleStudentImage"))
         
         demoClass.students = [student1, student2, student3, student4, student5, student6]
         
