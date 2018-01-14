@@ -22,15 +22,20 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     var demoClass = Class()
     var currentClass = Class()
+    var teacher = Teacher()
     //let pickerData = ["Cindy", "Jan", "Marsha", "Bobby", "Peter", "Greg"]
     var screenWidth : CGFloat = 0.0
     var screenHeight: CGFloat = 0.0
+    var myFont = "Helvetica Neue"
+    
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         myPickerView.dataSource = self
         myPickerView.delegate = self
+        
+        teacher.currentClassID = 0
         
         //create demo class
         var student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
@@ -43,6 +48,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         demoClass.students = [student1, student2, student3, student4, student5, student6]
         
         currentClass = demoClass
+        teacher.classes.append(currentClass)
         
         // set a random starting point on PickerView
         let randomStaringRow = Int(arc4random_uniform(1000)) + currentClass.students.count
@@ -55,7 +61,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         
         classNameLabel.text = "Demo Class"
-        classNameLabel.font = UIFont(name: classNameLabel.font.fontName, size: screenHeight / 24)
+        classNameLabel.font = UIFont(name: myFont, size: screenHeight / 24)
         classNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.05)
         classNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.12)
         
@@ -145,6 +151,17 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         myImageView.image = currentClass.students[row % currentClass.students.count].picture
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.identifier == "classesSegue"
+        {
+            let nvc = (segue.destination as? ClassesViewController)!
+            nvc.teacher = teacher
+        }
+    
+        
+        
+    }
 }
 
 

@@ -21,6 +21,7 @@
 		F1C4003B200A892400CEEC05 /* ClassesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C4003A200A892400CEEC05 /* ClassesViewController.swift */; };
 		F1C4003D200A894B00CEEC05 /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C4003C200A894B00CEEC05 /* GroupsViewController.swift */; };
 		F1C4003F200A895E00CEEC05 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C4003E200A895E00CEEC05 /* SettingsViewController.swift */; };
+		F1C40041200B03C100CEEC05 /* Teacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C40040200B03C100CEEC05 /* Teacher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		F1C4003A200A892400CEEC05 /* ClassesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesViewController.swift; sourceTree = "<group>"; };
 		F1C4003C200A894B00CEEC05 /* GroupsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		F1C4003E200A895E00CEEC05 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		F1C40040200B03C100CEEC05 /* Teacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teacher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 			children = (
 				83519FB02006548400214DA3 /* Student.swift */,
 				F13C853E2009BFFB00BAFC51 /* Class.swift */,
+				F1C40040200B03C100CEEC05 /* Teacher.swift */,
 				83519FAE2006544800214DA3 /* Group.swift */,
 			);
 			path = Model;
@@ -294,6 +297,7 @@
 				F13C853F2009BFFC00BAFC51 /* Class.swift in Sources */,
 				F1C4003D200A894B00CEEC05 /* GroupsViewController.swift in Sources */,
 				F1C4003B200A892400CEEC05 /* ClassesViewController.swift in Sources */,
+				F1C40041200B03C100CEEC05 /* Teacher.swift in Sources */,
 				83519FB12006548400214DA3 /* Student.swift in Sources */,
 				F124C6F820055B8C0026C7CB /* AppDelegate.swift in Sources */,
 				F1C4003F200A895E00CEEC05 /* SettingsViewController.swift in Sources */,

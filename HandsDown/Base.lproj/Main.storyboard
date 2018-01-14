@@ -12,6 +12,9 @@
         <array key="ChalkboardSE.ttc">
             <string>ChalkboardSE-Regular</string>
         </array>
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
     </customFonts>
     <scenes>
         <!--Hands Down-->
@@ -25,7 +28,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Class Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZT-bH-pnd">
                                 <rect key="frame" x="299" y="77" width="219" height="90"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="ChalkboardSE-Regular" family="Chalkboard SE" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" red="0.36470589040000001" green="0.066666670139999995" blue="0.96862745289999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -58,7 +61,7 @@
                                                     <color key="titleColor" red="0.50196081400000003" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <segue destination="tbb-2O-xeM" kind="show" id="abt-bL-2x6"/>
+                                                    <segue destination="tbb-2O-xeM" kind="show" identifier="classesSegue" id="abt-bL-2x6"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -117,7 +120,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.10692400482786391" green="0.69110806993296026" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Hands Down" id="iPx-sj-HPF"/>
@@ -144,13 +147,35 @@
                     <view key="view" contentMode="scaleToFill" id="fhK-D4-BsX">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uyQ-TR-aH6">
+                                <rect key="frame" x="10" y="74" width="748" height="940"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="classCell" id="Hiv-jo-aLs">
+                                        <rect key="frame" x="0.0" y="28" width="748" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hiv-jo-aLs" id="q0c-ax-tbJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="748" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.92549020049999997" green="0.23529411850000001" blue="0.1019607857" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="uyQ-TR-aH6" firstAttribute="top" secondItem="qe3-im-hxp" secondAttribute="top" constant="10" id="14H-Ky-3Tf"/>
+                            <constraint firstItem="qe3-im-hxp" firstAttribute="trailing" secondItem="uyQ-TR-aH6" secondAttribute="trailing" constant="10" id="DRI-6h-2lW"/>
+                            <constraint firstItem="qe3-im-hxp" firstAttribute="bottom" secondItem="uyQ-TR-aH6" secondAttribute="bottom" constant="10" id="F2r-ke-tXQ"/>
+                            <constraint firstItem="uyQ-TR-aH6" firstAttribute="leading" secondItem="qe3-im-hxp" secondAttribute="leading" constant="10" id="uLf-7T-qti"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="qe3-im-hxp"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r8U-tZ-O0I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-306" y="851"/>
+            <point key="canvasLocation" x="-196" y="832"/>
         </scene>
         <!--Manage Groups-->
         <scene sceneID="qLK-7t-28K">
