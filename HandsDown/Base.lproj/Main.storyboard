@@ -46,6 +46,10 @@
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pmC-Xw-ZWR">
                                 <rect key="frame" x="283" y="435" width="181" height="113"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="GWu-qY-qc8" appends="YES" id="ae3-AE-NsJ"/>
+                                </connections>
                             </pickerView>
                             <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="FEy-jl-mBo">
                                 <rect key="frame" x="5" y="771" width="602" height="410"/>
@@ -137,6 +141,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="GWu-qY-qc8">
+                    <connections>
+                        <action selector="swipeGestureOnPicker:" destination="BYZ-38-t0r" id="uFr-ue-BPG"/>
+                        <outlet property="delegate" destination="BYZ-38-t0r" id="EUf-xt-w4d"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="385.9375" y="131.8359375"/>
         </scene>

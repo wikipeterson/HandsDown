@@ -68,7 +68,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         studentNameLabel.text = "?"
         studentNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.18)
         studentNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.2)
-        studentNameLabel.font = UIFont(name: studentNameLabel.font.fontName, size: screenHeight / 10)
+        studentNameLabel.font = UIFont(name: myFont, size: screenHeight / 10)
         
         myImageView.frame = CGRect(x: 0, y: 0, width: screenWidth * 0.4, height: screenHeight * 0.4)
         myImageView.center = CGPoint(x: screenWidth / 4, y: screenHeight * 0.5)
@@ -83,9 +83,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         myStackView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.06)
         myStackView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.97)
         
-        manageClassesButton.titleLabel?.font = UIFont(name: manageClassesButton.titleLabel!.font.fontName, size: screenHeight / 25)
-        manageGroupsButton.titleLabel?.font = UIFont(name: manageClassesButton.titleLabel!.font.fontName, size: screenHeight / 25)
-        settingsButton.titleLabel?.font = UIFont(name: manageClassesButton.titleLabel!.font.fontName, size: screenHeight / 25)
+        manageClassesButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
+        manageGroupsButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
+        settingsButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
     }
     
     
@@ -128,7 +128,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             pickerLabel?.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         }
         let titleData = currentClass.students[row % currentClass.students.count].name
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSAttributedStringKey.font:UIFont(name: "Chalkboard SE", size: screenHeight / 24)!,NSAttributedStringKey.foregroundColor:UIColor.black])
+        let myTitle = NSAttributedString(string: titleData, attributes: [NSAttributedStringKey.font:UIFont(name: myFont, size: screenHeight / 24)!,NSAttributedStringKey.foregroundColor:UIColor.black])
         pickerLabel!.attributedText = myTitle
         pickerLabel!.textAlignment = .center
         
@@ -159,9 +159,24 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             nvc.teacher = teacher
         }
     
-        
-        
     }
+    
+    //I want the question marks to show up when the wheel starts t0 spin, but it only does that when I touch anything but the picker or button
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        studentNameLabel.text = "?"
+        myImageView.image = #imageLiteral(resourceName: "questionMarkImage")
+        print("touched")
+    }
+    
+    //tried the same with a swipe recongizer on picker to no avail
+    @IBAction func swipeGestureOnPicker(_ sender: UISwipeGestureRecognizer) {
+        
+        studentNameLabel.text = "?"
+        myImageView.image = #imageLiteral(resourceName: "questionMarkImage")
+        print("swiped")
+    }
+    
+    
 }
 
 
