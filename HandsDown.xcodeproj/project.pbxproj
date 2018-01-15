@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		83519FAF2006544800214DA3 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FAE2006544800214DA3 /* Group.swift */; };
 		83519FB12006548400214DA3 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FB02006548400214DA3 /* Student.swift */; };
+		83C42F06200C573D00F89072 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C42F05200C573D00F89072 /* CloudKit.framework */; };
 		F124C6F820055B8C0026C7CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C6F720055B8C0026C7CB /* AppDelegate.swift */; };
 		F124C6FA20055B8C0026C7CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C6F920055B8C0026C7CB /* ViewController.swift */; };
 		F124C6FD20055B8C0026C7CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F124C6FB20055B8C0026C7CB /* Main.storyboard */; };
@@ -45,6 +46,8 @@
 /* Begin PBXFileReference section */
 		83519FAE2006544800214DA3 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		83519FB02006548400214DA3 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
+		83C42F03200C571E00F89072 /* HandsDown.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HandsDown.entitlements; sourceTree = "<group>"; };
+		83C42F05200C573D00F89072 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		F124C6F420055B8B0026C7CB /* HandsDown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HandsDown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F124C6F720055B8C0026C7CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F124C6F920055B8C0026C7CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83C42F06200C573D00F89072 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +107,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		83C42F04200C573D00F89072 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				83C42F05200C573D00F89072 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F124C6EB20055B8A0026C7CB = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +122,7 @@
 				F124C70E20055B8D0026C7CB /* HandsDownTests */,
 				F124C71920055B8D0026C7CB /* HandsDownUITests */,
 				F124C6F520055B8B0026C7CB /* Products */,
+				83C42F04200C573D00F89072 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -126,6 +139,7 @@
 		F124C6F620055B8B0026C7CB /* HandsDown */ = {
 			isa = PBXGroup;
 			children = (
+				83C42F03200C571E00F89072 /* HandsDown.entitlements */,
 				83519FB2200654C500214DA3 /* Model */,
 				F124C6F720055B8C0026C7CB /* AppDelegate.swift */,
 				F124C6F920055B8C0026C7CB /* ViewController.swift */,
@@ -229,6 +243,14 @@
 					F124C6F320055B8B0026C7CB = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					F124C70A20055B8D0026C7CB = {
 						CreatedOnToolsVersion = 9.0;
@@ -470,8 +492,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HandsDown/HandsDown.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = EQST5YB479;
+				DEVELOPMENT_TEAM = 84LWTY6T5F;
 				INFOPLIST_FILE = HandsDown/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.WikipetersonAssistStatApps.HandsDown;
@@ -485,8 +508,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HandsDown/HandsDown.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = EQST5YB479;
+				DEVELOPMENT_TEAM = 84LWTY6T5F;
 				INFOPLIST_FILE = HandsDown/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.WikipetersonAssistStatApps.HandsDown;
