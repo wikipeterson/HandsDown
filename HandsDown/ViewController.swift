@@ -74,8 +74,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         myPickerView.frame = CGRect(x: 0, y: 0, width: screenWidth * 0.4, height: screenHeight * 0.6)
         myPickerView.center = CGPoint(x: screenWidth * 3/4, y: screenHeight * 0.5)
         
-        shuffleButton.frame = CGRect(x: 0, y: 0, width: screenWidth / 2, height: screenHeight * 0.15)
-        shuffleButton.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.85)
+        shuffleButton.frame = CGRect(x: 0, y: 0, width: screenWidth , height: screenHeight * 0.18)
+        shuffleButton.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.84)
         
         
         myStackView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.06)
