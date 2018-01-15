@@ -20,10 +20,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var manageGroupsButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     
-    var demoClass = Class()
-    var currentClass = Class()
+    
     var teacher = Teacher()
-    //let pickerData = ["Cindy", "Jan", "Marsha", "Bobby", "Peter", "Greg"]
     var screenWidth : CGFloat = 0.0
     var screenHeight: CGFloat = 0.0
     var myFont = "Helvetica Neue"
@@ -35,8 +33,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         myPickerView.dataSource = self
         myPickerView.delegate = self
         
-        teacher.currentClassID = 0
-        
         //create demo class
         var student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
         var student2 = Student(name: "Grammy", picture: #imageLiteral(resourceName: "beeImage"))
@@ -45,13 +41,15 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         var student5 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "elmoImage"))
         var student6 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "sampleStudentImage"))
         
+        //make the demo class be classID 0 for teacher class
+        var demoClass = Class()
         demoClass.students = [student1, student2, student3, student4, student5, student6]
-        
-        currentClass = demoClass
-        teacher.classes.append(currentClass)
-        
+        demoClass.name = "Demo Class"
+        teacher.classes.append(demoClass)
+
+    
         // set a random starting point on PickerView
-        let randomStaringRow = Int(arc4random_uniform(1000)) + currentClass.students.count
+        let randomStaringRow = Int(arc4random_uniform(1000)) + teacher.classes[teacher.currentClassID].students.count
         myPickerView.selectRow(randomStaringRow, inComponent:0, animated:true)
         
         //Place UI elements
@@ -60,7 +58,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         screenHeight = self.view.frame.height
         
         
-        classNameLabel.text = "Demo Class"
+        classNameLabel.text = teacher.classes[teacher.currentClassID].name
         classNameLabel.font = UIFont(name: myFont, size: screenHeight / 24)
         classNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.05)
         classNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.12)
@@ -91,7 +89,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBAction func shuffleButtonTapped(_ sender: UIButton)
     {
-        let randomPickerViewRow = Int(arc4random_uniform(UInt32(1000 * currentClass.students.count)))
+        let randomPickerViewRow = Int(arc4random_uniform(UInt32(1000 * teacher.classes[teacher.currentClassID].students.count)))
         
         myPickerView.selectRow(randomPickerViewRow, inComponent:0, animated:true)
         setStudent(row: randomPickerViewRow)
@@ -104,13 +102,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 1000 * currentClass.students.count
+        return 1000 * teacher.classes[teacher.currentClassID].students.count
     }
     
     
     //MARK: Delegates
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return currentClass.students[row % currentClass.students.count].name
+        return teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].name
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -124,10 +122,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         if view == nil {  //if no label there yet
             pickerLabel = UILabel()
             //color the label's background
-            let hue = CGFloat(row)/CGFloat(currentClass.students.count)
+            let hue = CGFloat(row)/CGFloat(teacher.classes[teacher.currentClassID].students.count)
             pickerLabel?.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         }
-        let titleData = currentClass.students[row % currentClass.students.count].name
+        let titleData = teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].name
         let myTitle = NSAttributedString(string: titleData, attributes: [NSAttributedStringKey.font:UIFont(name: myFont, size: screenHeight / 24)!,NSAttributedStringKey.foregroundColor:UIColor.black])
         pickerLabel!.attributedText = myTitle
         pickerLabel!.textAlignment = .center
@@ -147,19 +145,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     func setStudent(row: Int)
     {
-        studentNameLabel.text = currentClass.students[row % currentClass.students.count].name + "!"
-        myImageView.image = currentClass.students[row % currentClass.students.count].picture
+        studentNameLabel.text = teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].name + "!"
+        myImageView.image = teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].picture
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-    {
-        if segue.identifier == "classesSegue"
-        {
-            let nvc = (segue.destination as? ClassesViewController)!
-            nvc.teacher = teacher
-        }
-    
-    }
+
     
     //I want the question marks to show up when the wheel starts t0 spin, but it only does that when I touch anything but the picker or button
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -177,6 +167,16 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     
+    //send the data through segues
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.identifier == "classesSegue"
+        {
+            let nvc = (segue.destination as? ClassesViewController)!
+            nvc.teacher = teacher
+        }
+        
+    }
 }
 
 
