@@ -13,10 +13,12 @@ class ClassDetailViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var editSwitch = true
     var teacher = Teacher()
+    var myClass: Class?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        print(myClass?.name ?? "No name for class")
         
     }
 

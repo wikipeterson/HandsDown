@@ -19,7 +19,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,8 +54,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let alert = UIAlertController(title: "Add a new class", message: nil, preferredStyle: .alert)
         alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name of class"})
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            let newClassName = alert.textFields![0].text
-            let newClass = Class(name: newClassName!, students: [])
+            let newClassName = alert.textFields![0].text!
+            let newClass = Class(name: newClassName, students: [])
             
             self.teacher.classes.append(newClass)
             self.tableView.reloadData()
@@ -84,9 +83,21 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        teacher.currentClassID = tableView.indexPathForSelectedRow!.row
-        let nvc = segue.destination as! ClassDetailViewController
-        nvc.teacher = teacher
+        
+        if segue.identifier == "toClassDetailsSegue" {
+            teacher.currentClassID = tableView.indexPathForSelectedRow!.row
+            let nvc = segue.destination as! ClassDetailViewController
+            
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let row = indexPath.row
+            
+                let selectedClass = teacher.classes[row]
+                nvc.myClass = selectedClass
+            }
+
+            nvc.teacher = teacher
+        }
+        
     }
 
 
