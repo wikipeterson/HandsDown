@@ -8,17 +8,18 @@
 
 import UIKit
 
-class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
 
     @IBOutlet weak var NameTextField: UITextField!
     @IBOutlet weak var myTableView: UITableView!
     var editSwitch = true
     var teacher = Teacher()
     var myClass: Class?
-    
+    var defaultImagesArray = [#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "questionMarkImage")]
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        navigationController?.delegate = self
         
     }
 
@@ -42,16 +43,27 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
         navigationController?.dismiss(animated: true, completion: nil)
         
-        // figure out how to save things here
+        saveThisClass()
     }
+    
+    func saveThisClass()
+    {
+        // figure out how to save things here
+        teacher.classes[teacher.currentClassID].students = (myClass?.students)!
+        
+    }
+    
+    
     @IBAction func addStudentButtonTapped(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Add a student", message: nil, preferredStyle: .alert)
         alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name"})
         
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
             let newName = alert.textFields![0].text
-            let newStudent = Student(name: newName!, picture: #imageLiteral(resourceName: "questionMarkImage"))
-            //    self.teacher.classes[self.teacher.currentClassID].students.append(newStudent)
+            let randomImageIndex = Int(arc4random_uniform(UInt32(self.defaultImagesArray.count)))
+            let newPicture = self.defaultImagesArray[randomImageIndex]
+            let newStudent = Student(name: newName!, picture: newPicture)
+          
             self.myClass?.students.append(newStudent)
             self.myTableView.reloadData()
             
@@ -101,5 +113,18 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         teacher.classes[teacher.currentClassID].students.remove(at: sourceIndexPath.row)
         teacher.classes[teacher.currentClassID].students.insert(itemToMove, at: destinationIndexPath.row)
     }
-
+    
+    
+    // this might not be the best way of passing data backward
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool)
+    {
+    
+        if let vc = viewController as? ClassesViewController
+        {
+            saveThisClass()
+            vc.teacher = teacher    // Here you pass the data back to your original view controller
+        }
+    }
+    
+    
 }

@@ -92,7 +92,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
         
         if segue.identifier == "toClassDetailsSegue" {
             teacher.currentClassID = tableView.indexPathForSelectedRow!.row
@@ -108,7 +109,15 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
             nvc.teacher = teacher
         }
         
+        
     }
-
+    
+    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool)
+    {
+        if let controller = viewController as? ViewController
+        {
+            controller.teacher = teacher    // Here you pass the data back to your original view controller
+        }
+    }
 
 }
