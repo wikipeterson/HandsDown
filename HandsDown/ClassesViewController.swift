@@ -11,6 +11,7 @@ import UIKit
 class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     
+    @IBOutlet weak var currentClassLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     var editSwitch = true
     var teacher = Teacher()
@@ -32,24 +33,29 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell!
     }
     
+    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
+        navigationController?.dismiss(animated: true, completion: nil)
+        
+        // save any changes here
+    }
     
-    @IBAction func editButtonWasTapped(_ sender: UIButton) {
+    @IBAction func editButtonWasTapped(_ sender: UIBarButtonItem) {
         if editSwitch == true
         {
             tableView.isEditing = true
             editSwitch = false
-            sender.setTitle("End Editing", for: .normal)
-
+            sender.title = "Done"
         }
         else
         {
             tableView.isEditing = false
             editSwitch = true
-            sender.setTitle("Edit Class List", for: .normal)
+            sender.title = "Edit"
+
         }
     }
     
-    @IBAction func addButtonWasTapped(_ sender: UIButton) {
+    @IBAction func addButtonWasTapped(_ sender: UIBarButtonItem) {
 
         let alert = UIAlertController(title: "Add a new class", message: nil, preferredStyle: .alert)
         alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name of class"})

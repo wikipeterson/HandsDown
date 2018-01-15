@@ -9,6 +9,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Avenir.ttc">
+            <string>Avenir-Book</string>
+        </array>
         <array key="ChalkboardSE.ttc">
             <string>ChalkboardSE-Regular</string>
         </array>
@@ -158,66 +161,90 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Current Class" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KgP-hc-IPZ">
-                                <rect key="frame" x="296" y="91" width="176" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ckd-CE-IaG">
-                                <rect key="frame" x="322" y="120" width="125" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Add a class"/>
-                                <connections>
-                                    <action selector="addButtonWasTapped:" destination="tbb-2O-xeM" eventType="touchUpInside" id="6WP-Ro-Pv1"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MjV-TK-aaI">
-                                <rect key="frame" x="313" y="158" width="143" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Edit class list"/>
-                                <connections>
-                                    <action selector="editButtonWasTapped:" destination="tbb-2O-xeM" eventType="touchUpInside" id="y6R-Z5-Se7"/>
-                                </connections>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uyQ-TR-aH6">
-                                <rect key="frame" x="116" y="222" width="536" height="581"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="classCell" id="Hiv-jo-aLs">
-                                        <rect key="frame" x="0.0" y="28" width="536" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hiv-jo-aLs" id="q0c-ax-tbJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="536" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Nnm-Yf-acg">
+                                <rect key="frame" x="20" y="84" width="728" height="890"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Class" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KgP-hc-IPZ">
+                                        <rect key="frame" x="0.0" y="0.0" width="728" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="0LX-lF-4N9"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="40"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kyJ-Ku-kGb">
+                                        <rect key="frame" x="0.0" y="50" width="728" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="7eb-bO-Dh6"/>
+                                        </constraints>
+                                        <items>
+                                            <navigationItem title="Classes" id="4NP-Q0-bEt">
+                                                <barButtonItem key="leftBarButtonItem" title="Edit" id="FkE-6T-xlS">
+                                                    <connections>
+                                                        <action selector="editButtonWasTapped:" destination="tbb-2O-xeM" id="2ud-xi-9es"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                                <barButtonItem key="rightBarButtonItem" systemItem="add" id="uzN-VO-73p">
+                                                    <connections>
+                                                        <action selector="addButtonWasTapped:" destination="tbb-2O-xeM" id="1b2-70-P1B"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                            </navigationItem>
+                                        </items>
+                                    </navigationBar>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uyQ-TR-aH6">
+                                        <rect key="frame" x="0.0" y="94" width="728" height="796"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="classCell" id="Hiv-jo-aLs">
+                                                <rect key="frame" x="0.0" y="28" width="728" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hiv-jo-aLs" id="q0c-ax-tbJ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="728" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <segue destination="KGd-lN-hP3" kind="show" identifier="toClassDetailsSegue" id="rFn-Kk-Evk"/>
+                                                </connections>
+                                            </tableViewCell>
+                                        </prototypes>
                                         <connections>
-                                            <segue destination="KGd-lN-hP3" kind="show" identifier="toClassDetailsSegue" id="rFn-Kk-Evk"/>
+                                            <outlet property="dataSource" destination="tbb-2O-xeM" id="9cp-I6-3fe"/>
+                                            <outlet property="delegate" destination="tbb-2O-xeM" id="ofe-zk-wbD"/>
                                         </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="tbb-2O-xeM" id="9cp-I6-3fe"/>
-                                    <outlet property="delegate" destination="tbb-2O-xeM" id="ofe-zk-wbD"/>
-                                </connections>
-                            </tableView>
+                                    </tableView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.92549020049999997" green="0.23529411850000001" blue="0.1019607857" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Nnm-Yf-acg" secondAttribute="bottom" constant="50" id="2bw-yN-0zd"/>
+                            <constraint firstItem="qe3-im-hxp" firstAttribute="trailing" secondItem="Nnm-Yf-acg" secondAttribute="trailing" constant="20" id="7sP-Qs-S9g"/>
+                            <constraint firstItem="Nnm-Yf-acg" firstAttribute="top" secondItem="qe3-im-hxp" secondAttribute="top" constant="20" id="fsI-jg-C8G"/>
+                            <constraint firstItem="Nnm-Yf-acg" firstAttribute="leading" secondItem="qe3-im-hxp" secondAttribute="leading" constant="20" id="lP7-4U-q90"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="qe3-im-hxp"/>
                     </view>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" title="HandsDown" id="nuU-uM-W50">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="C7K-J3-dGy">
+                            <connections>
+                                <action selector="saveButtonTapped:" destination="tbb-2O-xeM" id="FSB-A7-Mu0"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="currentClassLabel" destination="KgP-hc-IPZ" id="eVu-OH-Y9Y"/>
                         <outlet property="tableView" destination="uyQ-TR-aH6" id="eOI-ZS-cC4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r8U-tZ-O0I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-616" y="856"/>
+            <point key="canvasLocation" x="-616.40625" y="855.46875"/>
         </scene>
-        <!--Class Detail View Controller-->
+        <!--Hands Down-->
         <scene sceneID="NaY-cZ-meH">
             <objects>
                 <viewController id="KGd-lN-hP3" customClass="ClassDetailViewController" customModule="HandsDown" customModuleProvider="target" sceneMemberID="viewController">
@@ -225,59 +252,83 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GcQ-YG-69Q">
-                                <rect key="frame" x="49" y="308" width="455" height="540"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="studentCell" id="bwz-mB-Pnx">
-                                        <rect key="frame" x="0.0" y="28" width="455" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bwz-mB-Pnx" id="ESf-7p-BrV">
-                                            <rect key="frame" x="0.0" y="0.0" width="455" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="KGd-lN-hP3" id="MQ9-QC-Sbj"/>
-                                    <outlet property="delegate" destination="KGd-lN-hP3" id="YHr-QX-EGm"/>
-                                </connections>
-                            </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Current Class" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sG0-lu-Giz">
-                                <rect key="frame" x="73" y="98" width="143" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xdm-cr-Gg8">
-                                <rect key="frame" x="73" y="148" width="206" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Move/Delete Students"/>
-                                <connections>
-                                    <action selector="editButtonTapped:" destination="KGd-lN-hP3" eventType="touchUpInside" id="27V-6n-X43"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="blq-jL-KYn">
-                                <rect key="frame" x="73" y="207" width="126" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Add a student"/>
-                                <connections>
-                                    <action selector="addStudentButtonTapped:" destination="KGd-lN-hP3" eventType="touchUpInside" id="F1n-6c-oHW"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="9Zs-qi-GjL">
+                                <rect key="frame" x="20" y="84" width="728" height="846"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Class Name..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="taL-l7-Gnm">
+                                        <rect key="frame" x="0.0" y="0.0" width="728" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="WUk-PZ-9CY"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="40"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="KGd-lN-hP3" id="bZe-22-JaJ"/>
+                                        </connections>
+                                    </textField>
+                                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QJG-m3-rXc">
+                                        <rect key="frame" x="0.0" y="60" width="728" height="44"/>
+                                        <items>
+                                            <navigationItem title="Students" id="awa-tP-stN">
+                                                <barButtonItem key="leftBarButtonItem" title="Edit" id="kGr-mS-gRc">
+                                                    <connections>
+                                                        <action selector="editButtonTapped:" destination="KGd-lN-hP3" id="fqK-3K-kEu"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                                <barButtonItem key="rightBarButtonItem" systemItem="add" id="meZ-Yy-Oif">
+                                                    <connections>
+                                                        <action selector="addStudentButtonTapped:" destination="KGd-lN-hP3" id="mFV-RL-4pM"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                            </navigationItem>
+                                        </items>
+                                    </navigationBar>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GcQ-YG-69Q">
+                                        <rect key="frame" x="0.0" y="104" width="728" height="742"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="studentCell" id="bwz-mB-Pnx">
+                                                <rect key="frame" x="0.0" y="28" width="728" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bwz-mB-Pnx" id="ESf-7p-BrV">
+                                                    <rect key="frame" x="0.0" y="0.0" width="728" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                            </tableViewCell>
+                                        </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="KGd-lN-hP3" id="MQ9-QC-Sbj"/>
+                                            <outlet property="delegate" destination="KGd-lN-hP3" id="YHr-QX-EGm"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                            </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="0.4941176471" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="9Zs-qi-GjL" firstAttribute="leading" secondItem="ULC-3U-98G" secondAttribute="leading" constant="20" id="9k8-f6-bYA"/>
+                            <constraint firstItem="9Zs-qi-GjL" firstAttribute="top" secondItem="ULC-3U-98G" secondAttribute="top" constant="20" id="LGx-Q7-bsR"/>
+                            <constraint firstItem="ULC-3U-98G" firstAttribute="trailing" secondItem="9Zs-qi-GjL" secondAttribute="trailing" constant="20" id="s5g-f6-pbg"/>
+                            <constraint firstItem="ULC-3U-98G" firstAttribute="bottom" secondItem="9Zs-qi-GjL" secondAttribute="bottom" constant="50" id="vYd-v9-Rhu"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="ULC-3U-98G"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Hands Down" id="qrE-y3-YX6">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="aru-D2-mub">
+                            <connections>
+                                <action selector="saveButtonTapped:" destination="KGd-lN-hP3" id="sRO-mL-wyG"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="NameTextField" destination="taL-l7-Gnm" id="tMm-qF-dTr"/>
                         <outlet property="myTableView" destination="GcQ-YG-69Q" id="meP-w6-3DO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmj-3p-Cck" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-883" y="1549"/>
+            <point key="canvasLocation" x="-883.59375" y="1548.6328125"/>
         </scene>
         <!--Manage Groups-->
         <scene sceneID="qLK-7t-28K">

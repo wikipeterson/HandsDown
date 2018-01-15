@@ -10,6 +10,7 @@ import UIKit
 
 class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var NameTextField: UITextField!
     @IBOutlet weak var myTableView: UITableView!
     var editSwitch = true
     var teacher = Teacher()
@@ -18,39 +19,42 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print(myClass?.name ?? "No name for class")
-        print(myClass?.students.count)
         
     }
 
-    @IBAction func editButtonTapped(_ sender: UIButton)
+    @IBAction func editButtonTapped(_ sender: UIBarButtonItem)
     {
         if editSwitch == true
         {
             myTableView.isEditing = true
             editSwitch = false
-            sender.setTitle("Done", for: .normal)
+           
+           sender.title = "Done"
         }
         else
         {
             myTableView.isEditing = false
             editSwitch = true
-            sender.setTitle("Edit", for: .normal)
+           sender.title = "Edit" 
         }
     }
     
-    @IBAction func addStudentButtonTapped(_ sender: UIButton) {
-    
+    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
+        navigationController?.dismiss(animated: true, completion: nil)
+        
+        // figure out how to save things here
+    }
+    @IBAction func addStudentButtonTapped(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Add a student", message: nil, preferredStyle: .alert)
         alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name"})
         
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-                let newName = alert.textFields![0].text
-                let newStudent = Student(name: newName!, picture: #imageLiteral(resourceName: "questionMarkImage"))
-//    self.teacher.classes[self.teacher.currentClassID].students.append(newStudent)
+            let newName = alert.textFields![0].text
+            let newStudent = Student(name: newName!, picture: #imageLiteral(resourceName: "questionMarkImage"))
+            //    self.teacher.classes[self.teacher.currentClassID].students.append(newStudent)
             self.myClass?.students.append(newStudent)
-                self.myTableView.reloadData()
-
+            self.myTableView.reloadData()
+            
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -58,7 +62,6 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
     }
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
@@ -68,18 +71,11 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         else {
             return 0
         }
-
-
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        
-        
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell")
-        
-//        let student = teacher.classes[teacher.currentClassID].students[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell", for: indexPath)
         if let theClass = myClass {
             let student = theClass.students[indexPath.row]
