@@ -10,9 +10,9 @@ import UIKit
 
 class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
-    
     @IBOutlet weak var currentClassLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    
     var editSwitch = true
     var teacher = Teacher()
     
@@ -22,16 +22,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return teacher.classes.count
-    }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let thisClass = teacher.classes[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "classCell")
-        cell!.textLabel?.text = thisClass.name
-        return cell!
-    }
+
     
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
         navigationController?.dismiss(animated: true, completion: nil)
@@ -71,6 +63,18 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         alert.addAction(okAction)
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: TableView methods
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return teacher.classes.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let thisClass = teacher.classes[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "classCell")
+        cell!.textLabel?.text = thisClass.name
+        return cell!
     }
     
     //this is the code needed to delete a row...
