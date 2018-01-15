@@ -13,5 +13,15 @@ struct Class
     
     var name : String = ""
     var students = [Student]()
+    
+//    init (){
+//        self.name = ""
+//        self.students = []
+//    }
+//    init (name: String, students: [Student]){
+//        self.name = name
+//        self.students = students
+//    }
+    
 
 }

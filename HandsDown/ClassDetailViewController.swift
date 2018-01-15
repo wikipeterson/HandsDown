@@ -8,9 +8,9 @@
 
 import UIKit
 
-class ClassDetailViewController: UIViewController {
+class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var myTableView: UITableView!
     var editSwitch = true
     var teacher = Teacher()
     var myClass: Class?
@@ -19,6 +19,7 @@ class ClassDetailViewController: UIViewController {
         super.viewDidLoad()
 
         print(myClass?.name ?? "No name for class")
+        print(myClass?.students.count)
         
     }
 
@@ -26,13 +27,13 @@ class ClassDetailViewController: UIViewController {
     {
         if editSwitch == true
         {
-            tableView.isEditing = true
+            myTableView.isEditing = true
             editSwitch = false
             sender.setTitle("Done", for: .normal)
         }
         else
         {
-            tableView.isEditing = false
+            myTableView.isEditing = false
             editSwitch = true
             sender.setTitle("Edit", for: .normal)
         }
@@ -46,8 +47,9 @@ class ClassDetailViewController: UIViewController {
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
                 let newName = alert.textFields![0].text
                 let newStudent = Student(name: newName!, picture: #imageLiteral(resourceName: "questionMarkImage"))
-    self.teacher.classes[self.teacher.currentClassID].students.append(newStudent)
-                self.tableView.reloadData()
+//    self.teacher.classes[self.teacher.currentClassID].students.append(newStudent)
+            self.myClass?.students.append(newStudent)
+                self.myTableView.reloadData()
 
         })
         
@@ -60,15 +62,33 @@ class ClassDetailViewController: UIViewController {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return teacher.classes[teacher.currentClassID].students.count
+        if let theClass = myClass {
+            return theClass.students.count
+        }
+        else {
+            return 0
+        }
+
+
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let student = teacher.classes[teacher.currentClassID].students[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell")
-        cell?.textLabel?.text = student.name
-        return cell!
+        
+        
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell")
+        
+//        let student = teacher.classes[teacher.currentClassID].students[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell", for: indexPath)
+        if let theClass = myClass {
+            let student = theClass.students[indexPath.row]
+            cell.textLabel?.text = student.name
+        } else {
+            cell.textLabel?.text = "No Class in file"
+        }
+        
+        return cell
     }
     
 

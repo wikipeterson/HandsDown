@@ -239,6 +239,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="KGd-lN-hP3" id="MQ9-QC-Sbj"/>
+                                    <outlet property="delegate" destination="KGd-lN-hP3" id="YHr-QX-EGm"/>
+                                </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Current Class" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sG0-lu-Giz">
                                 <rect key="frame" x="73" y="98" width="143" height="21"/>
@@ -268,7 +272,7 @@
                         <viewLayoutGuide key="safeArea" id="ULC-3U-98G"/>
                     </view>
                     <connections>
-                        <outlet property="tableView" destination="GcQ-YG-69Q" id="Tlb-6y-1ar"/>
+                        <outlet property="myTableView" destination="GcQ-YG-69Q" id="meP-w6-3DO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmj-3p-Cck" userLabel="First Responder" sceneMemberID="firstResponder"/>

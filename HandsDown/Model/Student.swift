@@ -12,6 +12,7 @@ class Student
 {
     var name: String = "default name"
     var picture: UIImage = #imageLiteral(resourceName: "sampleStudentImage")
+
     
     init(name: String, picture: UIImage)
     {
