@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		83519FAF2006544800214DA3 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FAE2006544800214DA3 /* Group.swift */; };
 		83519FB12006548400214DA3 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FB02006548400214DA3 /* Student.swift */; };
-		83C42F06200C573D00F89072 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C42F05200C573D00F89072 /* CloudKit.framework */; };
 		F124C6F820055B8C0026C7CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C6F720055B8C0026C7CB /* AppDelegate.swift */; };
 		F124C6FA20055B8C0026C7CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C6F920055B8C0026C7CB /* ViewController.swift */; };
 		F124C6FD20055B8C0026C7CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F124C6FB20055B8C0026C7CB /* Main.storyboard */; };
@@ -24,6 +23,7 @@
 		F1C4003F200A895E00CEEC05 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C4003E200A895E00CEEC05 /* SettingsViewController.swift */; };
 		F1C40041200B03C100CEEC05 /* Teacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C40040200B03C100CEEC05 /* Teacher.swift */; };
 		F1C40043200C1E1A00CEEC05 /* ClassDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C40042200C1E1A00CEEC05 /* ClassDetailViewController.swift */; };
+		F1F8BC81200D4F4500DA0579 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1F8BC80200D4F4500DA0579 /* CloudKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +47,6 @@
 		83519FAE2006544800214DA3 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		83519FB02006548400214DA3 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
 		83C42F03200C571E00F89072 /* HandsDown.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HandsDown.entitlements; sourceTree = "<group>"; };
-		83C42F05200C573D00F89072 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		F124C6F420055B8B0026C7CB /* HandsDown.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HandsDown.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F124C6F720055B8C0026C7CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F124C6F920055B8C0026C7CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +67,7 @@
 		F1C4003E200A895E00CEEC05 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		F1C40040200B03C100CEEC05 /* Teacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teacher.swift; sourceTree = "<group>"; };
 		F1C40042200C1E1A00CEEC05 /* ClassDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassDetailViewController.swift; sourceTree = "<group>"; };
+		F1F8BC80200D4F4500DA0579 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				83C42F06200C573D00F89072 /* CloudKit.framework in Frameworks */,
+				F1F8BC81200D4F4500DA0579 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,7 +110,7 @@
 		83C42F04200C573D00F89072 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				83C42F05200C573D00F89072 /* CloudKit.framework */,
+				F1F8BC80200D4F4500DA0579 /* CloudKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -497,7 +497,7 @@
 				DEVELOPMENT_TEAM = EQST5YB479;
 				INFOPLIST_FILE = HandsDown/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.WikipetersonAssistStatApps.HandsDown;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Wikipeterson.HandsDown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -513,7 +513,7 @@
 				DEVELOPMENT_TEAM = EQST5YB479;
 				INFOPLIST_FILE = HandsDown/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.WikipetersonAssistStatApps.HandsDown;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Wikipeterson.HandsDown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
