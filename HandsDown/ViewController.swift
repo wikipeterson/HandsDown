@@ -122,7 +122,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         if view == nil {  //if no label there yet
             pickerLabel = UILabel()
             //color the label's background
-            let hue = CGFloat(row)/CGFloat(teacher.classes[teacher.currentClassID].students.count)
+            let hue = CGFloat(0.6)
+            //let hue = CGFloat(row)/CGFloat(teacher.classes[teacher.currentClassID].students.count)
             pickerLabel?.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         }
         let titleData = teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].name
