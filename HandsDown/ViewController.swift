@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -25,7 +26,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var screenWidth : CGFloat = 0.0
     var screenHeight: CGFloat = 0.0
     var myFont = "Helvetica Neue"
-    
+    var player : AVAudioPlayer!
     
     override func viewDidLoad()
     {
@@ -33,13 +34,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         myPickerView.dataSource = self
         myPickerView.delegate = self
         
+        playSound(soundName: "Captain UnderpantsSound.mp3")
         //create demo class
         var student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
-        var student2 = Student(name: "Grammy", picture: #imageLiteral(resourceName: "beeImage"))
+        var student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
         var student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
-        var student4 = Student(name: "Pop-pop", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
-        var student5 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "elmoImage"))
-        var student6 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "sampleStudentImage"))
+        var student4 = Student(name: "Steve", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
+        var student5 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "elmoImage"))
+        var student6 = Student(name: "Amy", picture: #imageLiteral(resourceName: "sampleStudentImage"))
         
         //make the demo class be classID 0 for teacher class
         var demoClass = Class()
@@ -148,6 +150,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     {
         studentNameLabel.text = teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].name + "!"
         myImageView.image = teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].picture
+        playSound(soundName: "clickSound.mp3")
     }
     
 
@@ -160,13 +163,28 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     //tried the same with a swipe recongizer on picker to no avail
-    @IBAction func swipeGestureOnPicker(_ sender: UISwipeGestureRecognizer) {
+   @IBAction func swipeGestureOnPicker(_ sender: UISwipeGestureRecognizer) {
         
         studentNameLabel.text = "?"
         myImageView.image = #imageLiteral(resourceName: "questionMarkImage")
         print("swiped")
     }
     
+    
+    //set up function for playing sounds
+    func playSound(soundName: String)
+    {
+        let path = Bundle.main.path(forResource: soundName, ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player.play()
+        } catch {
+            // couldn't load file :(
+        }
+        
+    }
     
     //send the data through segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)

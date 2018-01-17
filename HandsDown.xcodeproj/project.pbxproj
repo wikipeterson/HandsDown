@@ -24,6 +24,8 @@
 		F1C40041200B03C100CEEC05 /* Teacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C40040200B03C100CEEC05 /* Teacher.swift */; };
 		F1C40043200C1E1A00CEEC05 /* ClassDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C40042200C1E1A00CEEC05 /* ClassDetailViewController.swift */; };
 		F1F8BC81200D4F4500DA0579 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1F8BC80200D4F4500DA0579 /* CloudKit.framework */; };
+		F1FCAC9C200FA921005637A1 /* Captain UnderpantsSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F1F8BC83200F9E1900DA0579 /* Captain UnderpantsSound.mp3 */; };
+		F1FCAC9E200FAC43005637A1 /* clickSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F1FCAC9D200FAC38005637A1 /* clickSound.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +70,8 @@
 		F1C40040200B03C100CEEC05 /* Teacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Teacher.swift; sourceTree = "<group>"; };
 		F1C40042200C1E1A00CEEC05 /* ClassDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassDetailViewController.swift; sourceTree = "<group>"; };
 		F1F8BC80200D4F4500DA0579 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		F1F8BC83200F9E1900DA0579 /* Captain UnderpantsSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Captain UnderpantsSound.mp3"; sourceTree = "<group>"; };
+		F1FCAC9D200FAC38005637A1 /* clickSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clickSound.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +151,8 @@
 				F1C40042200C1E1A00CEEC05 /* ClassDetailViewController.swift */,
 				F1C4003C200A894B00CEEC05 /* GroupsViewController.swift */,
 				F1C4003E200A895E00CEEC05 /* SettingsViewController.swift */,
+				F1FCAC9D200FAC38005637A1 /* clickSound.mp3 */,
+				F1F8BC83200F9E1900DA0579 /* Captain UnderpantsSound.mp3 */,
 				F124C70120055B8D0026C7CB /* Assets.xcassets */,
 				F124C70320055B8D0026C7CB /* LaunchScreen.storyboard */,
 				F124C70620055B8D0026C7CB /* Info.plist */,
@@ -292,6 +298,8 @@
 				F124C70520055B8D0026C7CB /* LaunchScreen.storyboard in Resources */,
 				F124C70220055B8D0026C7CB /* Assets.xcassets in Resources */,
 				F124C6FD20055B8C0026C7CB /* Main.storyboard in Resources */,
+				F1FCAC9E200FAC43005637A1 /* clickSound.mp3 in Resources */,
+				F1FCAC9C200FA921005637A1 /* Captain UnderpantsSound.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
