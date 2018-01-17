@@ -9,6 +9,7 @@
 import UIKit
 import CloudKit
 
+
 class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     @IBOutlet weak var currentClassLabel: UILabel!
@@ -16,6 +17,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var editSwitch = true
     var teacher = Teacher()
+    
+
     
     override func viewDidLoad()
     {
@@ -66,7 +69,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
             let newClassName = alert.textFields![0].text!
             let newClass = Class(name: newClassName, students: [Student]())
-            self.saveClassToCloudKit(name: newClassName)
+//            self.saveClassToCloudKit(name: newClassName)
             // figure out how to loadClassesFromCloudKit, only after the save class has finished.
 //            self.loadClassesFromCloudKit()
             self.teacher.classes.append(newClass)
