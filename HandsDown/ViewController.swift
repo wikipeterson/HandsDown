@@ -47,8 +47,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         var demoClass = Class()
         demoClass.students = [student1, student2, student3, student4, student5, student6]
         demoClass.name = "Demo Class"
+        demoClass.shuffle() // randomize order of students
         teacher.classes.append(demoClass)
 
+       
     
         // set a random starting point on PickerView
         let randomStaringRow = Int(arc4random_uniform(1000)) + teacher.classes[teacher.currentClassID].students.count
