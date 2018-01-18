@@ -36,12 +36,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         playSound(soundName: "Captain UnderpantsSound.mp3")
         //create demo class
-        var student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
-        var student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
-        var student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
-        var student4 = Student(name: "Steve", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
-        var student5 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "elmoImage"))
-        var student6 = Student(name: "Amy", picture: #imageLiteral(resourceName: "sampleStudentImage"))
+        let student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
+        let student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
+        let student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
+        let student4 = Student(name: "Steve", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
+        let student5 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "elmoImage"))
+        let student6 = Student(name: "Amy", picture: #imageLiteral(resourceName: "sampleStudentImage"))
         
         //make the demo class be classID 0 for teacher class
         var demoClass = Class()
