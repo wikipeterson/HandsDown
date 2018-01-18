@@ -37,5 +37,21 @@ struct Class
 //        self.students = students
 //    }
     
-
+    //this is a methode for randomizing the order of students within a class
+    mutating func shuffle()
+    {
+        var shuffled = [Student]();
+        
+        for _ in 0..<self.students.count
+        {
+            let rand = Int(arc4random_uniform(UInt32(self.students.count)))
+            
+            shuffled.append(self.students[rand])
+            
+            self.students.remove(at: rand)
+        }
+        
+        self.students = shuffled
+    }
+    
 }
