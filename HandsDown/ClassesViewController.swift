@@ -69,9 +69,9 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
             let newClassName = alert.textFields![0].text!
             let newClass = Class(name: newClassName, students: [Student]())
-//            self.saveClassToCloudKit(name: newClassName)
-            // figure out how to loadClassesFromCloudKit, only after the save class has finished.
-//            self.loadClassesFromCloudKit()
+            self.saveClassToCloudKit(name: newClassName)
+//             figure out how to loadClassesFromCloudKit, only after the save class has finished.
+            self.loadClassesFromCloudKit()
             self.teacher.classes.append(newClass)
             self.tableView.reloadData()
             

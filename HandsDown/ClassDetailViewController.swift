@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CloudKit
 
 class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
 
@@ -14,12 +15,13 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var myTableView: UITableView!
     var editSwitch = true
     var teacher = Teacher()
-    var myClass: Class?
+    var myClass: Class? // this should get passed over from classVC
     var defaultImagesArray = [#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "questionMarkImage")]
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationController?.delegate = self
+        self.loadStudentsFromCloudKit()
         
     }
 
@@ -59,13 +61,16 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name"})
         
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            let newName = alert.textFields![0].text
+            let newName = alert.textFields![0].text!
             let randomImageIndex = Int(arc4random_uniform(UInt32(self.defaultImagesArray.count)))
             let newPicture = self.defaultImagesArray[randomImageIndex]
-            let newStudent = Student(name: newName!, picture: newPicture)
+            let newStudent = Student(name: newName, picture: newPicture)
+            self.saveStudentToCloudKit(name: newName)
           
-            self.myClass?.students.append(newStudent)
-            self.myTableView.reloadData()
+            // figure out how to load students after the save is finished.
+            self.loadStudentsFromCloudKit()
+//            self.myClass?.students.append(newStudent)
+//            self.myTableView.reloadData()
             
         })
         
@@ -74,6 +79,82 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
     }
+    
+    // Mark: CloudKit Methods
+    func saveStudentToCloudKit(name: String) {
+        // create the CKRecord that gets saved to the database
+        let uid = UUID().uuidString // get a uniqueID
+        let recordID = CKRecordID(recordName: uid)
+        let newStudentRecord = CKRecord(recordType: "Student", recordID: recordID)
+        newStudentRecord["name"] = name as NSString
+        
+        
+        // save classID to Student, so that we can fetch the students by classID
+        if let currentClass = myClass {
+//            let classID = CKRecordID(recordName: currentClass.recordID)
+            guard let classRecord = currentClass.record else{return}
+            let classReference = CKReference(record: classRecord, action: .deleteSelf)
+//            let classReference = CKReference(recordID: classID, action: .deleteSelf)
+            newStudentRecord["classID"] = classReference
+        }
+        // figure out how to save the picture
+        
+        // save CKRecord to correct container.. private, public, shared, etc.
+        let myContainer = CKContainer.default()
+        let privateDatabase = myContainer.privateCloudDatabase
+        privateDatabase.save(newStudentRecord) {
+            (record, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            // insert successfully saved record code... reload table, etc...
+            print("Successfully saved record: ", record ?? "")
+        }
+    }
+    
+    func loadStudentsFromCloudKit() {
+        let privateDatabase = CKContainer.default().privateCloudDatabase
+        
+        // Initialize Query
+        // look more into Predicates.  You can query by name, distance form, etc.
+        guard var currentClass = myClass else {return}
+        
+        // search for all students with the classID = to the class's recordID
+//        let predicate = NSPredicate(format: "%K = %@", "classID", currentClass.recordID)
+       let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: "Student", predicate: predicate)
+        
+        // Configure Query.  Figure out a better way to sort.  Maybe sort by created?
+        query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        
+        privateDatabase.perform(query, inZoneWith: nil) {
+            (records, error) in
+            guard let records = records else {
+                print("Error querying records: ", error as Any)
+                return
+            }
+            print("Found \(records.count) records matching query")
+            // clear classes. then reload
+            
+            currentClass.students.removeAll()
+            for record in records {
+                let foundStudent = Student(record: record) // create a student from the record
+                // append to students array
+                currentClass.students.append(foundStudent)
+            }
+            self.myClass?.students = currentClass.students
+            // this will prevent crash because we are working on a background thread.  We might not need this, but it was needed for async calls in firebase
+            //            DispatchQueue.main.async(execute: {
+            //                print("we reloaded the table")
+            //                self.tableView.reloadData()
+            //            })
+            self.myTableView.reloadData()
+            
+        }
+    }
+    
+    // MARK:  TableView methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {

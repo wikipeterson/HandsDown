@@ -14,19 +14,28 @@ struct Class
     
     var name : String = ""
     var students = [Student]()
+    // recordID is used for cloudkit.  Each record of class has a unique id.  The recordid is the uniqueID.  It is important for relating the class to the students.
+    var recordID: String = ""
+    var record: CKRecord?
     
     init() {
         name = ""
+        recordID = ""
         students = []
+        record = nil
     }
     init(name: String, students: [Student]) {
         self.name = name
         self.students = students
+        self.recordID = ""
+        self.record = nil
     }
     init(record: CKRecord) {
         self.name = record["name"] as? String ?? ""
+        self.recordID = record["referenceName"] as? String ?? ""
         // figure out how to load students and images
         self.students = []
+        self.record = record
     }
 //    init (){
 //        self.name = ""
