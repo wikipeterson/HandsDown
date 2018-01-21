@@ -172,68 +172,69 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Nnm-Yf-acg">
-                                <rect key="frame" x="20" y="84" width="728" height="890"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Class" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KgP-hc-IPZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="728" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="0LX-lF-4N9"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="40"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kyJ-Ku-kGb">
-                                        <rect key="frame" x="0.0" y="50" width="728" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="7eb-bO-Dh6"/>
-                                        </constraints>
-                                        <items>
-                                            <navigationItem title="Classes" id="4NP-Q0-bEt">
-                                                <barButtonItem key="leftBarButtonItem" title="Edit" id="FkE-6T-xlS">
-                                                    <connections>
-                                                        <action selector="editButtonWasTapped:" destination="tbb-2O-xeM" id="2ud-xi-9es"/>
-                                                    </connections>
-                                                </barButtonItem>
-                                                <barButtonItem key="rightBarButtonItem" systemItem="add" id="uzN-VO-73p">
-                                                    <connections>
-                                                        <action selector="addButtonWasTapped:" destination="tbb-2O-xeM" id="1b2-70-P1B"/>
-                                                    </connections>
-                                                </barButtonItem>
-                                            </navigationItem>
-                                        </items>
-                                    </navigationBar>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uyQ-TR-aH6">
-                                        <rect key="frame" x="0.0" y="94" width="728" height="796"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="classCell" id="Hiv-jo-aLs">
-                                                <rect key="frame" x="0.0" y="28" width="728" height="44"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hiv-jo-aLs" id="q0c-ax-tbJ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="728" height="43.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </tableViewCellContentView>
-                                                <connections>
-                                                    <segue destination="KGd-lN-hP3" kind="show" identifier="toClassDetailsSegue" id="rFn-Kk-Evk"/>
-                                                </connections>
-                                            </tableViewCell>
-                                        </prototypes>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Class" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KgP-hc-IPZ">
+                                <rect key="frame" x="20" y="81" width="728" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="5yn-33-1IB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kyJ-Ku-kGb">
+                                <rect key="frame" x="20" y="141" width="728" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="ep3-Sk-Q1C"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="Classes" id="4NP-Q0-bEt">
+                                        <barButtonItem key="leftBarButtonItem" title="Edit" id="FkE-6T-xlS">
+                                            <connections>
+                                                <action selector="editButtonWasTapped:" destination="tbb-2O-xeM" id="2ud-xi-9es"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="uzN-VO-73p">
+                                            <connections>
+                                                <action selector="addButtonWasTapped:" destination="tbb-2O-xeM" id="1b2-70-P1B"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uyQ-TR-aH6">
+                                <rect key="frame" x="20" y="185" width="728" height="775"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="classCell" id="Hiv-jo-aLs">
+                                        <rect key="frame" x="0.0" y="28" width="728" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hiv-jo-aLs" id="q0c-ax-tbJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="728" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="dataSource" destination="tbb-2O-xeM" id="9cp-I6-3fe"/>
-                                            <outlet property="delegate" destination="tbb-2O-xeM" id="ofe-zk-wbD"/>
+                                            <segue destination="KGd-lN-hP3" kind="show" identifier="toClassDetailsSegue" id="rFn-Kk-Evk"/>
                                         </connections>
-                                    </tableView>
-                                </subviews>
-                            </stackView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="tbb-2O-xeM" id="9cp-I6-3fe"/>
+                                    <outlet property="delegate" destination="tbb-2O-xeM" id="ofe-zk-wbD"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.92549020049999997" green="0.23529411850000001" blue="0.1019607857" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="Nnm-Yf-acg" secondAttribute="bottom" constant="50" id="2bw-yN-0zd"/>
-                            <constraint firstItem="qe3-im-hxp" firstAttribute="trailing" secondItem="Nnm-Yf-acg" secondAttribute="trailing" constant="20" id="7sP-Qs-S9g"/>
-                            <constraint firstItem="Nnm-Yf-acg" firstAttribute="top" secondItem="qe3-im-hxp" secondAttribute="top" constant="20" id="fsI-jg-C8G"/>
-                            <constraint firstItem="Nnm-Yf-acg" firstAttribute="leading" secondItem="qe3-im-hxp" secondAttribute="leading" constant="20" id="lP7-4U-q90"/>
+                            <constraint firstItem="KgP-hc-IPZ" firstAttribute="leading" secondItem="qe3-im-hxp" secondAttribute="leading" constant="20" id="0RG-hu-rCr"/>
+                            <constraint firstItem="qe3-im-hxp" firstAttribute="bottom" secondItem="uyQ-TR-aH6" secondAttribute="bottom" constant="20" id="5b1-40-ghw"/>
+                            <constraint firstItem="qe3-im-hxp" firstAttribute="trailing" secondItem="KgP-hc-IPZ" secondAttribute="trailing" constant="20" id="CEs-qY-nNc"/>
+                            <constraint firstItem="qe3-im-hxp" firstAttribute="trailing" secondItem="uyQ-TR-aH6" secondAttribute="trailing" constant="20" id="GdP-Rv-Qjt"/>
+                            <constraint firstItem="kyJ-Ku-kGb" firstAttribute="top" secondItem="KgP-hc-IPZ" secondAttribute="bottom" constant="10" id="RPp-Y5-1WW"/>
+                            <constraint firstItem="kyJ-Ku-kGb" firstAttribute="leading" secondItem="qe3-im-hxp" secondAttribute="leading" constant="20" id="UT0-LA-37N"/>
+                            <constraint firstItem="qe3-im-hxp" firstAttribute="trailing" secondItem="kyJ-Ku-kGb" secondAttribute="trailing" constant="20" id="Znb-0t-m31"/>
+                            <constraint firstItem="uyQ-TR-aH6" firstAttribute="top" secondItem="kyJ-Ku-kGb" secondAttribute="bottom" id="ex2-tt-aOk"/>
+                            <constraint firstItem="uyQ-TR-aH6" firstAttribute="leading" secondItem="qe3-im-hxp" secondAttribute="leading" constant="20" id="hu9-aP-vNw"/>
+                            <constraint firstItem="KgP-hc-IPZ" firstAttribute="top" secondItem="qe3-im-hxp" secondAttribute="top" constant="17" id="pEs-kg-s85"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="qe3-im-hxp"/>
                     </view>
