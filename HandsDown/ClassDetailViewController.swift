@@ -145,11 +145,11 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             }
             self.myClass?.students = currentClass.students
             // this will prevent crash because we are working on a background thread.  We might not need this, but it was needed for async calls in firebase
-            //            DispatchQueue.main.async(execute: {
-            //                print("we reloaded the table")
-            //                self.tableView.reloadData()
-            //            })
-            self.myTableView.reloadData()
+            DispatchQueue.main.async(execute: {
+//                print("we reloaded the table")
+                self.myTableView.reloadData()
+            })
+//            self.myTableView.reloadData()
             
         }
     }
