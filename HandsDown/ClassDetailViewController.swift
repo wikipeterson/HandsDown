@@ -121,8 +121,14 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         guard var currentClass = myClass else {return}
         
         // search for all students with the classID = to the class's recordID
+        // Match item records whose owningList field points to the specified list record.
+        let classRecord = currentClass.record
+
+        let recordToMatch = CKReference(record: classRecord!, action: .deleteSelf)
+        let predicate = NSPredicate(format: "classID == %@", recordToMatch)
+
 //        let predicate = NSPredicate(format: "%K = %@", "classID", currentClass.recordID)
-       let predicate = NSPredicate(value: true)
+//       let predicate = NSPredicate(value: true)
         let query = CKQuery(recordType: "Student", predicate: predicate)
         
         // Configure Query.  Figure out a better way to sort.  Maybe sort by created?
