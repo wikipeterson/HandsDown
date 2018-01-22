@@ -132,7 +132,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             // this will prevent crash because we are working on a background thread.  We might not need this, but it was needed for async calls in firebase
             DispatchQueue.main.async(execute: {
-                print("we reloaded the table")
+//                print("we reloaded the table")
                 self.tableView.reloadData()
             })
 //            self.tableView.reloadData()
