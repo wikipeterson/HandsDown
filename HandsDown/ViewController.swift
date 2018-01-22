@@ -9,7 +9,15 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+
+
+class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, SetTeacherDelegate {
+    
+    
+    func setTeacher(teacher: Teacher)
+    {
+        self.teacher = teacher
+    }
     
     @IBOutlet weak var classNameLabel: UILabel!
     @IBOutlet weak var studentNameLabel: UILabel!
@@ -55,7 +63,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
        
     
         // set a random starting point on PickerView
-        let randomStaringRow = Int(arc4random_uniform(1000)) + teacher.classes[teacher.currentClassID].students.count
+        let randomStaringRow = Int(arc4random_uniform(1000)) + teacher.currentClass!.students.count
         myPickerView.selectRow(randomStaringRow, inComponent:0, animated:true)
         
         //Place UI elements
@@ -64,7 +72,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         screenHeight = self.view.frame.height
         
         
-        classNameLabel.text = teacher.classes[teacher.currentClassID].name
+        classNameLabel.text = teacher.currentClass!.name
         classNameLabel.font = UIFont(name: myFont, size: screenHeight / 24)
         classNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.05)
         classNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.12)
@@ -95,7 +103,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBAction func shuffleButtonTapped(_ sender: UIButton)
     {
-        let randomPickerViewRow = Int(arc4random_uniform(UInt32(1000 * teacher.classes[teacher.currentClassID].students.count)))
+        let randomPickerViewRow = Int(arc4random_uniform(UInt32(1000 * teacher.currentClass!.students.count)))
         
         myPickerView.selectRow(randomPickerViewRow, inComponent:0, animated:true)
         setStudent(row: randomPickerViewRow)
@@ -108,13 +116,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 1000 * teacher.classes[teacher.currentClassID].students.count
+        return 1000 * teacher.currentClass!.students.count
     }
     
     
     //MARK: Delegates
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].name
+        return teacher.currentClass!.students[row % teacher.currentClass!.students.count].name
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -132,7 +140,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             //let hue = CGFloat(row)/CGFloat(teacher.classes[teacher.currentClassID].students.count)
             pickerLabel?.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         }
-        let titleData = teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].name
+        let titleData = teacher.currentClass!.students[row % teacher.currentClass!.students.count].name
         let myTitle = NSAttributedString(string: titleData, attributes: [NSAttributedStringKey.font:UIFont(name: myFont, size: screenHeight / 24)!,NSAttributedStringKey.foregroundColor:UIColor.black])
         pickerLabel!.attributedText = myTitle
         pickerLabel!.textAlignment = .center
@@ -152,8 +160,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     func setStudent(row: Int)
     {
-        studentNameLabel.text = teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].name + "!"
-        myImageView.image = teacher.classes[teacher.currentClassID].students[row % teacher.classes[teacher.currentClassID].students.count].picture
+        studentNameLabel.text = teacher.currentClass!.students[row % teacher.currentClass!.students.count].name + "!"
+        myImageView.image = teacher.currentClass!.students[row % teacher.currentClass!.students.count].picture
         playSound(soundName: "clickSound.mp3")
     }
     
@@ -196,7 +204,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         if segue.identifier == "classesSegue"
         {
             let nvc = (segue.destination as? ClassesViewController)!
+            
             nvc.teacher = teacher
+            nvc.delegate = self
         }
         
     }
