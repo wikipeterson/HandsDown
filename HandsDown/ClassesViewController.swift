@@ -23,7 +23,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        loadClassesFromCloudKit()
+//        loadClassesFromCloudKit()
 //        CKContainer.default().fetchUserRecordID { (recordID, error) in
 //            if let error = error {
 //                print(error)
@@ -102,6 +102,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             // insert successfully saved record code... reload table, etc...
             print("Successfully saved record: ", record ?? "")
+            self.loadClassesFromCloudKit()
         }
     }
     

@@ -49,6 +49,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         demoClass.name = "Demo Class"
         demoClass.shuffle() // randomize order of students
         teacher.classes.append(demoClass)
+        
+        teacher.currentClass = demoClass
 
        
     

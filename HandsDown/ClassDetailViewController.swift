@@ -117,7 +117,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         let privateDatabase = CKContainer.default().privateCloudDatabase
         
         // Initialize Query
-        // look more into Predicates.  You can query by name, distance form, etc.
+        // look more into Predicates.  You can query by name, distance from, etc.
         guard var currentClass = myClass else {return}
         
         // search for all students with the classID = to the class's recordID
