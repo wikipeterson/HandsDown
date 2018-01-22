@@ -135,8 +135,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
 //                print("we reloaded the table")
                 self.tableView.reloadData()
             })
-//            self.tableView.reloadData()
-            
         }
     }
     
