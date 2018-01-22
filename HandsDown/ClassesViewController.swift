@@ -10,6 +10,10 @@ import UIKit
 import CloudKit
 
 
+protocol SetTeacherDelegate {
+    func setTeacher(teacher : Teacher)
+}
+
 class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     @IBOutlet weak var currentClassLabel: UILabel!
@@ -18,7 +22,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     var editSwitch = true
     var teacher = Teacher()
     
-
+    var delegate:SetTeacherDelegate?
     
     override func viewDidLoad()
     {
@@ -35,6 +39,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewWillAppear(_ animated: Bool) {
         loadClassesFromCloudKit()
+        
     }
     
     
@@ -44,6 +49,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         navigationController?.dismiss(animated: true, completion: nil)
         
         // save any changes here
+        delegate?.setTeacher(teacher: teacher)
+        
     }
     
     @IBAction func editButtonWasTapped(_ sender: UIBarButtonItem) {
@@ -168,8 +175,10 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         
-        if segue.identifier == "toClassDetailsSegue" {
-            teacher.currentClassID = tableView.indexPathForSelectedRow!.row
+        if segue.identifier == "toClassDetailsSegue"
+        {
+            teacher.currentClass = teacher.classes[tableView.indexPathForSelectedRow!.row]
+            
             let nvc = segue.destination as! ClassDetailViewController
             
             if let indexPath = tableView.indexPathForSelectedRow {
@@ -181,16 +190,16 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
             nvc.teacher = teacher
         }
-        
-        
+
     }
     
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool)
-    {
-        if let controller = viewController as? ViewController
-        {
-            controller.teacher = teacher    // Here you pass the data back to your original view controller
-        }
-    }
+    
+//    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool)
+//    {
+//        if let controller = viewController as? ViewController
+//        {
+//            controller.teacher = teacher    // Here you pass the data back to your original view controller
+//        }
+//    }
 
 }
