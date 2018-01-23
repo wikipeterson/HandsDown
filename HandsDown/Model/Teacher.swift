@@ -11,8 +11,8 @@ import UIKit
 class Teacher: NSObject {
     
     var classes = [Class]()
-    var currentClassID = 0 //classes array index of current class
-    var currentClass : Class?
-    
+    var currentClass: Class?
+    var currentClassID = 0
+
     
 }

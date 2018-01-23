@@ -23,6 +23,9 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         navigationController?.delegate = self
         self.loadStudentsFromCloudKit()
         
+        if let currentClass = myClass {
+            NameTextField.text = currentClass.name
+        }
     }
 
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem)
@@ -43,7 +46,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-        navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
         
         saveThisClass()
     }
@@ -51,7 +54,9 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     func saveThisClass()
     {
         // figure out how to save things here
+        teacher.currentClass?.students = myClass!.students
         teacher.classes[teacher.currentClassID].students = (myClass?.students)!
+        
         
     }
     
@@ -118,7 +123,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         let privateDatabase = CKContainer.default().privateCloudDatabase
         
         // Initialize Query
-        // look more into Predicates.  You can query by name, distance form, etc.
+        // look more into Predicates.  You can query by name, distance from, etc.
         guard var currentClass = myClass else {return}
         
         // search for all students with the classID = to the class's recordID
