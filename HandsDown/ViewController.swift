@@ -49,21 +49,25 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleStudentsLoaded), name: NSNotification.Name(rawValue: Class.studentsLoadedNotification), object: nil)
         
         // load the spritekit view
-        if let view = self.mySKView  {
+        if let view = self.mySKView
+        {
             // Load the SKScene from 'GameScene.sks'
             if let scene = SKScene(fileNamed: "GameScene") {
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
-
                 // Present the scene
+//                scene.userData = NSMutableDictionary()
+//                scene.userData?.setObject(teacher, forKey: "The Teacher" as NSCopying)
                 view.presentScene(scene)
             }
 
             view.ignoresSiblingOrder = true
+            view.showsFPS = false
+            view.showsNodeCount = false
 
-            view.showsFPS = true
-            view.showsNodeCount = true
         }
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -13,14 +13,23 @@ import AVFoundation
 class GameScene: SKScene
 {
     
-    var nameArray : [String] = [
-        "Theo", "Scooby", "Marsha"
-        , "Tyrese", "Matthew","Fat Albert"
-        , "Danesh", "Geoff", "Jill", "Sneaky Pete"
-        , "Amy", "Zoey", "Bryn", "Cameron", "Lashawndra"
-        ,"Beth", "Bella","Chunks", "Big Al", "Stinky Pat"
-        , "Milly", "Tuxedo Jack", "Heather", "Shaggy", "John Snow", "McFly", "Billy Two-times", "Dirty Harry", "Flo", "Hung", "Enrique", "Siobhan"
-                    ]
+//    var nameArray : [String] = [
+//        "Theo", "Scooby", "Marsha"
+//        , "Tyrese", "Matthew","Fat Albert"
+//        , "Danesh", "Geoff", "Jill", "Sneaky Pete"
+//        , "Amy", "Zoey", "Bryn", "Cameron", "Lashawndra"
+//        ,"Beth", "Bella","Chunks", "Big Al", "Stinky Pat"
+//        , "Milly", "Tuxedo Jack", "Heather", "Shaggy", "John Snow", "McFly", "Billy Two-times", "Dirty Harry", "Flo", "Hung", "Enrique", "Siobhan"
+//                    ]
+    let student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
+    let student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
+    let student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
+    let student4 = Student(name: "Steve", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
+    let student5 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "elmoImage"))
+    let student6 = Student(name: "Amy", picture: #imageLiteral(resourceName: "sampleStudentImage"))
+    var teacher = Teacher()
+    var referenceVC : ViewController!
+    var studentArray = [Student]()
     var nameLabel = SKLabelNode()
     var wheelSprite = SKSpriteNode()
     var spinButton = SKSpriteNode()
@@ -35,7 +44,7 @@ class GameScene: SKScene
     var player = AVAudioPlayer()
     let tockSystemSoundID: SystemSoundID = 1105
     let fanfareSystemSoundID: SystemSoundID = 1103
-    var holder = "" //this is for controlling the click sounds
+    var holder = Student(name: "", picture: #imageLiteral(resourceName: "sampleStudentImage")) //this is for controlling the click sounds
     var loopFactor = 1 //this is for duplicating small classes on the wheel
     
     override func didMove(to view: SKView)
@@ -45,13 +54,19 @@ class GameScene: SKScene
         tipOfArrowPoint = CGPoint(x: tipOfArrow.position.x, y: tipOfArrow.position.y)
         nameLabel.fontSize = 40.0
         nameLabel.text = "???"
-        numberOfSectors = nameArray.count
         
+        //get the teacher data from ViewController
+        studentArray = [student1, student2, student3]
+//        teacher = referenceVC.teacher
+//        studentArray = (teacher.currentClass?.students)!
+        
+        //set up the node that gets the wheel sectors overlayed
         wheelSprite = childNode(withName: "wheelSprite") as! SKSpriteNode
         wheelSprite.position = CGPoint(x: 0, y: 0)
         wheelSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5  )
         wheelSprite.physicsBody?.angularDamping = 1.0
         
+        numberOfSectors = studentArray.count
         placeSectorsOverWheel()
         
     }
@@ -61,7 +76,7 @@ class GameScene: SKScene
         switch numberOfSectors
         {
             case 0:
-                nameArray.append("empty class")
+                studentArray.append(Student(name: "empty class", picture: #imageLiteral(resourceName: "foxImage")))
                 loopFactor = 12
             case 1:
                 loopFactor = 9
@@ -77,7 +92,7 @@ class GameScene: SKScene
                 loopFactor = 1
         }
 
-        numberOfSectors = nameArray.count * loopFactor
+        numberOfSectors = studentArray.count * loopFactor
         angle = 2 * Double.pi / Double(numberOfSectors)
         print("loopFactor = ", loopFactor)
         let theta = 2.0 * Double.pi / Double(numberOfSectors) / 2.0
@@ -110,7 +125,7 @@ class GameScene: SKScene
             triangleArray.append(triangleShapeNode)
             wheelSprite.addChild(triangleShapeNode)
             
-            let rectLabel = SKLabelNode(text: nameArray[num % nameArray.count])
+            let rectLabel = SKLabelNode(text: studentArray[num % studentArray.count].name)
             rectLabel.position = CGPoint(x: 220, y: -10)
             rectLabel.fontColor = UIColor.black
             rectLabel.fontName = "HelveticaNeue"
@@ -148,13 +163,13 @@ class GameScene: SKScene
             {
                 if rectArray[i].intersects(tipOfArrow)
                 {
-                    nameLabel.text = nameArray[i % nameArray.count]
+                    nameLabel.text = studentArray[i % studentArray.count].name
                    
-                    if nameArray[i % nameArray.count] != holder
+                    if studentArray[i % studentArray.count].name != holder.name
                     {
                         AudioServicesPlaySystemSound(tockSystemSoundID)
                     }
-                    holder = nameArray[i % nameArray.count]
+                    holder = studentArray[i % studentArray.count]
                     
                     if (wheelSprite.physicsBody?.angularVelocity)! < CGFloat(0.05)
                     {
@@ -163,7 +178,7 @@ class GameScene: SKScene
                         spinning = false
                         AudioServicesPlaySystemSound(fanfareSystemSoundID)
                         AudioServicesPlaySystemSound(4095)
-                        nameLabel.text = nameArray[i % nameArray.count] + "!"
+                        nameLabel.text = studentArray[i % studentArray.count].name + "!"
                         nameLabel.fontSize = 70.0
                     //print(rectArray[i].zRotation)
 //                        wheelSprite.zRotation = rectArray[i].zRotation
