@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mn2-ce-ydk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mn2-ce-ydk">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -131,6 +131,14 @@
                                     <action selector="shuffleButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0By-2N-Tp5"/>
                                 </connections>
                             </button>
+                            <skView contentMode="scaleToFill" fixedFrame="YES" sceneName="GameScene.sks" translatesAutoresizingMaskIntoConstraints="NO" id="8u5-UT-D4H">
+                                <rect key="frame" x="47" y="244" width="240" height="375"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </skView>
+                            <skView contentMode="scaleToFill" fixedFrame="YES" sceneName="GameScene.sks" translatesAutoresizingMaskIntoConstraints="NO" id="2Cd-aS-S2C">
+                                <rect key="frame" x="47" y="244" width="240" height="375"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </skView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -148,6 +156,7 @@
                         <outlet property="manageGroupsButton" destination="FGl-mD-tE9" id="eon-Hc-PYE"/>
                         <outlet property="myImageView" destination="iYY-4l-PPW" id="ZZt-Nf-GJh"/>
                         <outlet property="myPickerView" destination="pmC-Xw-ZWR" id="92Y-ni-uaS"/>
+                        <outlet property="mySKView" destination="2Cd-aS-S2C" id="WbA-6b-Mlg"/>
                         <outlet property="myStackView" destination="FEy-jl-mBo" id="R1d-zF-gFa"/>
                         <outlet property="settingsButton" destination="Jng-4o-Qjc" id="5CE-v0-0lm"/>
                         <outlet property="shuffleButton" destination="Wv9-xY-iNv" id="CAY-RN-Srg"/>

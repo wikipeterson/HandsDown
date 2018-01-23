@@ -9,9 +9,12 @@
 import UIKit
 import AVFoundation
 import CloudKit
+import SpriteKit
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, SetTeacherDelegate {
     
+  
+    @IBOutlet weak var mySKView: SKView!
     @IBOutlet weak var classNameLabel: UILabel!
     @IBOutlet weak var studentNameLabel: UILabel!
     @IBOutlet weak var myImageView: UIImageView!
@@ -36,7 +39,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         myPickerView.dataSource = self
         myPickerView.delegate = self
         
-//        playSound(soundName: "Captain UnderpantsSound.mp3")
+
         // load classes from cloudkit.  If there are no classes, a demo class will be created
         loadClassesFromCloudKit()
         
@@ -44,6 +47,23 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         // this observer will get called from Class, after it is finished loading the students from the class Class (ps, that naming is the worst.)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleStudentsLoaded), name: NSNotification.Name(rawValue: Class.studentsLoadedNotification), object: nil)
+        
+        // load the spritekit view
+        if let view = self.mySKView  {
+            // Load the SKScene from 'GameScene.sks'
+            if let scene = SKScene(fileNamed: "GameScene") {
+                // Set the scale mode to scale to fit the window
+                scene.scaleMode = .aspectFill
+
+                // Present the scene
+                view.presentScene(scene)
+            }
+
+            view.ignoresSiblingOrder = true
+
+            view.showsFPS = true
+            view.showsNodeCount = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -288,6 +308,25 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             // couldn't load file :(
         }
         
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
+    
+    // change these orientation options
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .allButUpsideDown
+        } else {
+            return .all
+        }
+    }
+    
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
     
     // delegate method used to pass teacher back from classesVC
