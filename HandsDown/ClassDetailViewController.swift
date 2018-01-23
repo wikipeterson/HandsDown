@@ -23,6 +23,9 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         navigationController?.delegate = self
         self.loadStudentsFromCloudKit()
         
+        if let currentClass = myClass {
+            NameTextField.text = currentClass.name
+        }
     }
 
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem)
@@ -43,7 +46,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-        navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
         
         saveThisClass()
     }
@@ -51,7 +54,9 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     func saveThisClass()
     {
         // figure out how to save things here
+        teacher.currentClass?.students = myClass!.students
         teacher.classes[teacher.currentClassID].students = (myClass?.students)!
+        
         
     }
     

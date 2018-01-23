@@ -9,7 +9,7 @@
 import UIKit
 import CloudKit
 
-struct Class
+class Class
 {
     
     var name : String = ""
@@ -17,6 +17,8 @@ struct Class
     // recordID is used for cloudkit.  Each record of class has a unique id.  The recordid is the uniqueID.  It is important for relating the class to the students.
     var recordID: String = ""
     var record: CKRecord?
+    // this is used for notification that gets called after students get loaded.
+    static let studentsLoadedNotification = "studentsLoadedNotification"
     
     init() {
         name = ""
@@ -33,21 +35,51 @@ struct Class
     init(record: CKRecord) {
         self.name = record["name"] as? String ?? ""
         self.recordID = record["referenceName"] as? String ?? ""
-        // figure out how to load students and images
-        self.students = []
+
         self.record = record
+        self.students = []
+        
+        // figure out how to images
+        
+        // load students
+        let privateDatabase = CKContainer.default().privateCloudDatabase
+        
+        let recordToMatch = CKReference(record: record, action: .deleteSelf)
+        let predicate = NSPredicate(format: "classID == %@", recordToMatch)
+        
+        let query = CKQuery(recordType: "Student", predicate: predicate)
+        
+        // Configure Query.  Figure out a better way to sort.  Maybe sort by created?
+        query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        privateDatabase.perform(query, inZoneWith: nil) {
+            (records, error) in
+            guard let records = records else {
+                print("Error querying records: ", error as Any)
+                return
+            }
+            print("Found \(records.count) student records matching query")
+
+            for record in records {
+                // create a student from the record
+                let foundStudent = Student(record: record)
+                // append to students array
+                self.students.append(foundStudent)
+            }
+            DispatchQueue.main.async {
+                self.deliverStudentsLoadedNotification()
+            }
+            
+            
+        }
     }
-//    init (){
-//        self.name = ""
-//        self.students = []
-//    }
-//    init (name: String, students: [Student]){
-//        self.name = name
-//        self.students = students
-//    }
+    
+    private func deliverStudentsLoadedNotification() {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Class.studentsLoadedNotification), object: nil)
+    }
+
     
     //this is a methode for randomizing the order of students within a class
-    mutating func shuffle()
+    func shuffle()
     {
         var shuffled = [Student]();
         

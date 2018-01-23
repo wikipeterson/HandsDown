@@ -172,7 +172,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Class" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KgP-hc-IPZ">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Class" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="KgP-hc-IPZ">
                                 <rect key="frame" x="20" y="81" width="728" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="5yn-33-1IB"/>
@@ -242,7 +242,7 @@
                     <navigationItem key="navigationItem" title="HandsDown" id="nuU-uM-W50">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="C7K-J3-dGy">
                             <connections>
-                                <action selector="saveButtonTapped:" destination="tbb-2O-xeM" id="FSB-A7-Mu0"/>
+                                <action selector="saveButtonTapped:" destination="tbb-2O-xeM" id="MTQ-dW-omT"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

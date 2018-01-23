@@ -8,16 +8,9 @@
 
 import UIKit
 import AVFoundation
-
-
+import CloudKit
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, SetTeacherDelegate {
-    
-    
-    func setTeacher(teacher: Teacher)
-    {
-        self.teacher = teacher
-    }
     
     @IBOutlet weak var classNameLabel: UILabel!
     @IBOutlet weak var studentNameLabel: UILabel!
@@ -36,13 +29,88 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var myFont = "Helvetica Neue"
     var player : AVAudioPlayer!
     
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         myPickerView.dataSource = self
         myPickerView.delegate = self
         
-        playSound(soundName: "Captain UnderpantsSound.mp3")
+//        playSound(soundName: "Captain UnderpantsSound.mp3")
+        // load classes from cloudkit.  If there are no classes, a demo class will be created
+        loadClassesFromCloudKit()
+        
+        updateUIElements()
+        
+        // this observer will get called from Class, after it is finished loading the students from the class Class (ps, that naming is the worst.)
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleStudentsLoaded), name: NSNotification.Name(rawValue: Class.studentsLoadedNotification), object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        updateUIElements()
+        myPickerView.reloadAllComponents()
+    }
+    
+    // this gets called from notifacation after classes get loaded.
+    @objc func handleStudentsLoaded() {
+        updateUIElements()
+        attemptReloadOfPickerView()
+    }
+    // timer is used when data.  It is a work around so that we are not reloading the pickerView over and over again after each class gets students loaded, and we only reload the pickerview once.
+    
+    fileprivate func attemptReloadOfPickerView() {
+        self.timer?.invalidate()
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadPickerView), userInfo: nil, repeats: false)
+    }
+    var timer: Timer?
+    
+    @objc func handleReloadPickerView() {
+        print("pickerView is reloaded")
+        self.myPickerView.reloadAllComponents()
+        
+    }
+
+    func loadClassesFromCloudKit() {
+        let privateDatabase = CKContainer.default().privateCloudDatabase
+        
+        // Initialize Query.  And load all classes.
+        let predicate = NSPredicate(value: true) // this will grab all classes
+        let query = CKQuery(recordType: "Class", predicate: predicate)
+        
+        // Configure Query.  Figure out a better way to sort.  Maybe sort by created?
+        query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        
+        privateDatabase.perform(query, inZoneWith: nil) {
+            (records, error) in
+            guard let records = records else {
+                print("Error querying records: ", error as Any)
+                return
+            }
+            print("Found \(records.count) records matching query")
+            // if there are no records, load demo class
+            if records.count == 0 {
+                self.createDemoClass()
+            } else {
+//                // clear classes. then reload
+//                self.teacher.classes.removeAll()
+                for record in records {
+                    // create a class from the record...  This will also load the students for each class.
+                    let foundClass = Class(record: record)
+                    self.teacher.classes.append(foundClass)
+                }
+                if self.teacher.classes.count > 0 {
+                    self.teacher.currentClass = self.teacher.classes[0]
+                } else {
+                    self.createDemoClass()
+                }
+                
+                // everything is reloaded from notifcation observer that will be called after classes get loaded with the students.
+            }
+        }
+    }
+    
+    
+    func createDemoClass() {
         //create demo class
         let student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
         let student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
@@ -52,30 +120,27 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         let student6 = Student(name: "Amy", picture: #imageLiteral(resourceName: "sampleStudentImage"))
         
         //make the demo class be classID 0 for teacher class
-        var demoClass = Class()
+        let demoClass = Class()
         demoClass.students = [student1, student2, student3, student4, student5, student6]
         demoClass.name = "Demo Class"
         demoClass.shuffle() // randomize order of students
         teacher.classes.append(demoClass)
         
+        // set currentClass to demoClass
         teacher.currentClass = demoClass
+        
+        // figure out how to save demo class to cloudkit, so that it will always appear if no classes are available.
+        
+        // figure out how to reload pickerview and data on page
+        updateUIElements()
+        myPickerView.reloadAllComponents()
+    }
 
-       
-    
-        // set a random starting point on PickerView
-        let randomStaringRow = Int(arc4random_uniform(1000)) + teacher.currentClass!.students.count
-        myPickerView.selectRow(randomStaringRow, inComponent:0, animated:true)
+    func updateUIElements() {
         
         //Place UI elements
-        
         screenWidth = self.view.frame.width
         screenHeight = self.view.frame.height
-        
-        
-        classNameLabel.text = teacher.currentClass!.name
-        classNameLabel.font = UIFont(name: myFont, size: screenHeight / 24)
-        classNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.05)
-        classNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.12)
         
         studentNameLabel.text = "?"
         studentNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.18)
@@ -91,19 +156,27 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         shuffleButton.frame = CGRect(x: 0, y: 0, width: screenWidth , height: screenHeight * 0.18)
         shuffleButton.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.84)
         
-        
         myStackView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.06)
         myStackView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.97)
         
         manageClassesButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
         manageGroupsButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
         settingsButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
+        
+        // set a random starting point on PickerView
+        guard let currentClass = teacher.currentClass else {return}
+        let randomStaringRow = Int(arc4random_uniform(1000)) + currentClass.students.count
+        myPickerView.selectRow(randomStaringRow, inComponent:0, animated:true)
+        
+        classNameLabel.text = currentClass.name
+        classNameLabel.font = UIFont(name: myFont, size: screenHeight / 24)
+        classNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.05)
+        classNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.12)
     }
-    
-    
     @IBAction func shuffleButtonTapped(_ sender: UIButton)
     {
-        let randomPickerViewRow = Int(arc4random_uniform(UInt32(1000 * teacher.currentClass!.students.count)))
+        guard let currentClass = teacher.currentClass else {return}
+        let randomPickerViewRow = Int(arc4random_uniform(UInt32(1000 * currentClass.students.count)))
         
         myPickerView.selectRow(randomPickerViewRow, inComponent:0, animated:true)
         setStudent(row: randomPickerViewRow)
@@ -114,15 +187,23 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         return 1
     }
     
-    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 1000 * teacher.currentClass!.students.count
+        if let currentClass = teacher.currentClass {
+            return 1000 * currentClass.students.count
+        } else {
+            return 0
+        }
     }
     
     
     //MARK: Delegates
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return teacher.currentClass!.students[row % teacher.currentClass!.students.count].name
+        if let currentClass = teacher.currentClass {
+            return currentClass.students[row % currentClass.students.count].name
+        } else {
+            return "Error"
+        }
+        
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -140,7 +221,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             //let hue = CGFloat(row)/CGFloat(teacher.classes[teacher.currentClassID].students.count)
             pickerLabel?.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         }
-        let titleData = teacher.currentClass!.students[row % teacher.currentClass!.students.count].name
+        var titleData = ""
+        if let currentClass = teacher.currentClass {
+            titleData = currentClass.students[row % currentClass.students.count].name
+        }
         let myTitle = NSAttributedString(string: titleData, attributes: [NSAttributedStringKey.font:UIFont(name: myFont, size: screenHeight / 24)!,NSAttributedStringKey.foregroundColor:UIColor.black])
         pickerLabel!.attributedText = myTitle
         pickerLabel!.textAlignment = .center
@@ -160,14 +244,22 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     func setStudent(row: Int)
     {
-        studentNameLabel.text = teacher.currentClass!.students[row % teacher.currentClass!.students.count].name + "!"
-        myImageView.image = teacher.currentClass!.students[row % teacher.currentClass!.students.count].picture
-        playSound(soundName: "clickSound.mp3")
+        guard let currentClass = teacher.currentClass else {return}
+        if row > 0 {
+            let currentStudent = currentClass.students[row % currentClass.students.count]
+            studentNameLabel.text = currentStudent.name + "!"
+            myImageView.image = currentStudent.picture
+            playSound(soundName: "clickSound.mp3")
+        }
+        else {
+            print("There are no students, therefore cannot play this game")
+        }
+        
     }
     
 
     
-    //I want the question marks to show up when the wheel starts t0 spin, but it only does that when I touch anything but the picker or button
+    //I want the question marks to show up when the wheel starts to spin, but it only does that when I touch anything but the picker or button
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         studentNameLabel.text = "?"
         myImageView.image = #imageLiteral(resourceName: "questionMarkImage")
@@ -196,6 +288,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             // couldn't load file :(
         }
         
+    }
+    
+    // delegate method used to pass teacher back from classesVC
+    func setTeacher(teacher: Teacher)
+    {
+        self.teacher = teacher
     }
     
     //send the data through segues

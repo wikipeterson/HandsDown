@@ -9,7 +9,6 @@
 import UIKit
 import CloudKit
 
-
 protocol SetTeacherDelegate {
     func setTeacher(teacher : Teacher)
 }
@@ -27,6 +26,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad()
     {
         super.viewDidLoad()
+
+        
 //        loadClassesFromCloudKit()
 //        CKContainer.default().fetchUserRecordID { (recordID, error) in
 //            if let error = error {
@@ -38,15 +39,16 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        loadClassesFromCloudKit()
+//        loadClassesFromCloudKit()
+        if let currentClass = teacher.currentClass {
+            currentClassLabel.text = currentClass.name
+        }
         
     }
     
-    
-
-    
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-        navigationController?.dismiss(animated: true, completion: nil)
+       self.navigationController?.popViewController(animated: true)
+//        navigationController?.dismiss(animated: true, completion: nil)
         
         // save any changes here
         delegate?.setTeacher(teacher: teacher)
@@ -130,17 +132,14 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 print("Error querying records: ", error as Any)
                 return
             }
-            print("Found \(records.count) records matching query")
+            print("Found \(records.count) class records matching query")
             // clear classes. then reload
             self.teacher.classes.removeAll()
             for record in records {
                 let foundClass = Class(record: record) // create a class from the record
-                // append to classes array
                 self.teacher.classes.append(foundClass)
             }
-            // this will prevent crash because we are working on a background thread.  We might not need this, but it was needed for async calls in firebase
             DispatchQueue.main.async(execute: {
-//                print("we reloaded the table")
                 self.tableView.reloadData()
             })
         }
