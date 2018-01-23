@@ -65,6 +65,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             let randomImageIndex = Int(arc4random_uniform(UInt32(self.defaultImagesArray.count)))
             let newPicture = self.defaultImagesArray[randomImageIndex]
             let newStudent = Student(name: newName, picture: newPicture)
+            
             self.saveStudentToCloudKit(name: newName)
           
             // figure out how to load students after the save is finished.
