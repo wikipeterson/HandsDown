@@ -48,9 +48,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         // this observer will get called from Class, after it is finished loading the students from the class Class (ps, that naming is the worst.)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleStudentsLoaded), name: NSNotification.Name(rawValue: Class.studentsLoadedNotification), object: nil)
         
-
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -80,7 +77,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 //                scene.userData?.setObject(teacher, forKey: "The Teacher" as NSCopying)
                 view.presentScene(scene)
             }
-            
             view.ignoresSiblingOrder = true
             view.showsFPS = false
             view.showsNodeCount = false
