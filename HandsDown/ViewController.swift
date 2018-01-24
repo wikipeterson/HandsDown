@@ -70,7 +70,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         if let view = self.mySKView
         {
             // Load the SKScene from 'GameScene.sks'
-            //            if let scene = SKScene(fileNamed: "GameScene") {
+            //  if let scene = SKScene(fileNamed: "GameScene") {
             if let scene = GameScene(fileNamed: "GameScene") {
                 scene.teacher = teacher
                 // Set the scale mode to scale to fit the window
