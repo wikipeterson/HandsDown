@@ -48,24 +48,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         // this observer will get called from Class, after it is finished loading the students from the class Class (ps, that naming is the worst.)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleStudentsLoaded), name: NSNotification.Name(rawValue: Class.studentsLoadedNotification), object: nil)
         
-        // load the spritekit view
-        if let view = self.mySKView
-        {
-            // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
-                // Present the scene
-//                scene.userData = NSMutableDictionary()
-//                scene.userData?.setObject(teacher, forKey: "The Teacher" as NSCopying)
-                view.presentScene(scene)
-            }
 
-            view.ignoresSiblingOrder = true
-            view.showsFPS = false
-            view.showsNodeCount = false
-
-        }
         
         
     }
@@ -79,6 +62,30 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @objc func handleStudentsLoaded() {
         updateUIElements()
         attemptReloadOfPickerView()
+        
+    }
+    
+    func loadGameScene() {
+        // load the spritekit view
+        if let view = self.mySKView
+        {
+            // Load the SKScene from 'GameScene.sks'
+            //            if let scene = SKScene(fileNamed: "GameScene") {
+            if let scene = GameScene(fileNamed: "GameScene") {
+                scene.teacher = teacher
+                // Set the scale mode to scale to fit the window
+                scene.scaleMode = .aspectFill
+                // Present the scene
+                //                scene.userData = NSMutableDictionary()
+                //                scene.userData?.setObject(teacher, forKey: "The Teacher" as NSCopying)
+                view.presentScene(scene)
+            }
+            
+            view.ignoresSiblingOrder = true
+            view.showsFPS = false
+            view.showsNodeCount = false
+            
+        }
     }
     // timer is used when data.  It is a work around so that we are not reloading the pickerView over and over again after each class gets students loaded, and we only reload the pickerview once.
     
@@ -91,6 +98,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @objc func handleReloadPickerView() {
         print("pickerView is reloaded")
         self.myPickerView.reloadAllComponents()
+        loadGameScene()
         
     }
 

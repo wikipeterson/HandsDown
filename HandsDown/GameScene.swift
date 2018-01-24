@@ -21,6 +21,7 @@ class GameScene: SKScene
 //        ,"Beth", "Bella","Chunks", "Big Al", "Stinky Pat"
 //        , "Milly", "Tuxedo Jack", "Heather", "Shaggy", "John Snow", "McFly", "Billy Two-times", "Dirty Harry", "Flo", "Hung", "Enrique", "Siobhan"
 //                    ]
+    
     let student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
     let student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
     let student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
@@ -56,7 +57,12 @@ class GameScene: SKScene
         nameLabel.text = "???"
         
         //get the teacher data from ViewController
-        studentArray = [student1, student2, student3]
+        if let currentClass = teacher.currentClass {
+            studentArray = currentClass.students
+        } else {
+            studentArray = [student1, student2, student3]
+        }
+//        studentArray = [student1, student2, student3]
 //        teacher = referenceVC.teacher
 //        studentArray = (teacher.currentClass?.students)!
         
