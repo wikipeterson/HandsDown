@@ -59,6 +59,18 @@
                                     <outletCollection property="gestureRecognizers" destination="GWu-qY-qc8" appends="YES" id="ae3-AE-NsJ"/>
                                 </connections>
                             </pickerView>
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wv9-xY-iNv">
+                                <rect key="frame" x="167" y="573" width="435" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="slotMachineImage"/>
+                                <connections>
+                                    <action selector="shuffleButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0By-2N-Tp5"/>
+                                </connections>
+                            </button>
+                            <skView contentMode="scaleToFill" fixedFrame="YES" sceneName="GameScene.sks" translatesAutoresizingMaskIntoConstraints="NO" id="2Cd-aS-S2C">
+                                <rect key="frame" x="0.0" y="64" width="768" height="816"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </skView>
                             <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="FEy-jl-mBo">
                                 <rect key="frame" x="5" y="771" width="602" height="410"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -123,22 +135,6 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.55686277149999996" green="0.35294118520000001" blue="0.96862745289999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wv9-xY-iNv">
-                                <rect key="frame" x="167" y="573" width="435" height="70"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="slotMachineImage"/>
-                                <connections>
-                                    <action selector="shuffleButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0By-2N-Tp5"/>
-                                </connections>
-                            </button>
-                            <skView contentMode="scaleToFill" fixedFrame="YES" sceneName="GameScene.sks" translatesAutoresizingMaskIntoConstraints="NO" id="8u5-UT-D4H">
-                                <rect key="frame" x="47" y="244" width="240" height="375"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </skView>
-                            <skView contentMode="scaleToFill" fixedFrame="YES" sceneName="GameScene.sks" translatesAutoresizingMaskIntoConstraints="NO" id="2Cd-aS-S2C">
-                                <rect key="frame" x="47" y="244" width="240" height="375"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </skView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>

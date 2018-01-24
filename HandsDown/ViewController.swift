@@ -53,6 +53,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     override func viewWillAppear(_ animated: Bool) {
         updateUIElements()
         myPickerView.reloadAllComponents()
+        loadGameScene()
     }
     
     // this gets called from notifacation after classes get loaded.
@@ -67,14 +68,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         if let view = self.mySKView
         {
             // Load the SKScene from 'GameScene.sks'
-            //  if let scene = SKScene(fileNamed: "GameScene") {
+            
             if let scene = GameScene(fileNamed: "GameScene") {
                 scene.teacher = teacher
+                //scene.referenceVC = self
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
                 // Present the scene
-                //                scene.userData = NSMutableDictionary()
-                //                scene.userData?.setObject(teacher, forKey: "The Teacher" as NSCopying)
+                
                 view.presentScene(scene)
             }
             view.ignoresSiblingOrder = true
@@ -200,7 +201,13 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         classNameLabel.font = UIFont(name: myFont, size: screenHeight / 24)
         classNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.05)
         classNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.12)
+        
+        mySKView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight )
+        mySKView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.5)
     }
+    
+    
+    
     @IBAction func shuffleButtonTapped(_ sender: UIButton)
     {
         guard let currentClass = teacher.currentClass else {return}

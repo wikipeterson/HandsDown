@@ -62,9 +62,14 @@ class GameScene: SKScene
         } else {
             studentArray = [student1, student2, student3]
         }
-//        studentArray = [student1, student2, student3]
-//        teacher = referenceVC.teacher
-//        studentArray = (teacher.currentClass?.students)!
+//        if let currentClass = referenceVC.teacher.currentClass
+//        {
+//            studentArray = (teacher.currentClass?.students)!
+//        } else {
+//            studentArray = [student1, student2, student3]
+//        }
+        //teacher = referenceVC.teacher
+        
         
         //set up the node that gets the wheel sectors overlayed
         wheelSprite = childNode(withName: "wheelSprite") as! SKSpriteNode
@@ -193,7 +198,7 @@ class GameScene: SKScene
 //                        if spinning
 //                        {
 //                            wheelSprite.run(correction)
-//                            spinning = !spinning
+//
 //                        }
                     }
                 }
@@ -210,7 +215,7 @@ class GameScene: SKScene
         if wheelSprite.frame.contains(touchLocation!)
         {
             wheelSprite.physicsBody?.applyAngularImpulse(CGFloat(arc4random_uniform(1200)+500))
-            AudioServicesPlaySystemSound(1336)
+            //AudioServicesPlaySystemSound(1336)
             spinning = true
             nameLabel.fontSize = 40.0
             nameLabel.text = "???"
