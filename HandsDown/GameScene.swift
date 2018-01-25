@@ -47,6 +47,8 @@ class GameScene: SKScene
     let fanfareSystemSoundID: SystemSoundID = 1103
     var holder = Student(name: "", picture: #imageLiteral(resourceName: "sampleStudentImage")) //this is for controlling the click sounds
     var loopFactor = 1 //this is for duplicating small classes on the wheel
+    var synth = AVSpeechSynthesizer()
+    var allowsRepeats = true
     
     override func didMove(to view: SKView)
     {
@@ -59,6 +61,7 @@ class GameScene: SKScene
         //get the teacher data from ViewController
         if let currentClass = teacher.currentClass {
             studentArray = currentClass.students
+            
         } else {
             studentArray = [student1, student2, student3]
         }
@@ -191,6 +194,7 @@ class GameScene: SKScene
                         AudioServicesPlaySystemSound(4095)
                         nameLabel.text = studentArray[i % studentArray.count].name + "!"
                         nameLabel.fontSize = 70.0
+                        speak(textToSpeak: nameLabel.text!)
                     //print(rectArray[i].zRotation)
 //                        wheelSprite.zRotation = rectArray[i].zRotation
                         
@@ -208,6 +212,13 @@ class GameScene: SKScene
         }
     }
     
+    func speak(textToSpeak: String)
+    {
+        let utterance = AVSpeechUtterance(string: textToSpeak)
+        utterance.voice = AVSpeechSynthesisVoice(language: "us-au") //choose voice
+        synth.speak(utterance)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         let touchLocation = touches.first?.location(in: self)
@@ -215,7 +226,6 @@ class GameScene: SKScene
         if wheelSprite.frame.contains(touchLocation!)
         {
             wheelSprite.physicsBody?.applyAngularImpulse(CGFloat(arc4random_uniform(1200)+500))
-            //AudioServicesPlaySystemSound(1336)
             spinning = true
             nameLabel.fontSize = 40.0
             nameLabel.text = "???"

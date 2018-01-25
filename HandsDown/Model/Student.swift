@@ -13,9 +13,8 @@ class Student
 {
     var name: String = "default name"
     var picture: UIImage = #imageLiteral(resourceName: "sampleStudentImage")
-    
     var classID: String = ""
-
+    var picked = false
     
     init(name: String, picture: UIImage)
     {

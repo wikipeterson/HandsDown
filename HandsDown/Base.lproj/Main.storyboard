@@ -135,6 +135,18 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.55686277149999996" green="0.35294118520000001" blue="0.96862745289999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QKy-Do-IY5">
+                                <rect key="frame" x="485" y="137" width="156" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Reset Class"/>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AI7-n5-yHb">
+                                <rect key="frame" x="61" y="136" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="repeatsSwitchWasSwitched:forEvent:" destination="BYZ-38-t0r" eventType="valueChanged" id="CbU-Jx-B6D"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -154,6 +166,8 @@
                         <outlet property="myPickerView" destination="pmC-Xw-ZWR" id="92Y-ni-uaS"/>
                         <outlet property="mySKView" destination="2Cd-aS-S2C" id="WbA-6b-Mlg"/>
                         <outlet property="myStackView" destination="FEy-jl-mBo" id="R1d-zF-gFa"/>
+                        <outlet property="repeatsButtons" destination="QKy-Do-IY5" id="KYG-iO-K2O"/>
+                        <outlet property="repeatsSwitch" destination="AI7-n5-yHb" id="87J-VO-Z5h"/>
                         <outlet property="settingsButton" destination="Jng-4o-Qjc" id="5CE-v0-0lm"/>
                         <outlet property="shuffleButton" destination="Wv9-xY-iNv" id="CAY-RN-Srg"/>
                         <outlet property="studentNameLabel" destination="7HH-J3-KZJ" id="VH4-f6-wJy"/>
@@ -167,7 +181,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="385.9375" y="131.8359375"/>
+            <point key="canvasLocation" x="488" y="16"/>
         </scene>
         <!--Manage Classes-->
         <scene sceneID="Iuj-Rs-63K">

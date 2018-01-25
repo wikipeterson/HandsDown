@@ -71,6 +71,11 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             let newPicture = self.defaultImagesArray[randomImageIndex]
             let newStudent = Student(name: newName, picture: newPicture)
             
+            //Steve added this so new students would show up on table before another is added
+            self.myClass?.students.append(newStudent)
+            self.myTableView.reloadData()
+            
+            
             self.saveStudentToCloudKit(name: newName)
           
             // figure out how to load students after the save is finished.

@@ -13,7 +13,9 @@ import SpriteKit
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, SetTeacherDelegate {
     
-  
+    @IBOutlet weak var repeatsSwitch: UISwitch!
+    
+    @IBOutlet weak var repeatsButtons: UIButton!
     @IBOutlet weak var mySKView: SKView!
     @IBOutlet weak var classNameLabel: UILabel!
     @IBOutlet weak var studentNameLabel: UILabel!
@@ -31,13 +33,16 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var screenHeight: CGFloat = 0.0
     var myFont = "Helvetica Neue"
     var player : AVAudioPlayer!
-    
+    var allowsRepeats = true
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         myPickerView.dataSource = self
         myPickerView.delegate = self
+        
+        mySKView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight )
+        mySKView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.5)
         
 
         // load classes from cloudkit.  If there are no classes, a demo class will be created
@@ -56,6 +61,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         loadGameScene()
     }
     
+    @IBAction func repeatsSwitchWasSwitched(_ sender: UISwitch, forEvent event: UIEvent)
+    {
+        allowsRepeats = !allowsRepeats
+        
+    }
+    
     // this gets called from notifacation after classes get loaded.
     @objc func handleStudentsLoaded() {
         updateUIElements()
@@ -71,6 +82,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             
             if let scene = GameScene(fileNamed: "GameScene") {
                 scene.teacher = teacher
+                scene.allowsRepeats = allowsRepeats
                 //scene.referenceVC = self
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
@@ -118,7 +130,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             print("Found \(records.count) records matching query")
             // if there are no records, load demo class
             if records.count == 0 {
-                self.createDemoClass()
+                //self.createDemoClass()
             } else {
 //                // clear classes. then reload
 //                self.teacher.classes.removeAll()
@@ -130,7 +142,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 if self.teacher.classes.count > 0 {
                     self.teacher.currentClass = self.teacher.classes[0]
                 } else {
-                    self.createDemoClass()
+                    //self.createDemoClass()
                 }
                 
                 // everything is reloaded from notifcation observer that will be called after classes get loaded with the students.
@@ -139,31 +151,31 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     
-    func createDemoClass() {
-        //create demo class
-        let student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
-        let student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
-        let student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
-        let student4 = Student(name: "Steve", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
-        let student5 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "elmoImage"))
-        let student6 = Student(name: "Amy", picture: #imageLiteral(resourceName: "sampleStudentImage"))
-        
-        //make the demo class be classID 0 for teacher class
-        let demoClass = Class()
-        demoClass.students = [student1, student2, student3, student4, student5, student6]
-        demoClass.name = "Demo Class"
-        demoClass.shuffle() // randomize order of students
-        teacher.classes.append(demoClass)
-        
-        // set currentClass to demoClass
-        teacher.currentClass = demoClass
-        
-        // figure out how to save demo class to cloudkit, so that it will always appear if no classes are available.
-        
-        // figure out how to reload pickerview and data on page
-        updateUIElements()
-        myPickerView.reloadAllComponents()
-    }
+//    func createDemoClass() {
+//        //create demo class
+//        let student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
+//        let student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
+//        let student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
+//        let student4 = Student(name: "Steve", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
+//        let student5 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "elmoImage"))
+//        let student6 = Student(name: "Amy", picture: #imageLiteral(resourceName: "sampleStudentImage"))
+//
+//        //make the demo class be classID 0 for teacher class
+//        let demoClass = Class()
+//        demoClass.students = [student1, student2, student3, student4, student5, student6]
+//        demoClass.name = "Demo Class"
+//        demoClass.shuffle() // randomize order of students
+//        teacher.classes.append(demoClass)
+//
+//        // set currentClass to demoClass
+//        teacher.currentClass = demoClass
+//
+//        // figure out how to save demo class to cloudkit, so that it will always appear if no classes are available.
+//
+//        // figure out how to reload pickerview and data on page
+//        updateUIElements()
+//        myPickerView.reloadAllComponents()
+//    }
 
     func updateUIElements() {
         
@@ -202,19 +214,24 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         classNameLabel.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.05)
         classNameLabel.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.12)
         
+        //The SKView is also positioned in VDL, but I put it here as well to make sure it goes on top of picker. Should be able to delete when picker is removed
         mySKView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight )
         mySKView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.5)
+        
+        repeatsSwitch.center = CGPoint(x: screenWidth * 0.1, y: screenHeight * 0.9)
+        repeatsButtons.center = CGPoint(x: screenWidth * 0.87, y: screenHeight * 0.9)
+        
     }
     
     
     
     @IBAction func shuffleButtonTapped(_ sender: UIButton)
     {
-        guard let currentClass = teacher.currentClass else {return}
-        let randomPickerViewRow = Int(arc4random_uniform(UInt32(1000 * currentClass.students.count)))
-        
-        myPickerView.selectRow(randomPickerViewRow, inComponent:0, animated:true)
-        setStudent(row: randomPickerViewRow)
+//        guard let currentClass = teacher.currentClass else {return}
+//        let randomPickerViewRow = Int(arc4random_uniform(UInt32(1000 * currentClass.students.count)))
+//
+//        myPickerView.selectRow(randomPickerViewRow, inComponent:0, animated:true)
+//        setStudent(row: randomPickerViewRow)
     }
     
     
@@ -241,65 +258,59 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
     }
     
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        setStudent(row: row)
-        
-    }
+//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//        setStudent(row: row)
+//
+//    }
     
     
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var pickerLabel = view as! UILabel!
-        if view == nil {  //if no label there yet
-            pickerLabel = UILabel()
-            //color the label's background
-            let hue = CGFloat(0.6)
-            //let hue = CGFloat(row)/CGFloat(teacher.classes[teacher.currentClassID].students.count)
-            pickerLabel?.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
-        }
-        var titleData = ""
-        if let currentClass = teacher.currentClass {
-            titleData = currentClass.students[row % currentClass.students.count].name
-        }
-        let myTitle = NSAttributedString(string: titleData, attributes: [NSAttributedStringKey.font:UIFont(name: myFont, size: screenHeight / 24)!,NSAttributedStringKey.foregroundColor:UIColor.black])
-        pickerLabel!.attributedText = myTitle
-        pickerLabel!.textAlignment = .center
-        
-        return pickerLabel!
-        
-    }
+//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+//        var pickerLabel = view as! UILabel!
+//        if view == nil {  //if no label there yet
+//            pickerLabel = UILabel()
+//            //color the label's background
+//            let hue = CGFloat(0.6)
+//            //let hue = CGFloat(row)/CGFloat(teacher.classes[teacher.currentClassID].students.count)
+//            pickerLabel?.backgroundColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
+//        }
+//        var titleData = ""
+//        if let currentClass = teacher.currentClass {
+//            titleData = currentClass.students[row % currentClass.students.count].name
+//        }
+//        let myTitle = NSAttributedString(string: titleData, attributes: [NSAttributedStringKey.font:UIFont(name: myFont, size: screenHeight / 24)!,NSAttributedStringKey.foregroundColor:UIColor.black])
+//        pickerLabel!.attributedText = myTitle
+//        pickerLabel!.textAlignment = .center
+//
+//        return pickerLabel!
+//
+//    }
     
-    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 50.0
-    }
+//    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+//        return 50.0
+//    }
     
     
-    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        return myPickerView.frame.width
-    }
+//    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+//        return myPickerView.frame.width
+//    }
     
-    func setStudent(row: Int)
-    {
-        guard let currentClass = teacher.currentClass else {return}
-        if row > 0 {
-            let currentStudent = currentClass.students[row % currentClass.students.count]
-            studentNameLabel.text = currentStudent.name + "!"
-            myImageView.image = currentStudent.picture
-            playSound(soundName: "clickSound.mp3")
-        }
-        else {
-            print("There are no students, therefore cannot play this game")
-        }
-        
-    }
+//    func setStudent(row: Int)
+//    {
+//        guard let currentClass = teacher.currentClass else {return}
+//        if row > 0 {
+//            let currentStudent = currentClass.students[row % currentClass.students.count]
+//            studentNameLabel.text = currentStudent.name + "!"
+//            myImageView.image = currentStudent.picture
+//            playSound(soundName: "clickSound.mp3")
+//        }
+//        else {
+//            print("There are no students, therefore cannot play this game")
+//        }
+//
+//    }
     
 
-    
-    //I want the question marks to show up when the wheel starts to spin, but it only does that when I touch anything but the picker or button
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        studentNameLabel.text = "?"
-        myImageView.image = #imageLiteral(resourceName: "questionMarkImage")
-        print("touched")
-    }
+
     
     //tried the same with a swipe recongizer on picker to no avail
    @IBAction func swipeGestureOnPicker(_ sender: UISwipeGestureRecognizer) {
@@ -311,20 +322,20 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     
     //set up function for playing sounds
-    func playSound(soundName: String)
-    {
-        let path = Bundle.main.path(forResource: soundName, ofType:nil)!
-        let url = URL(fileURLWithPath: path)
-        
-        do {
-            player = try AVAudioPlayer(contentsOf: url)
-            player.play()
-        } catch {
-            // couldn't load file :(
-        }
-        
-    }
-    
+//    func playSound(soundName: String)
+//    {
+//        let path = Bundle.main.path(forResource: soundName, ofType:nil)!
+//        let url = URL(fileURLWithPath: path)
+//        
+//        do {
+//            player = try AVAudioPlayer(contentsOf: url)
+//            player.play()
+//        } catch {
+//            // couldn't load file :(
+//        }
+//        
+//    }
+//    
     override var shouldAutorotate: Bool {
         return false
     }
