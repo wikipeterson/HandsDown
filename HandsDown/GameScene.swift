@@ -13,15 +13,6 @@ import AVFoundation
 class GameScene: SKScene
 {
     
-//    var nameArray : [String] = [
-//        "Theo", "Scooby", "Marsha"
-//        , "Tyrese", "Matthew","Fat Albert"
-//        , "Danesh", "Geoff", "Jill", "Sneaky Pete"
-//        , "Amy", "Zoey", "Bryn", "Cameron", "Lashawndra"
-//        ,"Beth", "Bella","Chunks", "Big Al", "Stinky Pat"
-//        , "Milly", "Tuxedo Jack", "Heather", "Shaggy", "John Snow", "McFly", "Billy Two-times", "Dirty Harry", "Flo", "Hung", "Enrique", "Siobhan"
-//                    ]
-    
     let student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
     let student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
     let student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
@@ -41,6 +32,7 @@ class GameScene: SKScene
     var angleTracker : CGFloat = 0
     var rectArray = [SKSpriteNode]()
     var triangleArray = [SKShapeNode]()
+    var rectLabelArray = [SKLabelNode]()
     var spinning = false
     var player = AVAudioPlayer()
     let tockSystemSoundID: SystemSoundID = 1105
@@ -48,10 +40,12 @@ class GameScene: SKScene
     var holder = Student(name: "", picture: #imageLiteral(resourceName: "sampleStudentImage")) //this is for controlling the click sounds
     var loopFactor = 1 //this is for duplicating small classes on the wheel
     var synth = AVSpeechSynthesizer()
-    var allowsRepeats = true
+    var allowsRepeats = false
+    var studentsNotPickedArray : [Student] = []
     
     override func didMove(to view: SKView)
     {
+        print("did move")
         nameLabel = childNode(withName: "nameLabel") as! SKLabelNode
         tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
         tipOfArrowPoint = CGPoint(x: tipOfArrow.position.x, y: tipOfArrow.position.y)
@@ -65,13 +59,8 @@ class GameScene: SKScene
         } else {
             studentArray = [student1, student2, student3]
         }
-//        if let currentClass = referenceVC.teacher.currentClass
-//        {
-//            studentArray = (teacher.currentClass?.students)!
-//        } else {
-//            studentArray = [student1, student2, student3]
-//        }
-        //teacher = referenceVC.teacher
+
+        studentsNotPickedArray = studentArray
         
         
         //set up the node that gets the wheel sectors overlayed
@@ -80,14 +69,17 @@ class GameScene: SKScene
         wheelSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5  )
         wheelSprite.physicsBody?.angularDamping = 1.0
         
-        numberOfSectors = studentArray.count
         placeSectorsOverWheel()
-        
     }
     
     func placeSectorsOverWheel()
     {
-        switch numberOfSectors
+        
+        rectArray = []
+        triangleArray = []
+        rectLabelArray = []
+        
+        switch studentsNotPickedArray.count
         {
             case 0:
                 studentArray.append(Student(name: "empty class", picture: #imageLiteral(resourceName: "foxImage")))
@@ -106,40 +98,39 @@ class GameScene: SKScene
                 loopFactor = 1
         }
 
-        numberOfSectors = studentArray.count * loopFactor
+        let numberOfSectors = studentsNotPickedArray.count * loopFactor
         angle = 2 * Double.pi / Double(numberOfSectors)
         print("loopFactor = ", loopFactor)
         let theta = 2.0 * Double.pi / Double(numberOfSectors) / 2.0
+        
+        //set the rects, tris, and labels on wheel
         for num in 0..<Int(numberOfSectors)
         {
-            
             let rect = SKSpriteNode(color: UIColor.white, size: CGSize(width: 250, height: 2 * 250 * tan(theta)))
             rect.position = CGPoint(x: 0, y: 0)
             rect.zPosition = 1
             rect.anchorPoint = CGPoint(x: 0, y: 0.5)
             rect.zRotation = CGFloat(angle * Double(num))
             rectArray.append(rect)
-            
+            rect.name = "rectNode"
             wheelSprite.addChild(rect)
-            
-
             
             let topEdge = CGPoint(x: 250.0 * cos(angle / 2.0 + angle * Double(num)), y: 250.0 * sin(angle / 2.0 + angle * Double(num)))
             let bottomEdge = CGPoint(x: 250.0 * cos(angle * Double(num) - angle / 2.0 ), y: 250.0 * sin(angle * Double(num) - angle / 2.0 ))
             var points = [CGPoint(x: 0, y: 0), topEdge, bottomEdge]
-                          
-            
             let hue = CGFloat(Double(num) / Double(numberOfSectors))
             let triangleShapeNode = SKShapeNode(points: &points, count: points.count)
             triangleShapeNode.zPosition = 3
             triangleShapeNode.fillColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
             triangleShapeNode.strokeColor = UIColor.black
             triangleShapeNode.lineWidth = 3.0
+            triangleShapeNode.name = "triangleNode"
             
             triangleArray.append(triangleShapeNode)
             wheelSprite.addChild(triangleShapeNode)
             
-            let rectLabel = SKLabelNode(text: studentArray[num % studentArray.count].name)
+            var rectLabel = SKLabelNode(text: "")
+            rectLabel.text = studentsNotPickedArray[num % studentsNotPickedArray.count].name
             rectLabel.position = CGPoint(x: 220, y: -10)
             rectLabel.fontColor = UIColor.black
             rectLabel.fontName = "HelveticaNeue"
@@ -147,10 +138,29 @@ class GameScene: SKScene
             rectLabel.zPosition = 4
             rectLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.right
             rect.addChild(rectLabel)
-            
+            rect.name = "labelNode"
+            rectLabelArray.append(rectLabel)
         }
-        
-        
+    }
+    
+    func removeSectorsFromWheel()
+    {
+        for label in rectLabelArray
+        {
+            label.removeFromParent()
+
+            //label = nil
+        }
+        rectLabelArray = []
+        for tri in triangleArray
+        {
+            tri.removeFromParent()
+
+        }
+        for rect in rectArray
+        {
+            rect.removeFromParent()
+        }
     }
     
     func playSound(soundName: String)
@@ -164,51 +174,45 @@ class GameScene: SKScene
         } catch {
             // couldn't load file :(
         }
-        
     }
+    
     
     override func update(_ currentTime: TimeInterval)
     {
-        
         if spinning
         {
-            
             for i in 0..<(rectArray.count)
             {
-                if rectArray[i].intersects(tipOfArrow)
+                if triangleArray[i].intersects(tipOfArrow)
                 {
-                    nameLabel.text = studentArray[i % studentArray.count].name
+                    nameLabel.text = studentsNotPickedArray[i % studentsNotPickedArray.count].name
                    
-                    if studentArray[i % studentArray.count].name != holder.name
+                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
                     {
                         AudioServicesPlaySystemSound(tockSystemSoundID)
                     }
-                    holder = studentArray[i % studentArray.count]
+                    holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
                     
                     if (wheelSprite.physicsBody?.angularVelocity)! < CGFloat(0.05)
                     {
                         wheelSprite.physicsBody?.angularVelocity = 0
-                       //print("stopped")
-                        spinning = false
+                        print("stopped")
+                        
                         AudioServicesPlaySystemSound(fanfareSystemSoundID)
                         AudioServicesPlaySystemSound(4095)
-                        nameLabel.text = studentArray[i % studentArray.count].name + "!"
+                        nameLabel.text = studentsNotPickedArray[i % studentsNotPickedArray.count].name + "!"
                         nameLabel.fontSize = 70.0
-                        speak(textToSpeak: nameLabel.text!)
-                    //print(rectArray[i].zRotation)
-//                        wheelSprite.zRotation = rectArray[i].zRotation
-                        
-//                        let correction = SKAction.rotate(byAngle: rectArray[i].zRotation, duration: 2.0)
-//                        if spinning
-//                        {
-//                            wheelSprite.run(correction)
-//
-//                        }
+                        //speak(textToSpeak: nameLabel.text!)
+                        if !allowsRepeats && studentsNotPickedArray.count > 1
+                        {
+                        studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
+                        }
+                        print(studentsNotPickedArray.count)
+                        spinning = false
+                        return
                     }
                 }
             }
-            
-            
         }
     }
     
@@ -225,12 +229,15 @@ class GameScene: SKScene
         
         if wheelSprite.frame.contains(touchLocation!)
         {
-            wheelSprite.physicsBody?.applyAngularImpulse(CGFloat(arc4random_uniform(1200)+500))
+            wheelSprite.zRotation = 0
+            removeSectorsFromWheel()
+            placeSectorsOverWheel()
+            let randomSpin = CGFloat(arc4random_uniform(1200)+500)
+            wheelSprite.physicsBody?.applyAngularImpulse(CGFloat(randomSpin))
             spinning = true
             nameLabel.fontSize = 40.0
-            nameLabel.text = "???"
+            print("begin spin")
         }
     }
-    
     
 }

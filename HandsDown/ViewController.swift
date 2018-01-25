@@ -61,6 +61,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         loadGameScene()
     }
     
+    //how is this info supposedto get to the scene?
     @IBAction func repeatsSwitchWasSwitched(_ sender: UISwitch, forEvent event: UIEvent)
     {
         allowsRepeats = !allowsRepeats
@@ -82,7 +83,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             
             if let scene = GameScene(fileNamed: "GameScene") {
                 scene.teacher = teacher
-                scene.allowsRepeats = allowsRepeats
+                scene.allowsRepeats = false //this needs to be changed
                 //scene.referenceVC = self
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
