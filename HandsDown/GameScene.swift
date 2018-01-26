@@ -21,6 +21,8 @@ class GameScene: SKScene
     let student6 = Student(name: "Amy", picture: #imageLiteral(resourceName: "sampleStudentImage"))
     var teacher = Teacher()
     var referenceVC : ViewController!
+    var screenWidth : CGFloat = 0.0
+    var screenHeight: CGFloat = 0.0
     var studentArray = [Student]()
     var nameLabel = SKLabelNode()
     var wheelSprite = SKSpriteNode()
@@ -42,9 +44,13 @@ class GameScene: SKScene
     var synth = AVSpeechSynthesizer()
     var allowsRepeats = false
     var studentsNotPickedArray : [Student] = []
+    var switchLabel = SKLabelNode(text: "wtf")
     
     override func didMove(to view: SKView)
     {
+        screenWidth = (self.view?.frame.width)!
+        screenHeight = (self.view?.frame.height)!
+        
         print("did move")
         nameLabel = childNode(withName: "nameLabel") as! SKLabelNode
         tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
@@ -70,7 +76,42 @@ class GameScene: SKScene
         wheelSprite.physicsBody?.angularDamping = 1.0
         
         placeSectorsOverWheel()
+        addRepeatsSwitch()
     }
+    
+    @objc func switchValueDidChange(sender:UISwitch!)
+    {
+        allowsRepeats = !allowsRepeats
+        if allowsRepeats
+        {
+            switchLabel.text = "Repeats allowed"
+        } else
+        {
+            switchLabel.text = "Remove when picked"
+        }
+    }
+    
+    func addRepeatsSwitch()
+    {
+        
+        // label not showing up
+        switchLabel.text = "Remove when picked"
+        switchLabel.position = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.9)
+        switchLabel.fontColor = UIColor.white
+        switchLabel.fontName = "HelveticaNeue"
+        switchLabel.fontSize = 20.0
+        switchLabel.zPosition = 14
+        switchLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        self.addChild(switchLabel)
+        
+        let repeatSwitch = UISwitch()
+        repeatSwitch.center = CGPoint(x: screenWidth * 0.1, y: screenHeight * 0.9)
+        repeatSwitch.isOn = true
+        repeatSwitch.setOn(false, animated: true)
+        repeatSwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
+        self.view!.addSubview(repeatSwitch)
+    }
+    
     
     func placeSectorsOverWheel()
     {
@@ -83,7 +124,7 @@ class GameScene: SKScene
         {
             case 0:
                 studentArray.append(Student(name: "empty class", picture: #imageLiteral(resourceName: "foxImage")))
-                loopFactor = 12
+                loopFactor = 9
             case 1:
                 loopFactor = 9
             case 2:
@@ -100,7 +141,6 @@ class GameScene: SKScene
 
         let numberOfSectors = studentsNotPickedArray.count * loopFactor
         angle = 2 * Double.pi / Double(numberOfSectors)
-        print("loopFactor = ", loopFactor)
         let theta = 2.0 * Double.pi / Double(numberOfSectors) / 2.0
         
         //set the rects, tris, and labels on wheel
@@ -148,14 +188,10 @@ class GameScene: SKScene
         for label in rectLabelArray
         {
             label.removeFromParent()
-
-            //label = nil
         }
-        rectLabelArray = []
         for tri in triangleArray
         {
             tri.removeFromParent()
-
         }
         for rect in rectArray
         {
@@ -179,6 +215,8 @@ class GameScene: SKScene
     
     override func update(_ currentTime: TimeInterval)
     {
+        
+        
         if spinning
         {
             for i in 0..<(rectArray.count)
@@ -193,23 +231,23 @@ class GameScene: SKScene
                     }
                     holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
                     
-                    if (wheelSprite.physicsBody?.angularVelocity)! < CGFloat(0.05)
+                    if (wheelSprite.physicsBody?.angularVelocity)! < CGFloat(0.1)
                     {
                         wheelSprite.physicsBody?.angularVelocity = 0
-                        print("stopped")
                         
                         AudioServicesPlaySystemSound(fanfareSystemSoundID)
                         AudioServicesPlaySystemSound(4095)
                         nameLabel.text = studentsNotPickedArray[i % studentsNotPickedArray.count].name + "!"
                         nameLabel.fontSize = 70.0
-                        //speak(textToSpeak: nameLabel.text!)
+                        speak(textToSpeak: nameLabel.text!)
                         if !allowsRepeats && studentsNotPickedArray.count > 1
                         {
                         studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
                         }
                         print(studentsNotPickedArray.count)
+                        print("stopped")
                         spinning = false
-                        return
+                        //return
                     }
                 }
             }
@@ -221,6 +259,12 @@ class GameScene: SKScene
         let utterance = AVSpeechUtterance(string: textToSpeak)
         utterance.voice = AVSpeechSynthesisVoice(language: "us-au") //choose voice
         synth.speak(utterance)
+    }
+    
+    func resetPicks()
+    {
+        studentsNotPickedArray = studentArray
+        placeSectorsOverWheel()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
