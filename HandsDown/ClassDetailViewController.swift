@@ -21,7 +21,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
         
         navigationController?.delegate = self
-        self.loadStudentsFromCloudKit()
+//        self.loadStudentsFromCloudKit()
         
         if let currentClass = myClass {
             NameTextField.text = currentClass.name
@@ -72,14 +72,14 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             let newStudent = Student(name: newName, picture: newPicture)
             
             //Steve added this so new students would show up on table before another is added
-            self.myClass?.students.append(newStudent)
-            self.myTableView.reloadData()
+//            self.myClass?.students.append(newStudent)
+//            self.myTableView.reloadData()
             
             
             self.saveStudentToCloudKit(name: newName)
           
             // figure out how to load students after the save is finished.
-            self.loadStudentsFromCloudKit()
+//            self.loadStudentsFromCloudKit()
 //            self.myClass?.students.append(newStudent)
 //            self.myTableView.reloadData()
             
@@ -121,6 +121,14 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             }
             // insert successfully saved record code... reload table, etc...
             print("Successfully saved record: ", record ?? "")
+            // append newClass to classes array, then reload tableview
+            let newStudent = Student(record: newStudentRecord)
+
+            self.myClass?.students.append(newStudent)
+
+            DispatchQueue.main.async(execute: {
+                self.myTableView.reloadData()
+            })
         }
     }
     

@@ -43,7 +43,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let currentClass = teacher.currentClass {
             currentClassLabel.text = currentClass.name
         }
-        
     }
     
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
@@ -80,9 +79,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
             let newClass = Class(name: newClassName, students: [Student]())
             self.saveClassToCloudKit(name: newClassName)
 //             figure out how to loadClassesFromCloudKit, only after the save class has finished.
-            self.loadClassesFromCloudKit()
-            self.teacher.classes.append(newClass)
-            self.tableView.reloadData()
+//            self.teacher.classes.append(newClass)
+//            self.tableView.reloadData()
             
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -100,6 +98,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         newClassRecord["name"] = name as NSString
         // figure out how to save the picture
         
+        
         // save CKRecord to correct container.. private, public, shared, etc.
         let myContainer = CKContainer.default()
         let privateDatabase = myContainer.privateCloudDatabase
@@ -111,7 +110,12 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             // insert successfully saved record code... reload table, etc...
             print("Successfully saved record: ", record ?? "")
-            self.loadClassesFromCloudKit()
+            // append newClass to classes array, then reload tableview
+            let newClass = Class(record: newClassRecord)
+            self.teacher.classes.append(newClass)
+            DispatchQueue.main.async(execute: {
+                self.tableView.reloadData()
+            })
         }
     }
     
@@ -145,6 +149,21 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    func deleteRecordFromCloudKit(myClass: Class) {
+        let privateDatabase = CKContainer.default().privateCloudDatabase
+        
+        guard let record = myClass.record else {return}
+        privateDatabase.delete(withRecordID: record.recordID, completionHandler: {(recordID, error) in
+            if let err = error {
+                print(err)
+                return
+            } else {
+                print("Successfully deleted:", recordID as Any)
+            }
+            
+        })
+    }
+    
     // MARK: TableView methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return teacher.classes.count
@@ -160,6 +179,13 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     //this is the code needed to delete a row...
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
     {
+        
+        
+        
+        // delete from cloudkit
+        let myClass = teacher.classes[indexPath.row]
+        deleteRecordFromCloudKit(myClass: myClass)
+        
         teacher.classes.remove(at: indexPath.row)
         tableView.reloadData()
     }
