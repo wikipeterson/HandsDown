@@ -161,14 +161,14 @@ class ViewController: UIViewController, SetTeacherDelegate {
     
     
     //MARK: Delegates
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if let currentClass = teacher.currentClass {
-            return currentClass.students[row % currentClass.students.count].name
-        } else {
-            return "Error"
-        }
-        
-    }
+//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//        if let currentClass = teacher.currentClass {
+//            return currentClass.students[row % currentClass.students.count].name
+//        } else {
+//            return "Error"
+//        }
+//
+//    }
   
     override var shouldAutorotate: Bool {
         return false

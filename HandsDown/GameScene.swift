@@ -44,7 +44,8 @@ class GameScene: SKScene
     var synth = AVSpeechSynthesizer()
     var allowsRepeats = false
     var studentsNotPickedArray : [Student] = []
-    var switchLabel = SKLabelNode(text: "wtf")
+    var switchLabel = SKLabelNode()
+
     
     override func didMove(to view: SKView)
     {
@@ -52,6 +53,22 @@ class GameScene: SKScene
         screenHeight = (self.view?.frame.height)!
         
         print("did move")
+        
+        // label not showing up
+        
+        switchLabel = childNode(withName: "switchLabel") as! SKLabelNode
+        switchLabel.text = "this"
+        //switchLabel = SKLabelNode(text: "Remove when picked")
+        
+        switchLabel.position = CGPoint(x: screenWidth * 0.4, y: screenHeight * 1.2)
+        switchLabel.fontColor = SKColor.black
+        switchLabel.fontSize = 120.0
+        switchLabel.zPosition = 50
+        switchLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
+        
+        
+
+        
         nameLabel = childNode(withName: "nameLabel") as! SKLabelNode
         tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
         tipOfArrowPoint = CGPoint(x: tipOfArrow.position.x, y: tipOfArrow.position.y)
@@ -94,15 +111,7 @@ class GameScene: SKScene
     func addRepeatsSwitch()
     {
         
-        // label not showing up
-        switchLabel.text = "Remove when picked"
-        switchLabel.position = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.9)
-        switchLabel.fontColor = UIColor.white
-        switchLabel.fontName = "HelveticaNeue"
-        switchLabel.fontSize = 20.0
-        switchLabel.zPosition = 14
-        switchLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
-        self.addChild(switchLabel)
+
         
         let repeatSwitch = UISwitch()
         repeatSwitch.center = CGPoint(x: screenWidth * 0.1, y: screenHeight * 0.9)
@@ -215,8 +224,6 @@ class GameScene: SKScene
     
     override func update(_ currentTime: TimeInterval)
     {
-        
-        
         if spinning
         {
             for i in 0..<(rectArray.count)
@@ -224,7 +231,6 @@ class GameScene: SKScene
                 if triangleArray[i].intersects(tipOfArrow)
                 {
                     nameLabel.text = studentsNotPickedArray[i % studentsNotPickedArray.count].name
-                   
                     if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
                     {
                         AudioServicesPlaySystemSound(tockSystemSoundID)
