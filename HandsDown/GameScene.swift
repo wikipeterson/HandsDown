@@ -57,19 +57,17 @@ class GameScene: SKScene
         // label not showing up
         
         switchLabel = childNode(withName: "switchLabel") as! SKLabelNode
-        switchLabel.text = "this"
-        //switchLabel = SKLabelNode(text: "Remove when picked")
-        
-        switchLabel.position = CGPoint(x: screenWidth * 0.4, y: screenHeight * 1.2)
+        switchLabel.text = "Remove repeats"
+        //switchLabel.position = CGPoint(x: screenWidth * -0.35, y: screenHeight * -0.41)
         switchLabel.fontColor = SKColor.white
-        switchLabel.fontSize = 120.0
+        switchLabel.fontSize = 25.0
         switchLabel.zPosition = 50
         switchLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
         
         
         nameLabel = childNode(withName: "nameLabel") as! SKLabelNode
         tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
-        tipOfArrowPoint = CGPoint(x: tipOfArrow.position.x, y: tipOfArrow.position.y)
+        //tipOfArrowPoint = CGPoint(x: tipOfArrow.position.x, y: tipOfArrow.position.y)
         nameLabel.fontSize = 40.0
         nameLabel.text = "???"
         
@@ -86,11 +84,14 @@ class GameScene: SKScene
         
         //set up the node that gets the wheel sectors overlayed
         wheelSprite = childNode(withName: "wheelSprite") as! SKSpriteNode
-        wheelSprite.position = CGPoint(x: screenWidth * -0.5, y: 0)
+        wheelSprite.position = CGPoint(x: screenWidth * -0.8, y: 0)
         wheelSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5  )
         wheelSprite.physicsBody?.angularDamping = 1.0
         
         avatarNode = childNode(withName: "avatarNode") as! SKSpriteNode
+        let image = #imageLiteral(resourceName: "questionMarkImage")
+        let texture = SKTexture(image: image)
+        avatarNode.texture = texture
         
         placeSectorsOverWheel()
         addRepeatsSwitch()
