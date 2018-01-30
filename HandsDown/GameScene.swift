@@ -54,8 +54,7 @@ class GameScene: SKScene
         
         print("did move")
         
-        // label not showing up
-        
+
         switchLabel = childNode(withName: "switchLabel") as! SKLabelNode
         switchLabel.text = "Remove repeats"
         //switchLabel.position = CGPoint(x: screenWidth * -0.35, y: screenHeight * -0.41)
@@ -67,20 +66,18 @@ class GameScene: SKScene
         
         nameLabel = childNode(withName: "nameLabel") as! SKLabelNode
         tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
-        //tipOfArrowPoint = CGPoint(x: tipOfArrow.position.x, y: tipOfArrow.position.y)
+        
         nameLabel.fontSize = 40.0
         nameLabel.text = "???"
         
         //get the teacher data from ViewController
         if let currentClass = teacher.currentClass {
             studentArray = currentClass.students
-            
         } else {
             studentArray = [student1, student2, student3]
         }
 
         studentsNotPickedArray = studentArray
-        
         
         //set up the node that gets the wheel sectors overlayed
         wheelSprite = childNode(withName: "wheelSprite") as! SKSpriteNode
@@ -112,7 +109,6 @@ class GameScene: SKScene
     
     func addRepeatsSwitch()
     {
-        
         let repeatSwitch = UISwitch()
         repeatSwitch.center = CGPoint(x: screenWidth * 0.1, y: screenHeight * 0.9)
         repeatSwitch.isOn = true
@@ -178,7 +174,7 @@ class GameScene: SKScene
             triangleArray.append(triangleShapeNode)
             wheelSprite.addChild(triangleShapeNode)
             
-            var rectLabel = SKLabelNode(text: "")
+            let rectLabel = SKLabelNode(text: "")
             rectLabel.text = studentsNotPickedArray[num % studentsNotPickedArray.count].name
             rectLabel.position = CGPoint(x: 220, y: -10)
             rectLabel.fontColor = UIColor.black

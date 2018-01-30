@@ -37,10 +37,8 @@ class ViewController: UIViewController, SetTeacherDelegate {
         mySKView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight )
         mySKView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.5)
         
-
         // load classes from cloudkit.  If there are no classes, a demo class will be created
         loadClassesFromCloudKit()
-        
         updateUIElements()
         
         // this observer will get called from Class, after it is finished loading the students from the class Class (ps, that naming is the worst.)
@@ -49,7 +47,6 @@ class ViewController: UIViewController, SetTeacherDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //updateUIElements()
         loadGameScene()
     }
     
@@ -57,7 +54,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
     // this gets called from notification after classes get loaded.
     @objc func handleStudentsLoaded() {
         updateUIElements()
-        //attemptReloadOfPickerView()
+
         
     }
     
@@ -152,23 +149,9 @@ class ViewController: UIViewController, SetTeacherDelegate {
         settingsButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
         
         
-        //The SKView is also positioned in VDL, but I put it here as well to make sure it goes on top of picker. Should be able to delete when picker is removed
-//        mySKView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight )
-//        mySKView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.5)
-//
 
     }
     
-    
-    //MARK: Delegates
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        if let currentClass = teacher.currentClass {
-//            return currentClass.students[row % currentClass.students.count].name
-//        } else {
-//            return "Error"
-//        }
-//
-//    }
   
     override var shouldAutorotate: Bool {
         return false
