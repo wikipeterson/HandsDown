@@ -153,9 +153,9 @@ class ViewController: UIViewController, SetTeacherDelegate {
         
         
         //The SKView is also positioned in VDL, but I put it here as well to make sure it goes on top of picker. Should be able to delete when picker is removed
-        mySKView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight )
-        mySKView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.5)
-        
+//        mySKView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight )
+//        mySKView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.5)
+//
 
     }
     

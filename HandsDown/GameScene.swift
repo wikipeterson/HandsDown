@@ -45,7 +45,7 @@ class GameScene: SKScene
     var allowsRepeats = false
     var studentsNotPickedArray : [Student] = []
     var switchLabel = SKLabelNode()
-
+    var avatarNode = SKSpriteNode()
     
     override func didMove(to view: SKView)
     {
@@ -61,13 +61,11 @@ class GameScene: SKScene
         //switchLabel = SKLabelNode(text: "Remove when picked")
         
         switchLabel.position = CGPoint(x: screenWidth * 0.4, y: screenHeight * 1.2)
-        switchLabel.fontColor = SKColor.black
+        switchLabel.fontColor = SKColor.white
         switchLabel.fontSize = 120.0
         switchLabel.zPosition = 50
         switchLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
         
-        
-
         
         nameLabel = childNode(withName: "nameLabel") as! SKLabelNode
         tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
@@ -88,9 +86,11 @@ class GameScene: SKScene
         
         //set up the node that gets the wheel sectors overlayed
         wheelSprite = childNode(withName: "wheelSprite") as! SKSpriteNode
-        wheelSprite.position = CGPoint(x: 0, y: 0)
+        wheelSprite.position = CGPoint(x: screenWidth * -0.5, y: 0)
         wheelSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5  )
         wheelSprite.physicsBody?.angularDamping = 1.0
+        
+        avatarNode = childNode(withName: "avatarNode") as! SKSpriteNode
         
         placeSectorsOverWheel()
         addRepeatsSwitch()
@@ -106,12 +106,11 @@ class GameScene: SKScene
         {
             switchLabel.text = "Remove when picked"
         }
+        print("switch switched")
     }
     
     func addRepeatsSwitch()
     {
-        
-
         
         let repeatSwitch = UISwitch()
         repeatSwitch.center = CGPoint(x: screenWidth * 0.1, y: screenHeight * 0.9)
@@ -231,6 +230,10 @@ class GameScene: SKScene
                 if triangleArray[i].intersects(tipOfArrow)
                 {
                     nameLabel.text = studentsNotPickedArray[i % studentsNotPickedArray.count].name
+                    let image = studentsNotPickedArray[i % studentsNotPickedArray.count].picture
+                    let texture = SKTexture(image: image)
+                    avatarNode.texture = texture
+                    
                     if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
                     {
                         AudioServicesPlaySystemSound(tockSystemSoundID)
