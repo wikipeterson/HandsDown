@@ -16,7 +16,7 @@ class GameScene: SKScene
     let student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
     let student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
     let student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
-    let student4 = Student(name: "Steve", picture: #imageLiteral(resourceName: "Screen Shot 2018-01-03 at 8.59.44 AM"))
+    let student4 = Student(name: "Steve", picture: #imageLiteral(resourceName: "questionMarkImage"))
     let student5 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "elmoImage"))
     let student6 = Student(name: "Amy", picture: #imageLiteral(resourceName: "sampleStudentImage"))
     var teacher = Teacher()
@@ -58,7 +58,7 @@ class GameScene: SKScene
         switchLabel = childNode(withName: "switchLabel") as! SKLabelNode
         switchLabel.text = "Remove repeats"
         //switchLabel.position = CGPoint(x: screenWidth * -0.35, y: screenHeight * -0.41)
-        switchLabel.fontColor = SKColor.white
+        //switchLabel.fontColor = SKColor.white
         switchLabel.fontSize = 25.0
         switchLabel.zPosition = 50
         switchLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left

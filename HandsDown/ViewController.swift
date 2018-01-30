@@ -148,6 +148,11 @@ class ViewController: UIViewController, SetTeacherDelegate {
         manageGroupsButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
         settingsButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
         
+        //hide groups button until we add functionality
+        manageGroupsButton.isEnabled = false
+        manageGroupsButton.isHidden = true
+        settingsButton.isEnabled = false
+        settingsButton.isHidden = true
         
 
     }
