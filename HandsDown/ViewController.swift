@@ -13,7 +13,6 @@ import SpriteKit
 
 class ViewController: UIViewController, SetTeacherDelegate {
     
-
     @IBOutlet weak var mySKView: SKView!
     @IBOutlet weak var myStackView: UIStackView!
     @IBOutlet weak var manageClassesButton: UIButton!

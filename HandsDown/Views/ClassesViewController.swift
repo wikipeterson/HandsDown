@@ -18,6 +18,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var currentClassLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var tableViewNavBar: UINavigationBar!
+    
     var editSwitch = true
     var teacher = Teacher()
     
@@ -31,6 +33,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.backgroundColor = UIColor.clear
         
+        setUpNavBar()
+        
 
     }
     
@@ -38,6 +42,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let currentClass = teacher.currentClass {
             currentClassLabel.text = currentClass.name
         }
+        tableView.reloadData()
     }
     
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
@@ -46,6 +51,18 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         // save any changes here
         delegate?.setTeacher(teacher: teacher)
         
+    }
+    
+    func setUpNavBar () {
+        
+        tableViewNavBar.backgroundColor = UIColor.gray
+        tableViewNavBar.tintColor = UIColor.white
+        
+        let font = UIFont(name: "Avenir", size: 30)
+        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tableViewNavBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: font!]
+        
+        // do more to customize and make it look good
     }
     
     @IBAction func editButtonWasTapped(_ sender: UIBarButtonItem) {
@@ -124,15 +141,25 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     // MARK: TableView methods
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90.0
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return teacher.classes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "classCell") as! ClassesTableViewCell
         let thisClass = teacher.classes[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "classCell")
-        cell!.textLabel?.text = thisClass.name
-        return cell!
+        cell.theClass = thisClass // properties of cell will be set up in didSet Method in ClassesTVC
+
+        // set current class to selected state... Find a better way to do this
+//        if thisClass.recordID == teacher.currentClass?.recordID {
+//            self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
+//        }
+        
+        return cell
     }
     
     //this is the code needed to delete a row...
