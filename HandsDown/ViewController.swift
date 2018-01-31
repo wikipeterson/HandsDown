@@ -65,7 +65,6 @@ class ViewController: UIViewController, SetTeacherDelegate {
             
             if let scene = GameScene(fileNamed: "GameScene") {
                 scene.teacher = teacher
-                scene.allowsRepeats = false //this needs to be changed
                 //scene.referenceVC = self
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
