@@ -16,7 +16,7 @@ class ClassesTableViewCell: UITableViewCell {
     var theClass: Class? {
         didSet {
             self.layer.cornerRadius = 4.0
-            self.layer.borderColor = UIColor.gray.cgColor
+            self.layer.borderColor = UIColor.lightGray.cgColor
             self.layer.borderWidth = 1.0
             
             classNameLabel.text = theClass?.name

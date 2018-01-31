@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -288,13 +289,43 @@
                                         <rect key="frame" x="0.0" y="104" width="728" height="742"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="studentCell" id="bwz-mB-Pnx">
-                                                <rect key="frame" x="0.0" y="28" width="728" height="44"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="studentCell" rowHeight="124" id="bwz-mB-Pnx" customClass="StudentTableViewCell" customModule="HandsDown" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="728" height="124"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bwz-mB-Pnx" id="ESf-7p-BrV">
-                                                    <rect key="frame" x="0.0" y="0.0" width="728" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="728" height="123.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JR0-n9-akm">
+                                                            <rect key="frame" x="15" y="11" width="100" height="100"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="JR0-n9-akm" secondAttribute="height" multiplier="1:1" id="sI4-fO-JUJ"/>
+                                                                <constraint firstAttribute="width" constant="100" id="xjh-Jk-2tJ"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="StudentNameLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="2A9-oE-qy8">
+                                                            <rect key="frame" x="120" y="41" width="563" height="41"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="41" id="OSj-sN-tpm"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="30"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstItem="JR0-n9-akm" firstAttribute="leading" secondItem="ESf-7p-BrV" secondAttribute="leadingMargin" id="CJj-aW-Qef"/>
+                                                        <constraint firstItem="JR0-n9-akm" firstAttribute="top" secondItem="ESf-7p-BrV" secondAttribute="topMargin" id="LoQ-Ba-bHJ"/>
+                                                        <constraint firstItem="2A9-oE-qy8" firstAttribute="leading" secondItem="JR0-n9-akm" secondAttribute="trailing" constant="5" id="ZFM-Nr-HeY"/>
+                                                        <constraint firstItem="2A9-oE-qy8" firstAttribute="top" secondItem="ESf-7p-BrV" secondAttribute="topMargin" constant="30" id="dWB-Uh-iu7"/>
+                                                        <constraint firstAttribute="trailingMargin" secondItem="2A9-oE-qy8" secondAttribute="trailing" constant="30" id="mGQ-Lo-fvp"/>
+                                                    </constraints>
                                                 </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="nameLabel" destination="2A9-oE-qy8" id="am4-zL-iSN"/>
+                                                    <outlet property="studentImageView" destination="JR0-n9-akm" id="0MF-QP-eCB"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
@@ -305,7 +336,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="0.10588235294117647" green="0.69019607843137254" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="9Zs-qi-GjL" firstAttribute="leading" secondItem="ULC-3U-98G" secondAttribute="leading" constant="20" id="9k8-f6-bYA"/>
                             <constraint firstItem="9Zs-qi-GjL" firstAttribute="top" secondItem="ULC-3U-98G" secondAttribute="top" constant="20" id="LGx-Q7-bsR"/>
@@ -328,7 +359,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmj-3p-Cck" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="105" y="855"/>
+            <point key="canvasLocation" x="-74.21875" y="795.703125"/>
         </scene>
         <!--Manage Groups-->
         <scene sceneID="qLK-7t-28K">

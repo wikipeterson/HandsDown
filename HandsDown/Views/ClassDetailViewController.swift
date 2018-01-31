@@ -124,6 +124,10 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     // MARK:  TableView methods
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 124.0
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         if let theClass = teacher.currentClass {
@@ -137,12 +141,11 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell", for: indexPath) as! StudentTableViewCell
         if let theClass = teacher.currentClass {
             let student = theClass.students[indexPath.row]
-            cell.textLabel?.text = student.name
-        } else {
-            cell.textLabel?.text = "No Class in file"
+            cell.student = student // properties are set in didSet method in studentTVC
+
         }
         
         return cell

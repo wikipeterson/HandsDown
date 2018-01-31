@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		83038EB520215DB30068045E /* CloudKitStuffViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83038EB420215DB30068045E /* CloudKitStuffViewController.swift */; };
 		83038EB7202164290068045E /* ClassesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83038EB6202164290068045E /* ClassesTableViewCell.swift */; };
+		83038EBB202175B80068045E /* StudentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83038EBA202175B80068045E /* StudentTableViewCell.swift */; };
 		83519FAF2006544800214DA3 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FAE2006544800214DA3 /* Group.swift */; };
 		83519FB12006548400214DA3 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FB02006548400214DA3 /* Student.swift */; };
 		F124C6F820055B8C0026C7CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C6F720055B8C0026C7CB /* AppDelegate.swift */; };
@@ -51,6 +52,7 @@
 /* Begin PBXFileReference section */
 		83038EB420215DB30068045E /* CloudKitStuffViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitStuffViewController.swift; sourceTree = "<group>"; };
 		83038EB6202164290068045E /* ClassesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesTableViewCell.swift; sourceTree = "<group>"; };
+		83038EBA202175B80068045E /* StudentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentTableViewCell.swift; sourceTree = "<group>"; };
 		83519FAE2006544800214DA3 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		83519FB02006548400214DA3 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
 		83C42F03200C571E00F89072 /* HandsDown.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HandsDown.entitlements; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				83038EB6202164290068045E /* ClassesTableViewCell.swift */,
+				83038EBA202175B80068045E /* StudentTableViewCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				F1A9C395201786E00040CB44 /* GameScene.swift in Sources */,
 				F1C4003B200A892400CEEC05 /* ClassesViewController.swift in Sources */,
 				F1C40041200B03C100CEEC05 /* Teacher.swift in Sources */,
+				83038EBB202175B80068045E /* StudentTableViewCell.swift in Sources */,
 				83519FB12006548400214DA3 /* Student.swift in Sources */,
 				F124C6F820055B8C0026C7CB /* AppDelegate.swift in Sources */,
 				F1C4003F200A895E00CEEC05 /* SettingsViewController.swift in Sources */,
