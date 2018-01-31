@@ -15,19 +15,22 @@ class Student
     var picture: UIImage = #imageLiteral(resourceName: "sampleStudentImage")
     var classID: String = ""
     var picked = false
+    var record: CKRecord?
     
     init(name: String, picture: UIImage)
     {
         self.name = name
         self.picture = picture
         self.classID = ""
+        record = nil
     }
     
     init(record: CKRecord) {
         self.name = record["name"] as? String ?? ""
         self.classID = record["classID"] as? String ?? ""
-        // figure out how to load students and images
+        // figure out how to load images
         picture = #imageLiteral(resourceName: "Monkey")
+        self.record = record
     }
     
 

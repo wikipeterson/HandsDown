@@ -11,55 +11,45 @@ import CloudKit
 
 class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
 
-    @IBOutlet weak var NameTextField: UITextField!
-    @IBOutlet weak var myTableView: UITableView!
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var tableView: UITableView!
     var editSwitch = true
-    var teacher = Teacher()
-    var myClass: Class? // this should get passed over from classVC
+    var teacher = Teacher() // this should get passed over from classVC
+    
     var defaultImagesArray = [#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "questionMarkImage")]
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.delegate = self
-//        self.loadStudentsFromCloudKit()
+        // this will remove extra unsed rows from tableview
+        tableView.tableFooterView = UIView(frame: .zero)
+        tableView.backgroundColor = UIColor.clear
         
-        if let currentClass = myClass {
-            NameTextField.text = currentClass.name
+        navigationController?.delegate = self
+
+        
+        if let currentClass = teacher.currentClass {
+            nameTextField.text = currentClass.name
         }
     }
 
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem)
     {
-        if editSwitch == true
-        {
-            myTableView.isEditing = true
+        if editSwitch == true {
+            tableView.isEditing = true
             editSwitch = false
-           
-           sender.title = "Done"
+            sender.title = "Done"
         }
-        else
-        {
-            myTableView.isEditing = false
+        else {
+            tableView.isEditing = false
             editSwitch = true
-           sender.title = "Edit" 
+            sender.title = "Edit"
         }
     }
     
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
         navigationController?.popViewController(animated: true)
         
-        saveThisClass()
     }
-    
-    func saveThisClass()
-    {
-        // figure out how to save things here
-        teacher.currentClass?.students = myClass!.students
-        teacher.classes[teacher.currentClassID].students = (myClass?.students)!
-        
-        
-    }
-    
     
     @IBAction func addStudentButtonTapped(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Add a student", message: nil, preferredStyle: .alert)
@@ -69,20 +59,8 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             let newName = alert.textFields![0].text!
             let randomImageIndex = Int(arc4random_uniform(UInt32(self.defaultImagesArray.count)))
             let newPicture = self.defaultImagesArray[randomImageIndex]
-            let newStudent = Student(name: newName, picture: newPicture)
-            
-            //Steve added this so new students would show up on table before another is added
-//            self.myClass?.students.append(newStudent)
-//            self.myTableView.reloadData()
-            
-            
+//            let newStudent = Student(name: newName, picture: newPicture)
             self.saveStudentToCloudKit(name: newName)
-          
-            // figure out how to load students after the save is finished.
-//            self.loadStudentsFromCloudKit()
-//            self.myClass?.students.append(newStudent)
-//            self.myTableView.reloadData()
-            
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -99,9 +77,8 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         let newStudentRecord = CKRecord(recordType: "Student", recordID: recordID)
         newStudentRecord["name"] = name as NSString
         
-        
         // save classID to Student, so that we can fetch the students by classID
-        if let currentClass = myClass {
+        if let currentClass = teacher.currentClass {
 //            let classID = CKRecordID(recordName: currentClass.recordID)
             guard let classRecord = currentClass.record else{return}
             let classReference = CKReference(record: classRecord, action: .deleteSelf)
@@ -123,67 +100,33 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             print("Successfully saved record: ", record ?? "")
             // append newClass to classes array, then reload tableview
             let newStudent = Student(record: newStudentRecord)
-
-            self.myClass?.students.append(newStudent)
-
+            self.teacher.currentClass?.students.append(newStudent)
+            
             DispatchQueue.main.async(execute: {
-                self.myTableView.reloadData()
+                self.tableView.reloadData()
             })
         }
     }
-    
-    func loadStudentsFromCloudKit() {
+    func deleteRecordFromCloudKit(myStudent: Student) {
         let privateDatabase = CKContainer.default().privateCloudDatabase
         
-        // Initialize Query
-        // look more into Predicates.  You can query by name, distance from, etc.
-        guard var currentClass = myClass else {return}
-        
-        // search for all students with the classID = to the class's recordID
-        // Match item records whose owningList field points to the specified list record.
-        let classRecord = currentClass.record
-
-        let recordToMatch = CKReference(record: classRecord!, action: .deleteSelf)
-        let predicate = NSPredicate(format: "classID == %@", recordToMatch)
-
-//        let predicate = NSPredicate(format: "%K = %@", "classID", currentClass.recordID)
-//       let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: "Student", predicate: predicate)
-        
-        // Configure Query.  Figure out a better way to sort.  Maybe sort by created?
-        query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        
-        privateDatabase.perform(query, inZoneWith: nil) {
-            (records, error) in
-            guard let records = records else {
-                print("Error querying records: ", error as Any)
+        guard let record = myStudent.record else {return}
+        privateDatabase.delete(withRecordID: record.recordID, completionHandler: {(recordID, error) in
+            if let err = error {
+                print(err)
                 return
+            } else {
+                print("Successfully deleted:", recordID as Any)
             }
-            print("Found \(records.count) records matching query")
-            // clear classes. then reload
             
-            currentClass.students.removeAll()
-            for record in records {
-                let foundStudent = Student(record: record) // create a student from the record
-                // append to students array
-                currentClass.students.append(foundStudent)
-            }
-            self.myClass?.students = currentClass.students
-            // this will prevent crash because we are working on a background thread.  We might not need this, but it was needed for async calls in firebase
-            DispatchQueue.main.async(execute: {
-//                print("we reloaded the table")
-                self.myTableView.reloadData()
-            })
-//            self.myTableView.reloadData()
-            
-        }
+        })
     }
     
     // MARK:  TableView methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if let theClass = myClass {
+        if let theClass = teacher.currentClass {
             return theClass.students.count
         }
         else {
@@ -195,7 +138,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell", for: indexPath)
-        if let theClass = myClass {
+        if let theClass = teacher.currentClass {
             let student = theClass.students[indexPath.row]
             cell.textLabel?.text = student.name
         } else {
@@ -209,15 +152,22 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     //this is the code needed to delete a row...
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
     {
-        teacher.classes[teacher.currentClassID].students.remove(at: indexPath.row)
+   
+        // delete from cloudkit
+        if let myStudent = teacher.currentClass?.students[indexPath.row] {
+            deleteRecordFromCloudKit(myStudent: myStudent)
+            teacher.classes.remove(at: indexPath.row)
+        }
         tableView.reloadData()
     }
     //this is the code needed to move items in the tableview
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
     {
-        let itemToMove = teacher.classes[teacher.currentClassID].students[sourceIndexPath.row]
-        teacher.classes[teacher.currentClassID].students.remove(at: sourceIndexPath.row)
-        teacher.classes[teacher.currentClassID].students.insert(itemToMove, at: destinationIndexPath.row)
+        if let itemToMove = teacher.currentClass?.students[sourceIndexPath.row] {
+            teacher.currentClass?.students.remove(at: sourceIndexPath.row)
+            
+            teacher.currentClass?.students.insert(itemToMove, at: destinationIndexPath.row)
+        }
     }
     
     
@@ -227,7 +177,6 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
         if let vc = viewController as? ClassesViewController
         {
-            saveThisClass()
             vc.teacher = teacher    // Here you pass the data back to your original view controller
         }
     }

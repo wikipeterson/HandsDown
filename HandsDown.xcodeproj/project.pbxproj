@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		83038EB520215DB30068045E /* CloudKitStuffViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83038EB420215DB30068045E /* CloudKitStuffViewController.swift */; };
 		83519FAF2006544800214DA3 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FAE2006544800214DA3 /* Group.swift */; };
 		83519FB12006548400214DA3 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FB02006548400214DA3 /* Student.swift */; };
 		F124C6F820055B8C0026C7CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C6F720055B8C0026C7CB /* AppDelegate.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		83038EB420215DB30068045E /* CloudKitStuffViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitStuffViewController.swift; sourceTree = "<group>"; };
 		83519FAE2006544800214DA3 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		83519FB02006548400214DA3 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
 		83C42F03200C571E00F89072 /* HandsDown.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HandsDown.entitlements; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				F124C6FB20055B8C0026C7CB /* Main.storyboard */,
 				F1C4003A200A892400CEEC05 /* ClassesViewController.swift */,
 				F1C40042200C1E1A00CEEC05 /* ClassDetailViewController.swift */,
+				83038EB420215DB30068045E /* CloudKitStuffViewController.swift */,
 				F1A9C394201786DF0040CB44 /* GameScene.swift */,
 				F1A9C392201786B90040CB44 /* GameScene.sks */,
 				F1C4003C200A894B00CEEC05 /* GroupsViewController.swift */,
@@ -330,6 +333,7 @@
 				F124C70020055B8C0026C7CB /* HandsDown.xcdatamodeld in Sources */,
 				F124C6FA20055B8C0026C7CB /* ViewController.swift in Sources */,
 				83519FAF2006544800214DA3 /* Group.swift in Sources */,
+				83038EB520215DB30068045E /* CloudKitStuffViewController.swift in Sources */,
 				F13C853F2009BFFC00BAFC51 /* Class.swift in Sources */,
 				F1C4003D200A894B00CEEC05 /* GroupsViewController.swift in Sources */,
 				F1C40043200C1E1A00CEEC05 /* ClassDetailViewController.swift in Sources */,

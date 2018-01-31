@@ -27,19 +27,14 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     {
         super.viewDidLoad()
 
+        // this will remove extra unsed rows from tableview
+        tableView.tableFooterView = UIView(frame: .zero)
+        tableView.backgroundColor = UIColor.clear
         
-//        loadClassesFromCloudKit()
-//        CKContainer.default().fetchUserRecordID { (recordID, error) in
-//            if let error = error {
-//                print(error)
-//            } else if let recordID = recordID {
-//                print(recordID)
-//            }
-//        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        loadClassesFromCloudKit()
         if let currentClass = teacher.currentClass {
             currentClassLabel.text = currentClass.name
         }
@@ -47,7 +42,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
        self.navigationController?.popViewController(animated: true)
-//        navigationController?.dismiss(animated: true, completion: nil)
         
         // save any changes here
         delegate?.setTeacher(teacher: teacher)
@@ -76,12 +70,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name of class"})
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
             let newClassName = alert.textFields![0].text!
-            let newClass = Class(name: newClassName, students: [Student]())
+//            let newClass = Class(name: newClassName, students: [Student]())
             self.saveClassToCloudKit(name: newClassName)
-//             figure out how to loadClassesFromCloudKit, only after the save class has finished.
-//            self.teacher.classes.append(newClass)
-//            self.tableView.reloadData()
-            
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(okAction)
@@ -98,7 +88,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         newClassRecord["name"] = name as NSString
         // figure out how to save the picture
         
-        
         // save CKRecord to correct container.. private, public, shared, etc.
         let myContainer = CKContainer.default()
         let privateDatabase = myContainer.privateCloudDatabase
@@ -113,36 +102,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
             // append newClass to classes array, then reload tableview
             let newClass = Class(record: newClassRecord)
             self.teacher.classes.append(newClass)
-            DispatchQueue.main.async(execute: {
-                self.tableView.reloadData()
-            })
-        }
-    }
-    
-    func loadClassesFromCloudKit() {
-        let privateDatabase = CKContainer.default().privateCloudDatabase
-        
-        // Initialize Query
-        // look more into Predicates.  You can query by name, distance form, etc.
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: "Class", predicate: predicate)
-        
-        // Configure Query.  Figure out a better way to sort.  Maybe sort by created?
-        query.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        
-        privateDatabase.perform(query, inZoneWith: nil) {
-            (records, error) in
-            guard let records = records else {
-                print("Error querying records: ", error as Any)
-                return
-            }
-            print("Found \(records.count) class records matching query")
-            // clear classes. then reload
-            self.teacher.classes.removeAll()
-            for record in records {
-                let foundClass = Class(record: record) // create a class from the record
-                self.teacher.classes.append(foundClass)
-            }
             DispatchQueue.main.async(execute: {
                 self.tableView.reloadData()
             })
@@ -179,9 +138,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     //this is the code needed to delete a row...
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
     {
-        
-        
-        
         // delete from cloudkit
         let myClass = teacher.classes[indexPath.row]
         deleteRecordFromCloudKit(myClass: myClass)
@@ -209,9 +165,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             if let indexPath = tableView.indexPathForSelectedRow {
                 let row = indexPath.row
-            
-                let selectedClass = teacher.classes[row]
-                nvc.myClass = selectedClass
+                teacher.currentClass = teacher.classes[row]
             }
 
             nvc.teacher = teacher
