@@ -20,7 +20,7 @@ class StudentTableViewCell: UITableViewCell {
             self.layer.borderWidth = 1.0
             studentImageView.layer.cornerRadius = 50.0
             nameLabel.text = student?.name
-            studentImageView.image = student?.picture
+            studentImageView.image = student?.photo
             
             let height = studentImageView.bounds.height
             studentImageView.layer.cornerRadius = height / 2.0

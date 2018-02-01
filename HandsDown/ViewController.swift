@@ -39,6 +39,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
         // load classes from cloudkit.  If there are no classes, a demo class will be created
         loadClassesFromCloudKit()
         updateUIElements()
+        setupNavBar()
         
         // this observer will get called from Class, after it is finished loading the students from the class Class (ps, that naming is the worst.)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleStudentsLoaded), name: NSNotification.Name(rawValue: Class.studentsLoadedNotification), object: nil)
@@ -49,12 +50,26 @@ class ViewController: UIViewController, SetTeacherDelegate {
         loadGameScene()
     }
     
+    // this is causing constraint issues... figure out later
+    func setupNavBar() {
+        let navBar = navigationController?.navigationBar
+        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+//        navBar?.backgroundColor = UIColor.gray
+        navBar?.tintColor = color
+
+        let font = UIFont(name: "Avenir", size: 25)
+
+        navBar?.titleTextAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: font!]
+        
+        // do more to customize and make it look good
+        
+        
+    }
+    
     
     // this gets called from notification after classes get loaded.
     @objc func handleStudentsLoaded() {
         updateUIElements()
-
-        
     }
     
     func loadGameScene() {

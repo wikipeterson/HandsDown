@@ -11,12 +11,13 @@ import CloudKit
 
 class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
 
+    @IBOutlet weak var tableViewNavBar: UINavigationBar!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     var editSwitch = true
     var teacher = Teacher() // this should get passed over from classVC
     
-    var defaultImagesArray = [#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "questionMarkImage")]
+    var defaultImagesArray = [#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "questionMarkImage"), #imageLiteral(resourceName: "Monkey")]
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,6 +31,19 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         if let currentClass = teacher.currentClass {
             nameTextField.text = currentClass.name
         }
+        setUpNavBar()
+    }
+    
+    func setUpNavBar () {
+        tableViewNavBar.backgroundColor = UIColor.gray
+        tableViewNavBar.tintColor = UIColor.white
+        tableViewNavBar.layer.cornerRadius = 4.0
+        
+        let font = UIFont(name: "Avenir Book", size: 25)
+        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        tableViewNavBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: font!]
+        
+        // do more to customize and make it look good
     }
 
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem)
@@ -47,9 +61,35 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
+        saveClassName()
         navigationController?.popViewController(animated: true)
-        
     }
+    
+    func saveClassName() {
+        // make sure you save the new class name if the user changes the nameTextField.
+        if teacher.currentClass?.name != nameTextField.text {
+            let newName = nameTextField.text ?? ""
+            teacher.currentClass?.name = newName
+            // save to cloudkit as well
+            if let record = teacher.currentClass?.record {
+                record["name"] = newName as NSString
+                let myContainer = CKContainer.default()
+                let privateDatabase = myContainer.privateCloudDatabase
+                privateDatabase.save(record) {
+                    (record, error) in
+                    if let error = error {
+                        print(error)
+                        return
+                    }
+                    // insert successfully saved record code...
+                    print("Successfully updated record: ", record ?? "")
+                }
+            }
+            
+        }
+    }
+    
+    
     
     @IBAction func addStudentButtonTapped(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Add a student", message: nil, preferredStyle: .alert)
@@ -78,14 +118,23 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         newStudentRecord["name"] = name as NSString
         
         // save classID to Student, so that we can fetch the students by classID
-        if let currentClass = teacher.currentClass {
-//            let classID = CKRecordID(recordName: currentClass.recordID)
-            guard let classRecord = currentClass.record else{return}
-            let classReference = CKReference(record: classRecord, action: .deleteSelf)
-//            let classReference = CKReference(recordID: classID, action: .deleteSelf)
-            newStudentRecord["classID"] = classReference
+        guard let currentClass = teacher.currentClass, let classRecord = currentClass.record else {return}
+
+        let classReference = CKReference(record: classRecord, action: .deleteSelf)
+        newStudentRecord["classID"] = classReference
+    
+        // to save picture, I need to save as a CKAsset.  To create CKAsset, first create temp url file, then save photo, and finally delete temp file from memory.  Seems like a lot and try to find a better way
+        let randNumber = Int(arc4random_uniform(UInt32(defaultImagesArray.count)))
+        let randomImage = defaultImagesArray[randNumber]
+        let data = UIImagePNGRepresentation(randomImage)// UIImage -> NSData, see also UIImageJPEGRepresentation
+        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(NSUUID().uuidString+".dat")
+        do {
+            try data!.write(to: url, options: [])
+        } catch let e as NSError {
+            print("Error! \(e)")
+            return
         }
-        // figure out how to save the picture
+        newStudentRecord["photo"] = CKAsset(fileURL: url)
         
         // save CKRecord to correct container.. private, public, shared, etc.
         let myContainer = CKContainer.default()
@@ -105,6 +154,13 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             DispatchQueue.main.async(execute: {
                 self.tableView.reloadData()
             })
+            
+            // delete temp file for image data
+            do {
+                try FileManager.default.removeItem(at: url)
+            } catch let e {
+                print("Error deleting temp file: \(e)")
+            }
         }
     }
     func deleteRecordFromCloudKit(myStudent: Student) {
@@ -118,7 +174,6 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             } else {
                 print("Successfully deleted:", recordID as Any)
             }
-            
         })
     }
     
@@ -145,9 +200,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         if let theClass = teacher.currentClass {
             let student = theClass.students[indexPath.row]
             cell.student = student // properties are set in didSet method in studentTVC
-
         }
-        
         return cell
     }
     
@@ -159,7 +212,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         // delete from cloudkit
         if let myStudent = teacher.currentClass?.students[indexPath.row] {
             deleteRecordFromCloudKit(myStudent: myStudent)
-            teacher.classes.remove(at: indexPath.row)
+            teacher.currentClass?.students.remove(at: indexPath.row)
         }
         tableView.reloadData()
     }

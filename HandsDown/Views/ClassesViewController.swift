@@ -54,11 +54,11 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func setUpNavBar () {
-        
         tableViewNavBar.backgroundColor = UIColor.gray
         tableViewNavBar.tintColor = UIColor.white
+        tableViewNavBar.layer.cornerRadius = 4.0
         
-        let font = UIFont(name: "Avenir", size: 30)
+        let font = UIFont(name: "Avenir", size: 25)
         let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         tableViewNavBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: font!]
         
@@ -135,6 +135,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 return
             } else {
                 print("Successfully deleted:", recordID as Any)
+                // students will be deleted as well because of delete rule created and reference made
             }
             
         })
