@@ -13,6 +13,7 @@ class ClassesTableViewCell: UITableViewCell {
     @IBOutlet weak var classDetailLabel: UILabel!
     @IBOutlet weak var classNameLabel: UILabel!
 
+    @IBOutlet weak var numberLabel: UILabel!
     var theClass: Class? {
         didSet {
             self.layer.cornerRadius = 4.0

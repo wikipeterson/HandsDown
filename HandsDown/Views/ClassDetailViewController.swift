@@ -97,8 +97,8 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
             let newName = alert.textFields![0].text!
-            let randomImageIndex = Int(arc4random_uniform(UInt32(self.defaultImagesArray.count)))
-            let newPicture = self.defaultImagesArray[randomImageIndex]
+//            let randomImageIndex = Int(arc4random_uniform(UInt32(self.defaultImagesArray.count)))
+//            let newPicture = self.defaultImagesArray[randomImageIndex]
 //            let newStudent = Student(name: newName, picture: newPicture)
             self.saveStudentToCloudKit(name: newName)
         })
@@ -200,6 +200,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         if let theClass = teacher.currentClass {
             let student = theClass.students[indexPath.row]
             cell.student = student // properties are set in didSet method in studentTVC
+            cell.numberLabel.text = "\(indexPath.row + 1)"
         }
         return cell
     }
@@ -224,6 +225,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             
             teacher.currentClass?.students.insert(itemToMove, at: destinationIndexPath.row)
         }
+        tableView.reloadData() // if you don't reload data the numbers will be goofy
     }
     
     
@@ -234,6 +236,18 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         if let vc = viewController as? ClassesViewController
         {
             vc.teacher = teacher    // Here you pass the data back to your original view controller
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "editStudentSegue" {
+            let destVC = segue.destination as! StudentViewController
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let row = indexPath.row
+                let theStudent = teacher.currentClass?.students[row]
+                destVC.student = theStudent
+            }
+            
         }
     }
     

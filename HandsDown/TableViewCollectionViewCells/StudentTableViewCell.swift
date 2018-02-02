@@ -12,7 +12,7 @@ class StudentTableViewCell: UITableViewCell {
 
     @IBOutlet weak var studentImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    
+    @IBOutlet weak var numberLabel: UILabel!
     var student: Student? {
         didSet {
             self.layer.cornerRadius = 4.0
