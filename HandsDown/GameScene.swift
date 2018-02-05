@@ -13,12 +13,12 @@ import AVFoundation
 class GameScene: SKScene
 {
     
-    let student1 = Student(name: "Bryn", picture: #imageLiteral(resourceName: "foxImage"))
-    let student2 = Student(name: "Lucky", picture: #imageLiteral(resourceName: "beeImage"))
-    let student3 = Student(name: "Cameron", picture: #imageLiteral(resourceName: "pigTailGirl"))
-    let student4 = Student(name: "Steve", picture: #imageLiteral(resourceName: "questionMarkImage"))
-    let student5 = Student(name: "Zoey", picture: #imageLiteral(resourceName: "elmoImage"))
-    let student6 = Student(name: "Amy", picture: #imageLiteral(resourceName: "sampleStudentImage"))
+    let student1 = Student(name: "Bryn", photo: #imageLiteral(resourceName: "foxImage"))
+    let student2 = Student(name: "Lucky", photo: #imageLiteral(resourceName: "beeImage"))
+    let student3 = Student(name: "Cameron", photo: #imageLiteral(resourceName: "pigTailGirl"))
+    let student4 = Student(name: "Steve", photo: #imageLiteral(resourceName: "questionMarkImage"))
+    let student5 = Student(name: "Zoey", photo: #imageLiteral(resourceName: "elmoImage"))
+    let student6 = Student(name: "Amy", photo: #imageLiteral(resourceName: "sampleStudentImage"))
     var teacher = Teacher()
     var referenceVC : ViewController!
     var screenWidth : CGFloat = 0.0
@@ -39,7 +39,7 @@ class GameScene: SKScene
     var player = AVAudioPlayer()
     let tockSystemSoundID: SystemSoundID = 1105
     let fanfareSystemSoundID: SystemSoundID = 1103
-    var holder = Student(name: "", picture: #imageLiteral(resourceName: "sampleStudentImage")) //this is for controlling the click sounds
+    var holder = Student(name: "", photo: #imageLiteral(resourceName: "sampleStudentImage")) //this is for controlling the click sounds
     var loopFactor = 1 //this is for duplicating small classes on the wheel
     var synth = AVSpeechSynthesizer()
     var allowsRepeats = true
@@ -130,7 +130,7 @@ class GameScene: SKScene
         switch studentsNotPickedArray.count
         {
             case 0:
-                studentArray.append(Student(name: "empty class", picture: #imageLiteral(resourceName: "foxImage")))
+                studentArray.append(Student(name: "empty class", photo: #imageLiteral(resourceName: "foxImage")))
                 loopFactor = 9
             case 1:
                 loopFactor = 9
@@ -230,7 +230,7 @@ class GameScene: SKScene
                 if triangleArray[i].intersects(tipOfArrow)
                 {
                     nameLabel.text = studentsNotPickedArray[i % studentsNotPickedArray.count].name
-                    let image = studentsNotPickedArray[i % studentsNotPickedArray.count].picture
+                    let image = studentsNotPickedArray[i % studentsNotPickedArray.count].photo
                     let texture = SKTexture(image: image)
                     avatarNode.texture = texture
                     

@@ -12,7 +12,7 @@ class StudentTableViewCell: UITableViewCell {
 
     @IBOutlet weak var studentImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    
+    @IBOutlet weak var numberLabel: UILabel!
     var student: Student? {
         didSet {
             self.layer.cornerRadius = 4.0
@@ -20,7 +20,7 @@ class StudentTableViewCell: UITableViewCell {
             self.layer.borderWidth = 1.0
             studentImageView.layer.cornerRadius = 50.0
             nameLabel.text = student?.name
-            studentImageView.image = student?.picture
+            studentImageView.image = student?.photo
             
             let height = studentImageView.bounds.height
             studentImageView.layer.cornerRadius = height / 2.0

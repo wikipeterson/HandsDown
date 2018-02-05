@@ -32,10 +32,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         // this will remove extra unsed rows from tableview
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.backgroundColor = UIColor.clear
-        
         setUpNavBar()
-        
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,11 +51,11 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func setUpNavBar () {
-        
         tableViewNavBar.backgroundColor = UIColor.gray
         tableViewNavBar.tintColor = UIColor.white
+        tableViewNavBar.layer.cornerRadius = 4.0
         
-        let font = UIFont(name: "Avenir", size: 30)
+        let font = UIFont(name: "Avenir", size: 25)
         let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         tableViewNavBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: font!]
         
@@ -66,23 +63,19 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @IBAction func editButtonWasTapped(_ sender: UIBarButtonItem) {
-        if editSwitch == true
-        {
+        if editSwitch == true {
             tableView.isEditing = true
             editSwitch = false
             sender.title = "Done"
         }
-        else
-        {
+        else {
             tableView.isEditing = false
             editSwitch = true
             sender.title = "Edit"
-
         }
     }
     
     @IBAction func addButtonWasTapped(_ sender: UIBarButtonItem) {
-
         let alert = UIAlertController(title: "Add a new class", message: nil, preferredStyle: .alert)
         alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name of class"})
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
@@ -135,8 +128,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 return
             } else {
                 print("Successfully deleted:", recordID as Any)
+                // students will be deleted as well because of delete rule created and reference made
             }
-            
         })
     }
     
@@ -153,12 +146,12 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "classCell") as! ClassesTableViewCell
         let thisClass = teacher.classes[indexPath.row]
         cell.theClass = thisClass // properties of cell will be set up in didSet Method in ClassesTVC
+        cell.numberLabel.text = "\(indexPath.row + 1)"
 
         // set current class to selected state... Find a better way to do this
 //        if thisClass.recordID == teacher.currentClass?.recordID {
 //            self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
 //        }
-        
         return cell
     }
     
@@ -173,17 +166,15 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.reloadData()
     }
     //this is the code needed to move items in the tableview
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
-    {
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let itemToMove = teacher.classes[sourceIndexPath.row]
         teacher.classes.remove(at: sourceIndexPath.row)
         teacher.classes.insert(itemToMove, at: destinationIndexPath.row)
+        tableView.reloadData()
     }
     
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        
         if segue.identifier == "toClassDetailsSegue"
         {
             teacher.currentClass = teacher.classes[tableView.indexPathForSelectedRow!.row]
@@ -194,10 +185,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let row = indexPath.row
                 teacher.currentClass = teacher.classes[row]
             }
-
             nvc.teacher = teacher
         }
-
     }
     
     

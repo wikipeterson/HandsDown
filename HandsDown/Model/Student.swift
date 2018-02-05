@@ -12,15 +12,15 @@ import CloudKit
 class Student
 {
     var name: String = "default name"
-    var picture: UIImage = #imageLiteral(resourceName: "sampleStudentImage")
+    var photo: UIImage = #imageLiteral(resourceName: "sampleStudentImage")
     var classID: String = ""
     var picked = false
     var record: CKRecord?
     
-    init(name: String, picture: UIImage)
+    init(name: String, photo: UIImage)
     {
         self.name = name
-        self.picture = picture
+        self.photo = photo
         self.classID = ""
         record = nil
     }
@@ -28,10 +28,22 @@ class Student
     init(record: CKRecord) {
         self.name = record["name"] as? String ?? ""
         self.classID = record["classID"] as? String ?? ""
-        // figure out how to load images
-        picture = #imageLiteral(resourceName: "Monkey")
         self.record = record
+        // load photo, it is saved as a CKAsset
+        if let asset = record["photo"] as? CKAsset {
+            let imageData: Data
+            do {
+                imageData = try Data(contentsOf: asset.fileURL)
+            } catch {
+                return
+            }
+            if let image = UIImage(data: imageData) {
+                photo = image
+            } else {
+                photo = #imageLiteral(resourceName: "Monkey")
+            }
+        } else {
+            photo = #imageLiteral(resourceName: "Monkey")
+        }
     }
-    
-
 }
