@@ -9,7 +9,9 @@
 import UIKit
 import CloudKit
 
-class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
+class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, AddStudentDelegate {
+
+    
 
     @IBOutlet weak var tableViewNavBar: UINavigationBar!
     @IBOutlet weak var nameTextField: UITextField!
@@ -85,84 +87,50 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
                     print("Successfully updated record: ", record ?? "")
                 }
             }
-            
         }
     }
     
     
     
     @IBAction func addStudentButtonTapped(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Add a student", message: nil, preferredStyle: .alert)
-        alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name"})
-        
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            let newName = alert.textFields![0].text!
-//            let randomImageIndex = Int(arc4random_uniform(UInt32(self.defaultImagesArray.count)))
-//            let newPicture = self.defaultImagesArray[randomImageIndex]
-//            let newStudent = Student(name: newName, picture: newPicture)
-            self.saveStudentToCloudKit(name: newName)
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(okAction)
-        alert.addAction(cancelAction)
-        present(alert, animated: true, completion: nil)
+//        let alert = UIAlertController(title: "Add a student", message: nil, preferredStyle: .alert)
+//        alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name"})
+//        
+//        let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
+//            let newName = alert.textFields![0].text!
+////            let randomImageIndex = Int(arc4random_uniform(UInt32(self.defaultImagesArray.count)))
+////            let newPicture = self.defaultImagesArray[randomImageIndex]
+////            let newStudent = Student(name: newName, picture: newPicture)
+//            self.saveStudentToCloudKit(name: newName)
+//        })
+//        
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//        alert.addAction(okAction)
+//        alert.addAction(cancelAction)
+//        present(alert, animated: true, completion: nil)
     }
     
+    // MARK: AddStudentDelegate Methods
+    
+    func addStudent(student: Student) {
+        teacher.currentClass?.students.append(student)
+        tableView.reloadData()
+    }
+    
+    func updateStudent(student: Student) {
+        // find location of student in studentArray, update values, the reload tableview
+        if let myClass = teacher.currentClass {
+            for index in 0..<myClass.students.count {
+                if myClass.students[index].recordName == student.recordName {
+                    teacher.currentClass?.students[index] = student
+                    tableView.reloadData()
+                    break
+                }
+            }
+        }
+    }
     // Mark: CloudKit Methods
-    func saveStudentToCloudKit(name: String) {
-        // create the CKRecord that gets saved to the database
-        let uid = UUID().uuidString // get a uniqueID
-        let recordID = CKRecordID(recordName: uid)
-        let newStudentRecord = CKRecord(recordType: "Student", recordID: recordID)
-        newStudentRecord["name"] = name as NSString
-        
-        // save classID to Student, so that we can fetch the students by classID
-        guard let currentClass = teacher.currentClass, let classRecord = currentClass.record else {return}
 
-        let classReference = CKReference(record: classRecord, action: .deleteSelf)
-        newStudentRecord["classID"] = classReference
-    
-        // to save picture, I need to save as a CKAsset.  To create CKAsset, first create temp url file, then save photo, and finally delete temp file from memory.  Seems like a lot and try to find a better way
-        let randNumber = Int(arc4random_uniform(UInt32(defaultImagesArray.count)))
-        let randomImage = defaultImagesArray[randNumber]
-        let data = UIImagePNGRepresentation(randomImage)// UIImage -> NSData, see also UIImageJPEGRepresentation
-        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(NSUUID().uuidString+".dat")
-        do {
-            try data!.write(to: url, options: [])
-        } catch let e as NSError {
-            print("Error! \(e)")
-            return
-        }
-        newStudentRecord["photo"] = CKAsset(fileURL: url)
-        
-        // save CKRecord to correct container.. private, public, shared, etc.
-        let myContainer = CKContainer.default()
-        let privateDatabase = myContainer.privateCloudDatabase
-        privateDatabase.save(newStudentRecord) {
-            (record, error) in
-            if let error = error {
-                print(error)
-                return
-            }
-            // insert successfully saved record code... reload table, etc...
-            print("Successfully saved record: ", record ?? "")
-            // append newClass to classes array, then reload tableview
-            let newStudent = Student(record: newStudentRecord)
-            self.teacher.currentClass?.students.append(newStudent)
-            
-            DispatchQueue.main.async(execute: {
-                self.tableView.reloadData()
-            })
-            
-            // delete temp file for image data
-            do {
-                try FileManager.default.removeItem(at: url)
-            } catch let e {
-                print("Error deleting temp file: \(e)")
-            }
-        }
-    }
     func deleteRecordFromCloudKit(myStudent: Student) {
         let privateDatabase = CKContainer.default().privateCloudDatabase
         
@@ -246,9 +214,18 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
                 let row = indexPath.row
                 let theStudent = teacher.currentClass?.students[row]
                 destVC.student = theStudent
+                destVC.teacher = teacher
+                destVC.delegate = self
             }
             
+        } else if segue.identifier == "addStudentSegue" {
+            let destVC = segue.destination as! StudentViewController
+            destVC.student = nil
+            destVC.delegate = self
+            destVC.teacher = teacher
         }
+            
+        
     }
     
     

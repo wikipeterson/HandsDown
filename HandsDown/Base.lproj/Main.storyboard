@@ -298,6 +298,7 @@
                                             <color key="tintColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <connections>
                                                 <action selector="addStudentButtonTapped:" destination="KGd-lN-hP3" id="mFV-RL-4pM"/>
+                                                <segue destination="leI-OT-L8n" kind="presentation" identifier="addStudentSegue" modalPresentationStyle="formSheet" id="PoY-EA-Scb"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -422,10 +423,10 @@
                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="30"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                         <connections>
-                                            <outlet property="delegate" destination="leI-OT-L8n" id="YqL-mC-mqO"/>
+                                            <outlet property="delegate" destination="leI-OT-L8n" id="gOh-B0-NWm"/>
                                         </connections>
                                     </textField>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Monkey" translatesAutoresizingMaskIntoConstraints="NO" id="ZbE-pV-CeN">
+                                    <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Monkey" translatesAutoresizingMaskIntoConstraints="NO" id="ZbE-pV-CeN">
                                         <rect key="frame" x="0.0" y="45" width="540" height="221"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected Avatar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="vA5-vP-P8I">
@@ -454,7 +455,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Monkey" translatesAutoresizingMaskIntoConstraints="NO" id="3pI-9X-alq">
+                                                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Monkey" translatesAutoresizingMaskIntoConstraints="NO" id="3pI-9X-alq">
                                                             <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         </imageView>
@@ -520,8 +521,10 @@
                     </view>
                     <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="avatarImageView" destination="ZbE-pV-CeN" id="rMM-ce-KBF"/>
                         <outlet property="imageCollectionView" destination="eC3-mk-b8Y" id="Svz-1s-Vdg"/>
                         <outlet property="nameTextField" destination="zIn-o4-Dmh" id="wIz-MN-8v9"/>
+                        <outlet property="selectedAvatarLabel" destination="vA5-vP-P8I" id="VEy-4O-yor"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uux-72-fEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -580,4 +583,7 @@
     <resources>
         <image name="Monkey" width="225" height="225"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="PoY-EA-Scb"/>
+    </inferredMetricsTieBreakers>
 </document>
