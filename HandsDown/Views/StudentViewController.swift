@@ -11,17 +11,19 @@ import CloudKit
 
 protocol AddStudentDelegate {
     func addStudent(student: Student)
-    
+
     func updateStudent(student: Student)
 }
 class StudentViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    // MARK: Outlets
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var imageCollectionView: UICollectionView!
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var selectedAvatarLabel: UILabel!
-    var delegate: AddStudentDelegate?
     
+    // MARK: Properties
+    var delegate: AddStudentDelegate?
     var student: Student?
     var teacher = Teacher()
     let screenSize = UIScreen.main.bounds
@@ -81,14 +83,8 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
             record["name"] = newName as NSString
             let photo = avatarImageView.image ?? #imageLiteral(resourceName: "Monkey")
             
-            let data = UIImagePNGRepresentation(photo)
-            let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(NSUUID().uuidString+".dat")
-            do {
-                try data!.write(to: url, options: [])
-            } catch let e as NSError {
-                print("Error! \(e)")
-                return
-            }
+            guard let url = convertUIImageToURL(photo: photo) else {return}
+            
             record["photo"] = CKAsset(fileURL: url)
             
             let myContainer = CKContainer.default()
@@ -101,13 +97,17 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
                 }
                 // insert successfully saved record code...
                 DispatchQueue.main.async(execute: {
-                     self.delegate?.updateStudent(student: theStudent)
+                    
+                    self.delegate?.updateStudent(student: theStudent)
+
                 })
                 // delete temp file for image data
                 self.deleteTempImageURL(url: url)
             }
         }
     }
+    
+
     func saveStudentToCloudKit(name: String, photo: UIImage) {
         // create the CKRecord that gets saved to the database
         let uid = UUID().uuidString // get a uniqueID
@@ -130,7 +130,6 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
             print("Error! \(e)")
             return
         }
-        
         newStudentRecord["photo"] = CKAsset(fileURL: url)
         
         let myContainer = CKContainer.default()
@@ -145,7 +144,6 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
             let newStudent = Student(record: newStudentRecord)
             
             DispatchQueue.main.async(execute: {
-                // pass student back to Class DetailVC, where it will be appended to array and tableview will get reloaded
                 self.delegate?.addStudent(student: newStudent)
             })
             // delete temp file for image data

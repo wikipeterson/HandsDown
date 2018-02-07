@@ -9,17 +9,21 @@
 import UIKit
 import CloudKit
 
-class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, AddStudentDelegate {
+protocol updateTeacherDelegate {
+    func updateTeacher(teacher: Teacher)
+}
 
-    
+class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate, UITextFieldDelegate, AddStudentDelegate {
 
+    // MARK:  Outlets
     @IBOutlet weak var tableViewNavBar: UINavigationBar!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     var editSwitch = true
     var teacher = Teacher() // this should get passed over from classVC
+    var currentClass: Class?
+    var delegate: updateTeacherDelegate?
     
-    var defaultImagesArray = [#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "questionMarkImage"), #imageLiteral(resourceName: "Monkey")]
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,11 +33,19 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         
         navigationController?.delegate = self
 
-        
-        if let currentClass = teacher.currentClass {
-            nameTextField.text = currentClass.name
-        }
         setUpNavBar()
+        
+        if let theCurrentClass = currentClass {
+            nameTextField.text = theCurrentClass.name
+        } else {
+            nameTextField.text = ""
+            nameTextField.becomeFirstResponder()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        teacher.currentClass = currentClass
+        delegate?.updateTeacher(teacher: teacher)
     }
     
     func setUpNavBar () {
@@ -63,55 +75,13 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-        saveClassName()
+        let name = nameTextField.text ?? ""
+        saveOrUpdateClassToCloudKit(name: name)
+        delegate?.updateTeacher(teacher: teacher)
         navigationController?.popViewController(animated: true)
     }
     
-    func saveClassName() {
-        // make sure you save the new class name if the user changes the nameTextField.
-        if teacher.currentClass?.name != nameTextField.text {
-            let newName = nameTextField.text ?? ""
-            teacher.currentClass?.name = newName
-            // save to cloudkit as well
-            if let record = teacher.currentClass?.record {
-                record["name"] = newName as NSString
-                let myContainer = CKContainer.default()
-                let privateDatabase = myContainer.privateCloudDatabase
-                privateDatabase.save(record) {
-                    (record, error) in
-                    if let error = error {
-                        print(error)
-                        return
-                    }
-                    // insert successfully saved record code...
-                    print("Successfully updated record: ", record ?? "")
-                }
-            }
-        }
-    }
-    
-    
-    
-    @IBAction func addStudentButtonTapped(_ sender: UIBarButtonItem) {
-//        let alert = UIAlertController(title: "Add a student", message: nil, preferredStyle: .alert)
-//        alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name"})
-//        
-//        let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-//            let newName = alert.textFields![0].text!
-////            let randomImageIndex = Int(arc4random_uniform(UInt32(self.defaultImagesArray.count)))
-////            let newPicture = self.defaultImagesArray[randomImageIndex]
-////            let newStudent = Student(name: newName, picture: newPicture)
-//            self.saveStudentToCloudKit(name: newName)
-//        })
-//        
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-//        alert.addAction(okAction)
-//        alert.addAction(cancelAction)
-//        present(alert, animated: true, completion: nil)
-    }
-    
     // MARK: AddStudentDelegate Methods
-    
     func addStudent(student: Student) {
         teacher.currentClass?.students.append(student)
         tableView.reloadData()
@@ -130,7 +100,59 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     // Mark: CloudKit Methods
-
+    func saveOrUpdateClassToCloudKit(name: String) {
+        if currentClass == nil {
+            // create the CKRecord that gets saved to the database
+            let uid = UUID().uuidString // get a uniqueID
+            let recordID = CKRecordID(recordName: uid)
+            let newClassRecord = CKRecord(recordType: "Class", recordID: recordID)
+            newClassRecord["name"] = name as NSString
+            
+            
+            // save CKRecord to correct container.. private, public, shared, etc.
+            let myContainer = CKContainer.default()
+            let privateDatabase = myContainer.privateCloudDatabase
+            privateDatabase.save(newClassRecord) {
+                (record, error) in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                let newClass = Class(record: newClassRecord)
+                self.teacher.classes.append(newClass)
+                self.teacher.currentClass = newClass
+                self.currentClass = newClass
+                
+                DispatchQueue.main.async(execute: {
+                    self.delegate?.updateTeacher(teacher: self.teacher)
+                })
+            }
+        } else {
+            // update the class
+            // make sure you save the new class name if the user changes the nameTextField.
+            if currentClass?.name != nameTextField.text {
+                let newName = nameTextField.text ?? ""
+                currentClass?.name = newName
+                // save to cloudkit as well
+                if let record = currentClass?.record {
+                    record["name"] = newName as NSString
+                    let myContainer = CKContainer.default()
+                    let privateDatabase = myContainer.privateCloudDatabase
+                    privateDatabase.save(record) {
+                        (record, error) in
+                        if let error = error {
+                            print(error)
+                            return
+                        }
+                        // insert successfully saved record code...
+                        print("Successfully updated record: ", record ?? "")
+                        
+                    }
+                }
+            }
+        }
+        
+    }
     func deleteRecordFromCloudKit(myStudent: Student) {
         let privateDatabase = CKContainer.default().privateCloudDatabase
         
@@ -153,7 +175,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if let theClass = teacher.currentClass {
+        if let theClass = currentClass {
             return theClass.students.count
         }
         else {
@@ -165,7 +187,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "studentCell", for: indexPath) as! StudentTableViewCell
-        if let theClass = teacher.currentClass {
+        if let theClass = currentClass {
             let student = theClass.students[indexPath.row]
             cell.student = student // properties are set in didSet method in studentTVC
             cell.numberLabel.text = "\(indexPath.row + 1)"
@@ -179,36 +201,43 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     {
    
         // delete from cloudkit
-        if let myStudent = teacher.currentClass?.students[indexPath.row] {
+        if let myStudent = currentClass?.students[indexPath.row] {
             deleteRecordFromCloudKit(myStudent: myStudent)
-            teacher.currentClass?.students.remove(at: indexPath.row)
+            currentClass?.students.remove(at: indexPath.row)
         }
         tableView.reloadData()
     }
     //this is the code needed to move items in the tableview
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
     {
-        if let itemToMove = teacher.currentClass?.students[sourceIndexPath.row] {
-            teacher.currentClass?.students.remove(at: sourceIndexPath.row)
+        if let itemToMove = currentClass?.students[sourceIndexPath.row] {
+            currentClass?.students.remove(at: sourceIndexPath.row)
             
-            teacher.currentClass?.students.insert(itemToMove, at: destinationIndexPath.row)
+            currentClass?.students.insert(itemToMove, at: destinationIndexPath.row)
         }
         tableView.reloadData() // if you don't reload data the numbers will be goofy
     }
     
-    
-    // this might not be the best way of passing data backward
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool)
-    {
-    
-        if let vc = viewController as? ClassesViewController
-        {
-            vc.teacher = teacher    // Here you pass the data back to your original view controller
-        }
+    // MARK: TextField methods
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        let name = nameTextField.text ?? ""
+        saveOrUpdateClassToCloudKit(name: name)
+        return true
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if nameTextField.isEditing {
+            let name = nameTextField.text ?? ""
+            saveOrUpdateClassToCloudKit(name: name)
+        }
+        self.view.endEditing(true)
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "editStudentSegue" {
+            teacher.currentClass = currentClass
             let destVC = segue.destination as! StudentViewController
             if let indexPath = tableView.indexPathForSelectedRow {
                 let row = indexPath.row
@@ -219,6 +248,9 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             }
             
         } else if segue.identifier == "addStudentSegue" {
+            teacher.currentClass = currentClass
+            let name = nameTextField.text ?? ""
+            saveOrUpdateClassToCloudKit(name: name)
             let destVC = segue.destination as! StudentViewController
             destVC.student = nil
             destVC.delegate = self

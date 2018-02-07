@@ -18,4 +18,17 @@ extension UIViewController {
             print("Error deleting temp file: \(e)")
         }
     }
+    
+    func convertUIImageToURL(photo: UIImage) -> URL? {
+        let data = UIImagePNGRepresentation(photo)
+        let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(NSUUID().uuidString+".dat")
+        do {
+            try data!.write(to: url, options: [])
+            return url
+        } catch let e as NSError {
+            print("Error! \(e)")
+            return nil
+        }
+    }
 }
+
