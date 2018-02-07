@@ -20,12 +20,13 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         avatars = [#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "questionMarkImage"), #imageLiteral(resourceName: "Monkey")]
         
         nameTextField.text = student?.name
+        nameTextField.layer.borderWidth = 3.0
+        nameTextField.layer.borderColor = UIColor.lightGray.cgColor
     }
-    
 
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
