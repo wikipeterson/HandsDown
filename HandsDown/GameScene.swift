@@ -42,7 +42,7 @@ class GameScene: SKScene
     var holder = Student(name: "", photo: #imageLiteral(resourceName: "sampleStudentImage")) //this is for controlling the click sounds
     var loopFactor = 1 //this is for duplicating small classes on the wheel
     var synth = AVSpeechSynthesizer()
-    var allowsRepeats = false
+    var allowsRepeats = true
     var studentsNotPickedArray : [Student] = []
     var switchLabel = SKLabelNode()
     var avatarNode = SKSpriteNode()
@@ -56,8 +56,8 @@ class GameScene: SKScene
         
 
         switchLabel = childNode(withName: "switchLabel") as! SKLabelNode
-        switchLabel.text = "Remove repeats"
-        //switchLabel.position = CGPoint(x: screenWidth * -0.35, y: screenHeight * -0.41)
+        switchLabel.text = "Repeats allowed"
+        switchLabel.position = CGPoint(x: (scene?.frame.width)! * -0.22, y: (scene?.frame.height)! * -0.41)
         //switchLabel.fontColor = SKColor.white
         switchLabel.fontSize = 25.0
         switchLabel.zPosition = 50
@@ -74,14 +74,14 @@ class GameScene: SKScene
         if let currentClass = teacher.currentClass {
             studentArray = currentClass.students
         } else {
-            studentArray = [student1, student2, student3]
+            studentArray = [student1, student2, student3, student4, student5, student6]
         }
 
         studentsNotPickedArray = studentArray
         
         //set up the node that gets the wheel sectors overlayed
         wheelSprite = childNode(withName: "wheelSprite") as! SKSpriteNode
-        wheelSprite.position = CGPoint(x: screenWidth * -0.8, y: 0)
+        wheelSprite.position = CGPoint(x: (scene?.frame.width)! * -0.38, y: 0)
         wheelSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5  )
         wheelSprite.physicsBody?.angularDamping = 1.0
         
@@ -114,13 +114,13 @@ class GameScene: SKScene
         repeatSwitch.isOn = true
         repeatSwitch.setOn(false, animated: true)
         repeatSwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
-        self.view!.addSubview(repeatSwitch)
+        self.view?.addSubview(repeatSwitch)
+        print("added a switch")
     }
     
     
     func placeSectorsOverWheel()
     {
-        
         rectArray = []
         triangleArray = []
         rectLabelArray = []
