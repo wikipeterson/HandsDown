@@ -121,6 +121,7 @@ class GameScene: SKScene
     
     func placeSectorsOverWheel()
     {
+        print(studentArray.count)
         rectArray = []
         triangleArray = []
         rectLabelArray = []

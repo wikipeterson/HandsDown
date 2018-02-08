@@ -19,7 +19,6 @@ class ViewController: UIViewController, SetTeacherDelegate {
     @IBOutlet weak var manageGroupsButton: UIButton!
     @IBOutlet weak var settingsButton: UIButton!
     
-    
     var teacher = Teacher()
     var screenWidth : CGFloat = 0.0
     var screenHeight: CGFloat = 0.0
@@ -35,6 +34,8 @@ class ViewController: UIViewController, SetTeacherDelegate {
         
         mySKView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight )
         mySKView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.5)
+
+        
         
         // load classes from cloudkit.  If there are no classes, a demo class will be created
         loadClassesFromCloudKit()
@@ -48,6 +49,10 @@ class ViewController: UIViewController, SetTeacherDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         loadGameScene()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        mySKView.scene?.isPaused = true
     }
     
     // this is causing constraint issues... figure out later
