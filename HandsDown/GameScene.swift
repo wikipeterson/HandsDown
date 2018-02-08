@@ -74,14 +74,14 @@ class GameScene: SKScene
         if let currentClass = teacher.currentClass {
             studentArray = currentClass.students
         } else {
-            studentArray = [student1, student2, student3]
+            studentArray = [student1, student2, student3, student4, student5, student6]
         }
 
         studentsNotPickedArray = studentArray
         
         //set up the node that gets the wheel sectors overlayed
         wheelSprite = childNode(withName: "wheelSprite") as! SKSpriteNode
-        wheelSprite.position = CGPoint(x: screenWidth * -0.8, y: 0)
+        wheelSprite.position = CGPoint(x: (scene?.frame.width)! * -0.38, y: 0)
         wheelSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5  )
         wheelSprite.physicsBody?.angularDamping = 1.0
         
@@ -116,13 +116,13 @@ class GameScene: SKScene
         repeatSwitch.isOn = false
         repeatSwitch.setOn(false, animated: true)
         repeatSwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
-        self.view!.addSubview(repeatSwitch)
+        self.view?.addSubview(repeatSwitch)
+        print("added a switch")
     }
     
     
     func placeSectorsOverWheel()
     {
-        
         rectArray = []
         triangleArray = []
         rectLabelArray = []

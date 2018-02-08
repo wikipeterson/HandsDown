@@ -25,7 +25,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
     var screenHeight: CGFloat = 0.0
     var myFont = "Helvetica Neue"
     var player : AVAudioPlayer!
-    var allowsRepeats = true
+ 
     
     override func viewDidLoad()
     {
@@ -74,6 +74,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
     
     func loadGameScene() {
         // load the spritekit view
+        print("gamescene loaded")
         if let view = self.mySKView
         {
             // Load the SKScene from 'GameScene.sks'

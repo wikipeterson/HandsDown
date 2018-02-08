@@ -118,10 +118,10 @@
             </objects>
             <point key="canvasLocation" x="564" y="-613"/>
         </scene>
-        <!--Manage Classes-->
+        <!--HandsDown-->
         <scene sceneID="Iuj-Rs-63K">
             <objects>
-                <viewController title="Manage Classes" id="tbb-2O-xeM" customClass="ClassesViewController" customModule="HandsDown" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="tbb-2O-xeM" customClass="ClassesViewController" customModule="HandsDown" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fhK-D4-BsX">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -152,6 +152,7 @@
                                             <color key="tintColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <connections>
                                                 <action selector="addButtonWasTapped:" destination="tbb-2O-xeM" id="1b2-70-P1B"/>
+                                                <segue destination="KGd-lN-hP3" kind="show" identifier="addClassSegue" id="Skq-mu-qny"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -205,7 +206,7 @@
                                             <outlet property="classDetailLabel" destination="may-8y-SOK" id="W5e-NJ-bDl"/>
                                             <outlet property="classNameLabel" destination="yhk-31-RXF" id="wwg-W3-XbH"/>
                                             <outlet property="numberLabel" destination="IC9-vr-gAs" id="Asi-dl-I3r"/>
-                                            <segue destination="KGd-lN-hP3" kind="show" identifier="toClassDetailsSegue" id="rFn-Kk-Evk"/>
+                                            <segue destination="KGd-lN-hP3" kind="show" identifier="editClassSegue" id="rFn-Kk-Evk"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -250,7 +251,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r8U-tZ-O0I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-759.375" y="788.671875"/>
+            <point key="canvasLocation" x="-745" y="206"/>
         </scene>
         <!--Hands Down-->
         <scene sceneID="NaY-cZ-meH">
@@ -269,7 +270,7 @@
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="40"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                 <connections>
-                                    <outlet property="delegate" destination="KGd-lN-hP3" id="bZe-22-JaJ"/>
+                                    <outlet property="delegate" destination="KGd-lN-hP3" id="TFk-RO-jSw"/>
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap &quot;+&quot; to add a Student" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="ecY-Vt-QZ6">
@@ -297,7 +298,7 @@
                                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="meZ-Yy-Oif">
                                             <color key="tintColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <connections>
-                                                <action selector="addStudentButtonTapped:" destination="KGd-lN-hP3" id="mFV-RL-4pM"/>
+                                                <segue destination="leI-OT-L8n" kind="presentation" identifier="addStudentSegue" modalPresentationStyle="formSheet" id="PoY-EA-Scb"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -357,7 +358,7 @@
                                             <outlet property="nameLabel" destination="2A9-oE-qy8" id="am4-zL-iSN"/>
                                             <outlet property="numberLabel" destination="9zC-ws-zrr" id="BfP-K0-0MS"/>
                                             <outlet property="studentImageView" destination="JR0-n9-akm" id="0MF-QP-eCB"/>
-                                            <segue destination="leI-OT-L8n" kind="presentation" identifier="editStudentSegue" id="4fn-wj-eg6"/>
+                                            <segue destination="leI-OT-L8n" kind="presentation" identifier="editStudentSegue" modalPresentationStyle="formSheet" id="4fn-wj-eg6"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -400,124 +401,135 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmj-3p-Cck" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="80" y="788"/>
+            <point key="canvasLocation" x="95" y="204"/>
         </scene>
         <!--Student View Controller-->
         <scene sceneID="TpK-4F-uiP">
             <objects>
-                <viewController id="leI-OT-L8n" customClass="StudentViewController" customModule="HandsDown" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController autoresizesArchivedViewToFullSize="NO" modalPresentationStyle="formSheet" id="leI-OT-L8n" customClass="StudentViewController" customModule="HandsDown" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jW4-iY-Jmh">
                         <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yox-lH-ZW2">
-                                <rect key="frame" x="366" y="540" width="154" height="60"/>
-                                <color key="backgroundColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="rmz-Qq-67u"/>
-                                    <constraint firstAttribute="width" constant="154" id="vvs-I6-k4B"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="30"/>
-                                <state key="normal" title="SAVE">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="saveButtonTapped:" destination="leI-OT-L8n" eventType="touchUpInside" id="mYr-Mn-Grc"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Dy-0d-BYh">
-                                <rect key="frame" x="20" y="540" width="121" height="60"/>
-                                <color key="backgroundColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="csc-mO-Fm9"/>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="154" id="jQS-A1-dFV"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="30"/>
-                                <state key="normal" title="CANCEL">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="cancelButtonTapped:" destination="leI-OT-L8n" eventType="touchUpInside" id="H8c-wN-SfD"/>
-                                </connections>
-                            </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eC3-mk-b8Y">
-                                <rect key="frame" x="0.0" y="149" width="540" height="322"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="322" id="HPZ-XJ-x6w"/>
-                                </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Zs9-vN-cCn">
-                                    <size key="itemSize" width="212" height="324"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="myCell" id="XTM-E3-F4t" customClass="AvatarCollectionViewCell" customModule="HandsDown" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="-1" width="212" height="324"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                            <rect key="frame" x="0.0" y="0.0" width="212" height="324"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Monkey" translatesAutoresizingMaskIntoConstraints="NO" id="3pI-9X-alq">
-                                                    <rect key="frame" x="0.0" y="0.0" width="212" height="324"/>
-                                                </imageView>
-                                            </subviews>
-                                        </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1zS-tJ-Maq">
+                                <rect key="frame" x="0.0" y="20" width="540" height="580"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Student Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zIn-o4-Dmh">
+                                        <rect key="frame" x="0.0" y="0.0" width="540" height="45"/>
                                         <constraints>
-                                            <constraint firstItem="3pI-9X-alq" firstAttribute="top" secondItem="XTM-E3-F4t" secondAttribute="top" id="C4m-2Z-LS8"/>
-                                            <constraint firstAttribute="trailing" secondItem="3pI-9X-alq" secondAttribute="trailing" id="RK0-gi-Uav"/>
-                                            <constraint firstAttribute="bottom" secondItem="3pI-9X-alq" secondAttribute="bottom" id="jkE-Nb-eRC"/>
-                                            <constraint firstItem="3pI-9X-alq" firstAttribute="leading" secondItem="XTM-E3-F4t" secondAttribute="leading" id="yvY-wT-Klr"/>
+                                            <constraint firstAttribute="height" constant="45" id="J5s-0R-SMg"/>
                                         </constraints>
+                                        <color key="textColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="30"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                         <connections>
-                                            <outlet property="avatarImageView" destination="3pI-9X-alq" id="WBQ-Gg-1db"/>
+                                            <outlet property="delegate" destination="leI-OT-L8n" id="gOh-B0-NWm"/>
                                         </connections>
-                                    </collectionViewCell>
-                                </cells>
-                                <connections>
-                                    <outlet property="dataSource" destination="leI-OT-L8n" id="8X2-Bt-GOa"/>
-                                    <outlet property="delegate" destination="leI-OT-L8n" id="VB5-zi-lgt"/>
-                                </connections>
-                            </collectionView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Student Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zIn-o4-Dmh">
-                                <rect key="frame" x="20" y="59" width="500" height="45"/>
+                                    </textField>
+                                    <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Monkey" translatesAutoresizingMaskIntoConstraints="NO" id="ZbE-pV-CeN">
+                                        <rect key="frame" x="0.0" y="45" width="540" height="221"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected Avatar" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="vA5-vP-P8I">
+                                        <rect key="frame" x="0.0" y="266" width="540" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="X61-d2-KJF"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="25"/>
+                                        <color key="textColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eC3-mk-b8Y">
+                                        <rect key="frame" x="0.0" y="306" width="540" height="221"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Zs9-vN-cCn">
+                                            <size key="itemSize" width="200" height="200"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="myCell" id="XTM-E3-F4t" customClass="AvatarCollectionViewCell" customModule="HandsDown" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="10.5" width="200" height="200"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Monkey" translatesAutoresizingMaskIntoConstraints="NO" id="3pI-9X-alq">
+                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                </view>
+                                                <connections>
+                                                    <outlet property="avatarImageView" destination="3pI-9X-alq" id="WBQ-Gg-1db"/>
+                                                </connections>
+                                            </collectionViewCell>
+                                        </cells>
+                                        <connections>
+                                            <outlet property="dataSource" destination="leI-OT-L8n" id="8X2-Bt-GOa"/>
+                                            <outlet property="delegate" destination="leI-OT-L8n" id="VB5-zi-lgt"/>
+                                        </connections>
+                                    </collectionView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="avE-GX-9Gn">
+                                        <rect key="frame" x="0.0" y="527" width="540" height="53"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Dy-0d-BYh">
+                                                <rect key="frame" x="0.0" y="0.0" width="255" height="53"/>
+                                                <color key="backgroundColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="53" id="CIF-YT-UDd"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="30"/>
+                                                <state key="normal" title="CANCEL">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cancelButtonTapped:" destination="leI-OT-L8n" eventType="touchUpInside" id="H8c-wN-SfD"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yox-lH-ZW2">
+                                                <rect key="frame" x="285" y="0.0" width="255" height="53"/>
+                                                <color key="backgroundColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="53" id="PUs-bi-i1O"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="30"/>
+                                                <state key="normal" title="SAVE">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="saveButtonTapped:" destination="leI-OT-L8n" eventType="touchUpInside" id="mYr-Mn-Grc"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="VgJ-oO-9nO"/>
+                                    <constraint firstItem="eC3-mk-b8Y" firstAttribute="height" secondItem="ZbE-pV-CeN" secondAttribute="height" id="ziX-0L-JBb"/>
                                 </constraints>
-                                <color key="textColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="30"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
-                                <connections>
-                                    <outlet property="delegate" destination="leI-OT-L8n" id="YqL-mC-mqO"/>
-                                </connections>
-                            </textField>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="gcF-Ug-FER" firstAttribute="bottom" secondItem="yox-lH-ZW2" secondAttribute="bottom" constant="20" id="C3N-EO-Dub"/>
-                            <constraint firstItem="gcF-Ug-FER" firstAttribute="bottom" secondItem="6Dy-0d-BYh" secondAttribute="bottom" constant="20" id="Eb6-x8-6N4"/>
-                            <constraint firstItem="6Dy-0d-BYh" firstAttribute="leading" secondItem="gcF-Ug-FER" secondAttribute="leading" constant="20" id="Ffu-F9-NWD"/>
-                            <constraint firstItem="eC3-mk-b8Y" firstAttribute="centerY" secondItem="jW4-iY-Jmh" secondAttribute="centerY" id="GCP-iu-j5V"/>
-                            <constraint firstItem="eC3-mk-b8Y" firstAttribute="leading" secondItem="gcF-Ug-FER" secondAttribute="leading" id="Ud5-nG-CIy"/>
-                            <constraint firstItem="zIn-o4-Dmh" firstAttribute="top" secondItem="gcF-Ug-FER" secondAttribute="top" constant="59" id="ZI1-mY-TDN"/>
-                            <constraint firstItem="zIn-o4-Dmh" firstAttribute="leading" secondItem="gcF-Ug-FER" secondAttribute="leading" constant="20" id="fGe-5o-BW8"/>
-                            <constraint firstItem="gcF-Ug-FER" firstAttribute="trailing" secondItem="yox-lH-ZW2" secondAttribute="trailing" constant="20" id="mUU-s7-23E"/>
-                            <constraint firstItem="eC3-mk-b8Y" firstAttribute="trailing" secondItem="gcF-Ug-FER" secondAttribute="trailing" id="ocl-lq-pse"/>
-                            <constraint firstItem="gcF-Ug-FER" firstAttribute="trailing" secondItem="zIn-o4-Dmh" secondAttribute="trailing" constant="20" id="syp-M7-VRr"/>
+                            <constraint firstItem="gcF-Ug-FER" firstAttribute="bottom" secondItem="1zS-tJ-Maq" secondAttribute="bottom" constant="20" id="DZU-db-FM1"/>
+                            <constraint firstItem="1zS-tJ-Maq" firstAttribute="trailing" secondItem="gcF-Ug-FER" secondAttribute="trailing" id="Daj-gu-eWC"/>
+                            <constraint firstItem="1zS-tJ-Maq" firstAttribute="top" secondItem="gcF-Ug-FER" secondAttribute="top" constant="20" id="JBl-02-uVm"/>
+                            <constraint firstItem="1zS-tJ-Maq" firstAttribute="leading" secondItem="gcF-Ug-FER" secondAttribute="leading" id="Jje-ah-KOK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gcF-Ug-FER"/>
                     </view>
                     <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="avatarImageView" destination="ZbE-pV-CeN" id="rMM-ce-KBF"/>
                         <outlet property="imageCollectionView" destination="eC3-mk-b8Y" id="Svz-1s-Vdg"/>
                         <outlet property="nameTextField" destination="zIn-o4-Dmh" id="wIz-MN-8v9"/>
+                        <outlet property="selectedAvatarLabel" destination="vA5-vP-P8I" id="VEy-4O-yor"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uux-72-fEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="955" y="788"/>
+            <point key="canvasLocation" x="970" y="204"/>
         </scene>
         <!--Manage Groups-->
         <scene sceneID="qLK-7t-28K">
@@ -571,4 +583,8 @@
     <resources>
         <image name="Monkey" width="225" height="225"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="4fn-wj-eg6"/>
+        <segue reference="rFn-Kk-Evk"/>
+    </inferredMetricsTieBreakers>
 </document>
