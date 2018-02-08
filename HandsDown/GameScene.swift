@@ -46,6 +46,8 @@ class GameScene: SKScene
     var studentsNotPickedArray : [Student] = []
     var switchLabel = SKLabelNode()
     var avatarNode = SKSpriteNode()
+    var colorArray = [UIColor.hDLightGrayColor, UIColor.hDLightBlueColor, UIColor.hDDarBlueColor]
+
     
     override func didMove(to view: SKView)
     {
@@ -166,11 +168,12 @@ class GameScene: SKScene
             let topEdge = CGPoint(x: sizeFactor * cos(angle / 2.0 + angle * Double(num)), y: sizeFactor * sin(angle / 2.0 + angle * Double(num)))
             let bottomEdge = CGPoint(x: sizeFactor * cos(angle * Double(num) - angle / 2.0 ), y: sizeFactor * sin(angle * Double(num) - angle / 2.0 ))
             var points = [CGPoint(x: 0, y: 0), topEdge, bottomEdge]
-            let hue = CGFloat(Double(num) / Double(numberOfSectors))
+            //let hue = CGFloat(Double(num) / Double(numberOfSectors))
             let triangleShapeNode = SKShapeNode(points: &points, count: points.count)
             triangleShapeNode.zPosition = 3
-            triangleShapeNode.fillColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
-            triangleShapeNode.strokeColor = UIColor.black
+            //triangleShapeNode.fillColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
+            triangleShapeNode.fillColor = colorArray[num % colorArray.count]
+            triangleShapeNode.strokeColor = UIColor.hDDarkGrayColor
             triangleShapeNode.lineWidth = 3.0
             triangleShapeNode.name = "triangleNode"
             
