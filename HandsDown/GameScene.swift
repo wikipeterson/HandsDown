@@ -46,7 +46,7 @@ class GameScene: SKScene
     var studentsNotPickedArray : [Student] = []
     var switchLabel = SKLabelNode()
     var avatarNode = SKSpriteNode()
-    var colorArray = [UIColor.hDLightGrayColor, UIColor.hDLightBlueColor, UIColor.hDDarBlueColor]
+    var colorArray = [UIColor.hDLightGrayColor, UIColor.hDLightBlueColor, UIColor.hDDarkBlueColor]
 
     
     override func didMove(to view: SKView)
