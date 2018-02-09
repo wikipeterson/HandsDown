@@ -229,7 +229,7 @@ class GameScene: SKScene
     {
         if spinning
         {
-            for i in 0..<(rectArray.count)
+            for i in 0..<(triangleArray.count)
             {
                 if triangleArray[i].intersects(tipOfArrow)
                 {
@@ -238,19 +238,19 @@ class GameScene: SKScene
                     let texture = SKTexture(image: image)
                     avatarNode.texture = texture
                     
-                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
-                    {
-                        AudioServicesPlaySystemSound(tockSystemSoundID)
-                    }
-                    holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
-                    
+//                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
+//                    {
+//                        AudioServicesPlaySystemSound(tockSystemSoundID)
+//                    }
+//                    holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
+//
                     if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.1)
                     {
                         wheelSprite.physicsBody?.angularVelocity = 0
                         
                         AudioServicesPlaySystemSound(fanfareSystemSoundID)
                         AudioServicesPlaySystemSound(4095)
-                        nameLabel.text = studentsNotPickedArray[i % studentsNotPickedArray.count].name + "!"
+                        nameLabel.text = nameLabel.text! + "!"
                         nameLabel.fontSize = 70.0
                         speak(textToSpeak: nameLabel.text!)
                         if !allowsRepeats && studentsNotPickedArray.count > 1
