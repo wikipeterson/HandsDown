@@ -36,6 +36,6 @@ extension UIColor{
     static let hDDarkGrayColor = UIColor(red: 67.0/255.0, green: 53.0/255.0, blue: 53.0/255, alpha: 1.0)
     static let hDLightGrayColor = UIColor(red: 171.0/255.0, green: 174.0/255.0, blue: 186.0/255, alpha: 1.0)
     static let hDLightBlueColor = UIColor(red: 96.0/255.0, green: 139.0/255.0, blue: 188.0/255, alpha: 1.0)
-    static let hDDarBlueColor = UIColor(red: 57.0/255.0, green: 83.0/255.0, blue: 169.0/255, alpha: 1.0)
+    static let hDDarkBlueColor = UIColor(red: 57.0/255.0, green: 83.0/255.0, blue: 169.0/255, alpha: 1.0)
 }
 
