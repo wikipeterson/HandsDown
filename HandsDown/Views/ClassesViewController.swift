@@ -40,17 +40,16 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         reloadViews()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        // save any changes here
+        delegate?.setTeacher(teacher: teacher)
+    }
+    
     func reloadViews() {
         if let currentClass = teacher.currentClass {
             currentClassLabel.text = currentClass.name
         }
         tableView.reloadData()
-    }
-    
-    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-       self.navigationController?.popViewController(animated: true)
-        // save any changes here
-        delegate?.setTeacher(teacher: teacher)
     }
     
     func setUpNavBar () {
@@ -79,49 +78,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    @IBAction func addButtonWasTapped(_ sender: UIBarButtonItem) {
-//        let alert = UIAlertController(title: "Add a new class", message: nil, preferredStyle: .alert)
-//        alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name of class"})
-//        let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-//            let newClassName = alert.textFields![0].text!
-////            let newClass = Class(name: newClassName, students: [Student]())
-//            self.saveClassToCloudKit(name: newClassName)
-//        })
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-//        alert.addAction(okAction)
-//        alert.addAction(cancelAction)
-//        present(alert, animated: true, completion: nil)
-    }
-    
-    // Mark: CloudKit Methods
-//    func saveClassToCloudKit(name: String) {
-//        // create the CKRecord that gets saved to the database
-//        let uid = UUID().uuidString // get a uniqueID
-//        let recordID = CKRecordID(recordName: uid)
-//        let newClassRecord = CKRecord(recordType: "Class", recordID: recordID)
-//        newClassRecord["name"] = name as NSString
-//        // figure out how to save the picture
-//
-//        // save CKRecord to correct container.. private, public, shared, etc.
-//        let myContainer = CKContainer.default()
-//        let privateDatabase = myContainer.privateCloudDatabase
-//        privateDatabase.save(newClassRecord) {
-//            (record, error) in
-//            if let error = error {
-//                print(error)
-//                return
-//            }
-//            // insert successfully saved record code... reload table, etc...
-//            print("Successfully saved record: ", record ?? "")
-//            // append newClass to classes array, then reload tableview
-//            let newClass = Class(record: newClassRecord)
-//            self.teacher.classes.append(newClass)
-//            DispatchQueue.main.async(execute: {
-//                self.tableView.reloadData()
-//            })
-//        }
-//    }
-    
     func deleteRecordFromCloudKit(myClass: Class) {
         let privateDatabase = CKContainer.default().privateCloudDatabase
         
@@ -131,7 +87,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 print(err)
                 return
             } else {
-                print("Successfully deleted:", recordID as Any)
+//                print("Successfully deleted:", recordID as Any)
                 // students will be deleted as well because of delete rule created and reference made
             }
         })

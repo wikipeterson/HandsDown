@@ -13,13 +13,13 @@
 		8332120B20240DCF00EAE94D /* AvatarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8332120A20240DCF00EAE94D /* AvatarCollectionViewCell.swift */; };
 		83519FAF2006544800214DA3 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FAE2006544800214DA3 /* Group.swift */; };
 		83519FB12006548400214DA3 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FB02006548400214DA3 /* Student.swift */; };
+		83A9724E202D3AEE00905498 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A9724D202D3AEE00905498 /* Assets.xcassets */; };
 		83FAD7C82024062900B241E6 /* StudentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FAD7C72024062900B241E6 /* StudentViewController.swift */; };
 		83FCD414202AA2EE0044DFE6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FCD413202AA2EE0044DFE6 /* Extensions.swift */; };
 		F124C6F820055B8C0026C7CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C6F720055B8C0026C7CB /* AppDelegate.swift */; };
 		F124C6FA20055B8C0026C7CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C6F920055B8C0026C7CB /* ViewController.swift */; };
 		F124C6FD20055B8C0026C7CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F124C6FB20055B8C0026C7CB /* Main.storyboard */; };
 		F124C70020055B8C0026C7CB /* HandsDown.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F124C6FE20055B8C0026C7CB /* HandsDown.xcdatamodeld */; };
-		F124C70220055B8D0026C7CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F124C70120055B8D0026C7CB /* Assets.xcassets */; };
 		F124C70520055B8D0026C7CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F124C70320055B8D0026C7CB /* LaunchScreen.storyboard */; };
 		F124C71020055B8D0026C7CB /* HandsDownTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C70F20055B8D0026C7CB /* HandsDownTests.swift */; };
 		F124C71B20055B8D0026C7CB /* HandsDownUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F124C71A20055B8D0026C7CB /* HandsDownUITests.swift */; };
@@ -59,6 +59,7 @@
 		8332120A20240DCF00EAE94D /* AvatarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCollectionViewCell.swift; sourceTree = "<group>"; };
 		83519FAE2006544800214DA3 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		83519FB02006548400214DA3 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
+		83A9724D202D3AEE00905498 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83C42F03200C571E00F89072 /* HandsDown.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HandsDown.entitlements; sourceTree = "<group>"; };
 		83FAD7C72024062900B241E6 /* StudentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentViewController.swift; sourceTree = "<group>"; };
 		83FCD413202AA2EE0044DFE6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -67,7 +68,6 @@
 		F124C6F920055B8C0026C7CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F124C6FC20055B8C0026C7CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F124C6FF20055B8C0026C7CB /* HandsDown.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HandsDown.xcdatamodel; sourceTree = "<group>"; };
-		F124C70120055B8D0026C7CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F124C70420055B8D0026C7CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F124C70620055B8D0026C7CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F124C70B20055B8D0026C7CB /* HandsDownTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HandsDownTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,10 +187,10 @@
 				83038EB82021643F0068045E /* Views */,
 				83038EB420215DB30068045E /* CloudKitStuffViewController.swift */,
 				83FCD413202AA2EE0044DFE6 /* Extensions.swift */,
+				83A9724D202D3AEE00905498 /* Assets.xcassets */,
 				F1A9C394201786DF0040CB44 /* GameScene.swift */,
 				F1A9C392201786B90040CB44 /* GameScene.sks */,
 				F1FCAC9D200FAC38005637A1 /* clickSound.mp3 */,
-				F124C70120055B8D0026C7CB /* Assets.xcassets */,
 				F124C70320055B8D0026C7CB /* LaunchScreen.storyboard */,
 				F124C70620055B8D0026C7CB /* Info.plist */,
 				F124C6FE20055B8C0026C7CB /* HandsDown.xcdatamodeld */,
@@ -333,10 +333,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F124C70520055B8D0026C7CB /* LaunchScreen.storyboard in Resources */,
-				F124C70220055B8D0026C7CB /* Assets.xcassets in Resources */,
 				F124C6FD20055B8C0026C7CB /* Main.storyboard in Resources */,
 				F1FCAC9E200FAC43005637A1 /* clickSound.mp3 in Resources */,
 				F1A9C393201786B90040CB44 /* GameScene.sks in Resources */,
+				83A9724E202D3AEE00905498 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,10 +546,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HandsDown/HandsDown.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = EQST5YB479;
+				DEVELOPMENT_TEAM = 84LWTY6T5F;
 				INFOPLIST_FILE = HandsDown/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.WikipetersonApps.HandsDown;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WikipetersonAssistStatApps.HandsDown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -562,10 +562,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = HandsDown/HandsDown.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = EQST5YB479;
+				DEVELOPMENT_TEAM = 84LWTY6T5F;
 				INFOPLIST_FILE = HandsDown/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.WikipetersonApps.HandsDown;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WikipetersonAssistStatApps.HandsDown;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

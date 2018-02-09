@@ -11,6 +11,7 @@ import CloudKit
 
 
 extension UIViewController {
+    // this will be used when saving photo to cloudkit.
     func deleteTempImageURL(url: URL) {
         do {
             try FileManager.default.removeItem(at: url)
@@ -18,7 +19,7 @@ extension UIViewController {
             print("Error deleting temp file: \(e)")
         }
     }
-    
+    // this will be used when saving photo to cloudkit.
     func convertUIImageToURL(photo: UIImage) -> URL? {
         let data = UIImagePNGRepresentation(photo)
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(NSUUID().uuidString+".dat")
@@ -30,6 +31,19 @@ extension UIViewController {
             return nil
         }
     }
+    
+    // this is used to make sure that user is signed into icloud.  Must be signed in, in order to save/ load classes
+    func isICloudContainerAvailable()->Bool {
+        if let currentToken = FileManager.default.ubiquityIdentityToken {
+            print(currentToken)
+            return true
+        } else {
+            print("Not signed into iCloud")
+            return false
+        }
+    }
+    
+    
 }
 
 extension UIColor{

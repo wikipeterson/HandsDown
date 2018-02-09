@@ -44,6 +44,8 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        let name = nameTextField.text ?? ""
+        saveOrUpdateClassToCloudKit(name: name)
         teacher.currentClass = currentClass
         delegate?.updateTeacher(teacher: teacher)
     }
@@ -74,12 +76,12 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-        let name = nameTextField.text ?? ""
-        saveOrUpdateClassToCloudKit(name: name)
-        delegate?.updateTeacher(teacher: teacher)
-        navigationController?.popViewController(animated: true)
-    }
+//    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
+//        let name = nameTextField.text ?? ""
+//        saveOrUpdateClassToCloudKit(name: name)
+//        delegate?.updateTeacher(teacher: teacher)
+//        navigationController?.popViewController(animated: true)
+//    }
     
     // MARK: AddStudentDelegate Methods
     func addStudent(student: Student) {
@@ -101,13 +103,13 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     }
     // Mark: CloudKit Methods
     func saveOrUpdateClassToCloudKit(name: String) {
+        // create a new record in cloudkit if nil
         if currentClass == nil {
             // create the CKRecord that gets saved to the database
             let uid = UUID().uuidString // get a uniqueID
             let recordID = CKRecordID(recordName: uid)
             let newClassRecord = CKRecord(recordType: "Class", recordID: recordID)
             newClassRecord["name"] = name as NSString
-            
             
             // save CKRecord to correct container.. private, public, shared, etc.
             let myContainer = CKContainer.default()
@@ -162,13 +164,11 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
                 print(err)
                 return
             } else {
-                print("Successfully deleted:", recordID as Any)
+//                print("Successfully deleted:", recordID as Any)
             }
         })
     }
-    
     // MARK:  TableView methods
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 124.0
     }

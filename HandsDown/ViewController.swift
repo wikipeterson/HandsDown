@@ -34,20 +34,24 @@ class ViewController: UIViewController, SetTeacherDelegate {
         
         mySKView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight )
         mySKView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.5)
-
-        
         
         // load classes from cloudkit.  If there are no classes, a demo class will be created
-        loadClassesFromCloudKit()
+
         updateUIElements()
         setupNavBar()
+        
+        // check to make sure user is logged into iCloud before loading data
+        tryToLoadCloudKitData()
         
         // this observer will get called from Class, after it is finished loading the students from the class Class (ps, that naming is the worst.)
         NotificationCenter.default.addObserver(self, selector: #selector(ViewController.handleStudentsLoaded), name: NSNotification.Name(rawValue: Class.studentsLoadedNotification), object: nil)
         
+        // this observer is used to detect if user signs in or signs out of icloud account.  If account changes
+        NotificationCenter.default.addObserver(self, selector: #selector(iCloudAccountChanged), name: NSNotification.Name.NSUbiquityIdentityDidChange, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
+
         loadGameScene()
     }
     
@@ -55,10 +59,45 @@ class ViewController: UIViewController, SetTeacherDelegate {
         mySKView.scene?.isPaused = true
     }
     
+    @objc func iCloudAccountChanged() {
+        tryToLoadCloudKitData()
+    }
+    
+    func tryToLoadCloudKitData() {
+        // check to make sure user is logged into iCloud before loading data
+        let iCloudAvailable = isICloudContainerAvailable()
+        if iCloudAvailable == true {
+            loadClassesFromCloudKit()
+            self.manageClassesButton.isHidden = false
+        } else {
+            noiCloudAlert(message: "You must be signed into iCloud in order to save and load Class data.  Go to \"Setting\" -> \"Sign in to your iPhone\".")
+            teacher = Teacher()
+            self.manageClassesButton.isHidden = true
+        }
+    }
+    func noiCloudAlert(message: String) {
+        let alert = UIAlertController(title: "ERROR", message: message, preferredStyle: .alert)
+        let settingsAction = UIAlertAction(title: "Go to  Settings", style: .default, handler: {action in
+            guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                return
+            }
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+//                    print("Settings opened: \(success)") // Prints true
+                })
+            }
+        })
+        let returnAction = UIAlertAction(title: "Work without data", style: .default, handler: nil)
+        alert.addAction(returnAction)
+        alert.addAction(settingsAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
     // this is causing constraint issues... figure out later
     func setupNavBar() {
         let navBar = navigationController?.navigationBar
-        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        let color = UIColor.hDLightBlueColor
+//        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
 //        navBar?.backgroundColor = UIColor.gray
         navBar?.tintColor = color
 
@@ -67,11 +106,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
         navBar?.titleTextAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: font!]
         
         // do more to customize and make it look good
-        
-        
     }
-    
-    
     // this gets called from notification after classes get loaded.
     @objc func handleStudentsLoaded() {
         updateUIElements()
@@ -96,24 +131,8 @@ class ViewController: UIViewController, SetTeacherDelegate {
             view.ignoresSiblingOrder = true
             view.showsFPS = false
             view.showsNodeCount = false
-            
         }
     }
-    // timer is used when data.  It is a work around so that we are not reloading the pickerView over and over again after each class gets students loaded, and we only reload the pickerview once.
-    
-//    fileprivate func attemptReloadOfPickerView() {
-//        self.timer?.invalidate()
-//        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadPickerView), userInfo: nil, repeats: false)
-//    }
-//    var timer: Timer?
-    
-//    @objc func handleReloadPickerView() {
-//        print("pickerView is reloaded")
-//        self.myPickerView.reloadAllComponents()
-//        loadGameScene()
-//        
-//    }
-
     func loadClassesFromCloudKit() {
         let privateDatabase = CKContainer.default().privateCloudDatabase
         
@@ -135,8 +154,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
             if records.count == 0 {
                 //self.createDemoClass()
             } else {
-//                // clear classes. then reload
-//                self.teacher.classes.removeAll()
+
                 for record in records {
                     // create a class from the record...  This will also load the students for each class.
                     let foundClass = Class(record: record)
@@ -152,17 +170,10 @@ class ViewController: UIViewController, SetTeacherDelegate {
             }
         }
     }
-    
-    
-
     func updateUIElements() {
-        
         //Place UI elements
-       
-        
         myStackView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight * 0.06)
         myStackView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.97)
-        
         manageClassesButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
         manageGroupsButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
         settingsButton.titleLabel?.font = UIFont(name: myFont, size: screenHeight / 25)
@@ -172,8 +183,6 @@ class ViewController: UIViewController, SetTeacherDelegate {
         manageGroupsButton.isHidden = true
         settingsButton.isEnabled = false
         settingsButton.isHidden = true
-        
-
     }
     
   
@@ -183,13 +192,13 @@ class ViewController: UIViewController, SetTeacherDelegate {
     
     
     // change these orientation options
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
-        } else {
-            return .all
-        }
-    }
+//    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+//        if UIDevice.current.userInterfaceIdiom == .phone {
+//            return .allButUpsideDown
+//        } else {
+//            return .all
+//        }
+//    }
     
     
     override var prefersStatusBarHidden: Bool {
