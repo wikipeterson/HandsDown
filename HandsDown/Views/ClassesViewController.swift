@@ -13,16 +13,17 @@ protocol SetTeacherDelegate {
     func setTeacher(teacher : Teacher)
 }
 
-class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
+class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, updateTeacherDelegate
 {
+    // MARK: Outlets
     @IBOutlet weak var currentClassLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var tableViewNavBar: UINavigationBar!
     
+    // MARK:  Properties
     var editSwitch = true
     var teacher = Teacher()
-    
     var delegate:SetTeacherDelegate?
     
     override func viewDidLoad()
@@ -36,18 +37,19 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        reloadViews()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        // save any changes here
+        delegate?.setTeacher(teacher: teacher)
+    }
+    
+    func reloadViews() {
         if let currentClass = teacher.currentClass {
             currentClassLabel.text = currentClass.name
         }
         tableView.reloadData()
-    }
-    
-    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-       self.navigationController?.popViewController(animated: true)
-        
-        // save any changes here
-        delegate?.setTeacher(teacher: teacher)
-        
     }
     
     func setUpNavBar () {
@@ -56,7 +58,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableViewNavBar.layer.cornerRadius = 4.0
         
         let font = UIFont(name: "Avenir", size: 25)
-        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        let color = UIColor.hDLightBlueColor
+//        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         tableViewNavBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: font!]
         
         // do more to customize and make it look good
@@ -75,49 +78,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    @IBAction func addButtonWasTapped(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Add a new class", message: nil, preferredStyle: .alert)
-        alert.addTextField(configurationHandler: {textfield in textfield.placeholder = "Name of class"})
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            let newClassName = alert.textFields![0].text!
-//            let newClass = Class(name: newClassName, students: [Student]())
-            self.saveClassToCloudKit(name: newClassName)
-        })
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(okAction)
-        alert.addAction(cancelAction)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    // Mark: CloudKit Methods
-    func saveClassToCloudKit(name: String) {
-        // create the CKRecord that gets saved to the database
-        let uid = UUID().uuidString // get a uniqueID
-        let recordID = CKRecordID(recordName: uid)
-        let newClassRecord = CKRecord(recordType: "Class", recordID: recordID)
-        newClassRecord["name"] = name as NSString
-        // figure out how to save the picture
-        
-        // save CKRecord to correct container.. private, public, shared, etc.
-        let myContainer = CKContainer.default()
-        let privateDatabase = myContainer.privateCloudDatabase
-        privateDatabase.save(newClassRecord) {
-            (record, error) in
-            if let error = error {
-                print(error)
-                return
-            }
-            // insert successfully saved record code... reload table, etc...
-            print("Successfully saved record: ", record ?? "")
-            // append newClass to classes array, then reload tableview
-            let newClass = Class(record: newClassRecord)
-            self.teacher.classes.append(newClass)
-            DispatchQueue.main.async(execute: {
-                self.tableView.reloadData()
-            })
-        }
-    }
-    
     func deleteRecordFromCloudKit(myClass: Class) {
         let privateDatabase = CKContainer.default().privateCloudDatabase
         
@@ -127,14 +87,12 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 print(err)
                 return
             } else {
-                print("Successfully deleted:", recordID as Any)
+//                print("Successfully deleted:", recordID as Any)
                 // students will be deleted as well because of delete rule created and reference made
             }
         })
     }
-    
     // MARK: TableView methods
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90.0
     }
@@ -173,9 +131,15 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableView.reloadData()
     }
     
+    // MARK:  AddClassDelegate Methods
+    // this is how data gets passed back
+    func updateTeacher(teacher: Teacher) {
+        self.teacher = teacher
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        if segue.identifier == "toClassDetailsSegue"
+        if segue.identifier == "editClassSegue"
         {
             teacher.currentClass = teacher.classes[tableView.indexPathForSelectedRow!.row]
             
@@ -184,18 +148,18 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
             if let indexPath = tableView.indexPathForSelectedRow {
                 let row = indexPath.row
                 teacher.currentClass = teacher.classes[row]
+                nvc.currentClass = teacher.classes[row]
             }
             nvc.teacher = teacher
+            nvc.delegate = self
+        }
+        if segue.identifier == "addClassSegue" {
+            let nvc = segue.destination as! ClassDetailViewController
+            
+            nvc.teacher = teacher
+            nvc.delegate = self
+            nvc.currentClass = nil
         }
     }
-    
-    
-//    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool)
-//    {
-//        if let controller = viewController as? ViewController
-//        {
-//            controller.teacher = teacher    // Here you pass the data back to your original view controller
-//        }
-//    }
 
 }

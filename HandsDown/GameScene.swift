@@ -46,6 +46,8 @@ class GameScene: SKScene
     var studentsNotPickedArray : [Student] = []
     var switchLabel = SKLabelNode()
     var avatarNode = SKSpriteNode()
+    var colorArray = [UIColor.hDLightGrayColor, UIColor.hDLightBlueColor, UIColor.hDDarkBlueColor]
+
     
     override func didMove(to view: SKView)
     {
@@ -57,7 +59,7 @@ class GameScene: SKScene
 
         switchLabel = childNode(withName: "switchLabel") as! SKLabelNode
         switchLabel.text = "Repeats allowed"
-        switchLabel.position = CGPoint(x: (scene?.frame.width)! * -0.22, y: (scene?.frame.height)! * -0.41)
+        //switchLabel.position = CGPoint(x: screenWidth * -0.35, y: screenHeight * -0.41)
         //switchLabel.fontColor = SKColor.white
         switchLabel.fontSize = 25.0
         switchLabel.zPosition = 50
@@ -96,6 +98,7 @@ class GameScene: SKScene
     
     @objc func switchValueDidChange(sender:UISwitch!)
     {
+        
         allowsRepeats = !allowsRepeats
         if allowsRepeats
         {
@@ -105,13 +108,14 @@ class GameScene: SKScene
             switchLabel.text = "Remove when picked"
         }
         print("switch switched")
+        
     }
     
     func addRepeatsSwitch()
     {
         let repeatSwitch = UISwitch()
         repeatSwitch.center = CGPoint(x: screenWidth * 0.1, y: screenHeight * 0.9)
-        repeatSwitch.isOn = true
+        repeatSwitch.isOn = false
         repeatSwitch.setOn(false, animated: true)
         repeatSwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
         self.view?.addSubview(repeatSwitch)
@@ -121,6 +125,7 @@ class GameScene: SKScene
     
     func placeSectorsOverWheel()
     {
+        print(studentArray.count)
         rectArray = []
         triangleArray = []
         rectLabelArray = []
@@ -151,7 +156,8 @@ class GameScene: SKScene
         //set the rects, tris, and labels on wheel
         for num in 0..<Int(numberOfSectors)
         {
-            let rect = SKSpriteNode(color: UIColor.white, size: CGSize(width: 250, height: 2 * 250 * tan(theta)))
+            let sizeFactor = 250.0
+            let rect = SKSpriteNode(color: UIColor.white, size: CGSize(width: sizeFactor, height: 2 * sizeFactor * tan(theta)))
             rect.position = CGPoint(x: 0, y: 0)
             rect.zPosition = 1
             rect.anchorPoint = CGPoint(x: 0, y: 0.5)
@@ -160,14 +166,15 @@ class GameScene: SKScene
             rect.name = "rectNode"
             wheelSprite.addChild(rect)
             
-            let topEdge = CGPoint(x: 250.0 * cos(angle / 2.0 + angle * Double(num)), y: 250.0 * sin(angle / 2.0 + angle * Double(num)))
-            let bottomEdge = CGPoint(x: 250.0 * cos(angle * Double(num) - angle / 2.0 ), y: 250.0 * sin(angle * Double(num) - angle / 2.0 ))
+            let topEdge = CGPoint(x: sizeFactor * cos(angle / 2.0 + angle * Double(num)), y: sizeFactor * sin(angle / 2.0 + angle * Double(num)))
+            let bottomEdge = CGPoint(x: sizeFactor * cos(angle * Double(num) - angle / 2.0 ), y: sizeFactor * sin(angle * Double(num) - angle / 2.0 ))
             var points = [CGPoint(x: 0, y: 0), topEdge, bottomEdge]
-            let hue = CGFloat(Double(num) / Double(numberOfSectors))
+            //let hue = CGFloat(Double(num) / Double(numberOfSectors))
             let triangleShapeNode = SKShapeNode(points: &points, count: points.count)
             triangleShapeNode.zPosition = 3
-            triangleShapeNode.fillColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
-            triangleShapeNode.strokeColor = UIColor.black
+            //triangleShapeNode.fillColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
+            triangleShapeNode.fillColor = colorArray[num % colorArray.count]
+            triangleShapeNode.strokeColor = UIColor.hDDarkGrayColor
             triangleShapeNode.lineWidth = 3.0
             triangleShapeNode.name = "triangleNode"
             
@@ -176,10 +183,10 @@ class GameScene: SKScene
             
             let rectLabel = SKLabelNode(text: "")
             rectLabel.text = studentsNotPickedArray[num % studentsNotPickedArray.count].name
-            rectLabel.position = CGPoint(x: 220, y: -10)
+            rectLabel.position = CGPoint(x: sizeFactor - 30.0, y: -10)
             rectLabel.fontColor = UIColor.black
             rectLabel.fontName = "HelveticaNeue"
-            rectLabel.fontSize = 20.0
+            rectLabel.fontSize = CGFloat(20.0 + Double(loopFactor) * 2.0)
             rectLabel.zPosition = 4
             rectLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.right
             rect.addChild(rectLabel)
@@ -204,25 +211,25 @@ class GameScene: SKScene
         }
     }
     
-    func playSound(soundName: String)
-    {
-        let path = Bundle.main.path(forResource: soundName, ofType:nil)!
-        let url = URL(fileURLWithPath: path)
-        
-        do {
-            player = try AVAudioPlayer(contentsOf: url)
-            player.play()
-        } catch {
-            // couldn't load file :(
-        }
-    }
+//    func playSound(soundName: String)
+//    {
+//        let path = Bundle.main.path(forResource: soundName, ofType:nil)!
+//        let url = URL(fileURLWithPath: path)
+//
+//        do {
+//            player = try AVAudioPlayer(contentsOf: url)
+//            player.play()
+//        } catch {
+//            // couldn't load file :(
+//        }
+//    }
     
     
     override func update(_ currentTime: TimeInterval)
     {
         if spinning
         {
-            for i in 0..<(rectArray.count)
+            for i in 0..<(triangleArray.count)
             {
                 if triangleArray[i].intersects(tipOfArrow)
                 {
@@ -231,19 +238,19 @@ class GameScene: SKScene
                     let texture = SKTexture(image: image)
                     avatarNode.texture = texture
                     
-                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
-                    {
-                        AudioServicesPlaySystemSound(tockSystemSoundID)
-                    }
-                    holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
-                    
-                    if (wheelSprite.physicsBody?.angularVelocity)! < CGFloat(0.1)
+//                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
+//                    {
+//                        AudioServicesPlaySystemSound(tockSystemSoundID)
+//                    }
+//                    holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
+//
+                    if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.1)
                     {
                         wheelSprite.physicsBody?.angularVelocity = 0
                         
                         AudioServicesPlaySystemSound(fanfareSystemSoundID)
                         AudioServicesPlaySystemSound(4095)
-                        nameLabel.text = studentsNotPickedArray[i % studentsNotPickedArray.count].name + "!"
+                        nameLabel.text = nameLabel.text! + "!"
                         nameLabel.fontSize = 70.0
                         speak(textToSpeak: nameLabel.text!)
                         if !allowsRepeats && studentsNotPickedArray.count > 1
@@ -263,7 +270,7 @@ class GameScene: SKScene
     func speak(textToSpeak: String)
     {
         let utterance = AVSpeechUtterance(string: textToSpeak)
-        utterance.voice = AVSpeechSynthesisVoice(language: "us-au") //choose voice
+        //utterance.voice = AVSpeechSynthesisVoice(language: "us-au") //choose voice
         synth.speak(utterance)
     }
     
@@ -283,7 +290,7 @@ class GameScene: SKScene
             removeSectorsFromWheel()
             placeSectorsOverWheel()
             let randomSpin = CGFloat(arc4random_uniform(1200)+500)
-            wheelSprite.physicsBody?.applyAngularImpulse(CGFloat(randomSpin))
+            wheelSprite.physicsBody?.applyAngularImpulse(-1.0 * CGFloat(randomSpin))
             spinning = true
             nameLabel.fontSize = 40.0
             print("begin spin")

@@ -11,7 +11,6 @@ import CloudKit
 
 class Class
 {
-    
     var name : String = ""
     var students = [Student]()
     // recordID is used for cloudkit.  Each record of class has a unique id.  The recordid is the uniqueID.  It is important for relating the class to the students.

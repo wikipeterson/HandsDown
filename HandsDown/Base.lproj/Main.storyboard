@@ -118,10 +118,10 @@
             </objects>
             <point key="canvasLocation" x="564" y="-613"/>
         </scene>
-        <!--Manage Classes-->
+        <!--HandsDown-->
         <scene sceneID="Iuj-Rs-63K">
             <objects>
-                <viewController title="Manage Classes" id="tbb-2O-xeM" customClass="ClassesViewController" customModule="HandsDown" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="tbb-2O-xeM" customClass="ClassesViewController" customModule="HandsDown" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fhK-D4-BsX">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -151,7 +151,7 @@
                                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="uzN-VO-73p">
                                             <color key="tintColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <connections>
-                                                <action selector="addButtonWasTapped:" destination="tbb-2O-xeM" id="1b2-70-P1B"/>
+                                                <segue destination="KGd-lN-hP3" kind="show" identifier="addClassSegue" id="Skq-mu-qny"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -205,7 +205,7 @@
                                             <outlet property="classDetailLabel" destination="may-8y-SOK" id="W5e-NJ-bDl"/>
                                             <outlet property="classNameLabel" destination="yhk-31-RXF" id="wwg-W3-XbH"/>
                                             <outlet property="numberLabel" destination="IC9-vr-gAs" id="Asi-dl-I3r"/>
-                                            <segue destination="KGd-lN-hP3" kind="show" identifier="toClassDetailsSegue" id="rFn-Kk-Evk"/>
+                                            <segue destination="KGd-lN-hP3" kind="show" identifier="editClassSegue" id="rFn-Kk-Evk"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -234,13 +234,7 @@
                         <viewLayoutGuide key="safeArea" id="qe3-im-hxp"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="HandsDown" id="nuU-uM-W50">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="C7K-J3-dGy">
-                            <connections>
-                                <action selector="saveButtonTapped:" destination="tbb-2O-xeM" id="MTQ-dW-omT"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="HandsDown" id="nuU-uM-W50"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="currentClassLabel" destination="KgP-hc-IPZ" id="eVu-OH-Y9Y"/>
@@ -250,7 +244,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r8U-tZ-O0I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-759.375" y="788.671875"/>
+            <point key="canvasLocation" x="-745" y="206"/>
         </scene>
         <!--Hands Down-->
         <scene sceneID="NaY-cZ-meH">
@@ -269,7 +263,7 @@
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="40"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                 <connections>
-                                    <outlet property="delegate" destination="KGd-lN-hP3" id="bZe-22-JaJ"/>
+                                    <outlet property="delegate" destination="KGd-lN-hP3" id="TFk-RO-jSw"/>
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap &quot;+&quot; to add a Student" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="20" translatesAutoresizingMaskIntoConstraints="NO" id="ecY-Vt-QZ6">
@@ -297,7 +291,6 @@
                                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="meZ-Yy-Oif">
                                             <color key="tintColor" red="0.1058823529" green="0.69019607839999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <connections>
-                                                <action selector="addStudentButtonTapped:" destination="KGd-lN-hP3" id="mFV-RL-4pM"/>
                                                 <segue destination="leI-OT-L8n" kind="presentation" identifier="addStudentSegue" modalPresentationStyle="formSheet" id="PoY-EA-Scb"/>
                                             </connections>
                                         </barButtonItem>
@@ -386,13 +379,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ULC-3U-98G"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Hands Down" id="qrE-y3-YX6">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="aru-D2-mub">
-                            <connections>
-                                <action selector="saveButtonTapped:" destination="KGd-lN-hP3" id="sRO-mL-wyG"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Hands Down" id="qrE-y3-YX6"/>
                     <connections>
                         <outlet property="nameTextField" destination="taL-l7-Gnm" id="kQW-td-tzz"/>
                         <outlet property="tableView" destination="GcQ-YG-69Q" id="a6T-V8-6GL"/>
@@ -401,7 +388,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmj-3p-Cck" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="80" y="788"/>
+            <point key="canvasLocation" x="95" y="204"/>
         </scene>
         <!--Student View Controller-->
         <scene sceneID="TpK-4F-uiP">
@@ -529,7 +516,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uux-72-fEB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="954.6875" y="787.5"/>
+            <point key="canvasLocation" x="970" y="204"/>
         </scene>
         <!--Manage Groups-->
         <scene sceneID="qLK-7t-28K">
@@ -584,6 +571,7 @@
         <image name="Monkey" width="225" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="PoY-EA-Scb"/>
+        <segue reference="4fn-wj-eg6"/>
+        <segue reference="rFn-Kk-Evk"/>
     </inferredMetricsTieBreakers>
 </document>
