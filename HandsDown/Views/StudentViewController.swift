@@ -33,7 +33,7 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        avatars = [#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "questionMarkImage"), #imageLiteral(resourceName: "Monkey"), #imageLiteral(resourceName: "elmoImage"), #imageLiteral(resourceName: "pigTailGirl")]
+        avatars = [#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "Monkey"), #imageLiteral(resourceName: "elmoImage"), #imageLiteral(resourceName: "pigTailGirl")]
         setUpViews()
     }
     

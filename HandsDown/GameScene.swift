@@ -45,8 +45,18 @@ class GameScene: SKScene
     var allowsRepeats = true
     var studentsNotPickedArray : [Student] = []
     var switchLabel = SKLabelNode()
+    var titleLabel = SKLabelNode()
     var avatarNode = SKSpriteNode()
-    var colorArray = [UIColor.hDLightGrayColor, UIColor.hDLightBlueColor, UIColor.hDDarkBlueColor]
+    var colorArray = [
+        UIColor.blueJeansLight,
+        UIColor.grassLight,
+        //UIColor.aquaLight,
+        //UIColor.mintLight,
+        UIColor.sunFlowerLight,
+        UIColor.bitterSweetLight,
+        UIColor.grapefruitLight,
+        UIColor.lavendarLight
+    ]
 
     
     override func didMove(to view: SKView)
@@ -56,7 +66,9 @@ class GameScene: SKScene
         
         print("did move")
         
-
+        titleLabel = childNode(withName: "titleLabel")  as! SKLabelNode
+        titleLabel.fontColor = UIColor.blueJeansDark
+        
         switchLabel = childNode(withName: "switchLabel") as! SKLabelNode
         switchLabel.text = "Repeats allowed"
         //switchLabel.position = CGPoint(x: screenWidth * -0.35, y: screenHeight * -0.41)
@@ -65,12 +77,12 @@ class GameScene: SKScene
         switchLabel.zPosition = 50
         switchLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
         
-        
         nameLabel = childNode(withName: "nameLabel") as! SKLabelNode
-        tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
-        
-        nameLabel.fontSize = 40.0
+        nameLabel.fontColor = UIColor.mintDark
+        nameLabel.fontSize = 50.0
         nameLabel.text = "???"
+        
+        tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
         
         //get the teacher data from ViewController
         if let currentClass = teacher.currentClass {
@@ -174,7 +186,7 @@ class GameScene: SKScene
             triangleShapeNode.zPosition = 3
             //triangleShapeNode.fillColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
             triangleShapeNode.fillColor = colorArray[num % colorArray.count]
-            triangleShapeNode.strokeColor = UIColor.hDDarkGrayColor
+            triangleShapeNode.strokeColor = UIColor.darkGray
             triangleShapeNode.lineWidth = 3.0
             triangleShapeNode.name = "triangleNode"
             
@@ -184,7 +196,7 @@ class GameScene: SKScene
             let rectLabel = SKLabelNode(text: "")
             rectLabel.text = studentsNotPickedArray[num % studentsNotPickedArray.count].name
             rectLabel.position = CGPoint(x: sizeFactor - 30.0, y: -10)
-            rectLabel.fontColor = UIColor.black
+            rectLabel.fontColor = UIColor.white
             rectLabel.fontName = "HelveticaNeue"
             rectLabel.fontSize = CGFloat(20.0 + Double(loopFactor) * 2.0)
             rectLabel.zPosition = 4
@@ -251,7 +263,7 @@ class GameScene: SKScene
                         AudioServicesPlaySystemSound(fanfareSystemSoundID)
                         AudioServicesPlaySystemSound(4095)
                         nameLabel.text = nameLabel.text! + "!"
-                        nameLabel.fontSize = 70.0
+                        nameLabel.fontSize = 90.0
                         speak(textToSpeak: nameLabel.text!)
                         if !allowsRepeats && studentsNotPickedArray.count > 1
                         {
@@ -292,7 +304,7 @@ class GameScene: SKScene
             let randomSpin = CGFloat(arc4random_uniform(1200)+500)
             wheelSprite.physicsBody?.applyAngularImpulse(-1.0 * CGFloat(randomSpin))
             spinning = true
-            nameLabel.fontSize = 40.0
+            nameLabel.fontSize = 50.0
             print("begin spin")
         }
     }

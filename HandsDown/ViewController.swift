@@ -96,7 +96,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
     // this is causing constraint issues... figure out later
     func setupNavBar() {
         let navBar = navigationController?.navigationBar
-        let color = UIColor.hDLightBlueColor
+        let color = UIColor.mintLight
 //        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
 //        navBar?.backgroundColor = UIColor.gray
         navBar?.tintColor = color
