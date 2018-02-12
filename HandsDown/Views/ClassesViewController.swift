@@ -59,7 +59,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let font = UIFont(name: "Avenir", size: 25)
         let color = UIColor.blueJeansLight
-//        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         tableViewNavBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: font!]
         
         // do more to customize and make it look good
@@ -105,6 +104,7 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let thisClass = teacher.classes[indexPath.row]
         cell.theClass = thisClass // properties of cell will be set up in didSet Method in ClassesTVC
         cell.numberLabel.text = "\(indexPath.row + 1)"
+
 
         // set current class to selected state... Find a better way to do this
 //        if thisClass.recordID == teacher.currentClass?.recordID {
