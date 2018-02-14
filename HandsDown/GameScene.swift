@@ -10,8 +10,10 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 
-class GameScene: SKScene
+class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
 {
+
+    
     
     let student1 = Student(name: "Bryn", photo: #imageLiteral(resourceName: "foxImage"))
     let student2 = Student(name: "Lucky", photo: #imageLiteral(resourceName: "beeImage"))
@@ -106,11 +108,78 @@ class GameScene: SKScene
         
         placeSectorsOverWheel()
         addRepeatsSwitch()
+        addClassButtonAndTableView()
     }
     
+    // this is created global so that we can access it later
+    lazy var classButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Default Class", for: UIControlState())
+        button.setTitleColor(UIColor.blueJeansDark, for: UIControlState())
+        button.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 50.0)
+//        button.backgroundColor = UIColor.bitterSweetDark
+//        button.translatesAutoresizingMaskIntoConstraints = false
+        button.frame = CGRect(x: 0, y: 0, width: screenWidth * 0.75, height: screenHeight * 0.1)
+        button.center = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.2)
+        button.addTarget(self, action: #selector(classButtonTapped(sender:)), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var classTableView: ClassTableView = {
+        let rect = CGRect(x: 0, y: 0, width: screenWidth * 0.75, height: screenHeight * 0.5)
+        let table = ClassTableView(frame: rect, style: UITableViewStyle.plain)
+        table.center = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.5)
+        table.items = teacher.classes
+        // register a cell
+        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        table.delegate = self
+        table.dataSource = self
+        return table
+    }()
+    
+    func addClassButtonAndTableView() {
+        print("button should appear")
+        self.view?.addSubview(classButton)
+        self.view?.addSubview(classTableView)
+        classTableView.isHidden = true
+    }
+    
+    @objc func classButtonTapped(sender: UIButton) {
+        classTableView.isHidden = false
+        classTableView.reloadData()
+    }
+    
+    // MARK: TableView Methods
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return teacher.classes.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")! as UITableViewCell
+        let theClass = self.teacher.classes[indexPath.row]
+        cell.textLabel?.text = theClass.name
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let theClass = teacher.classes[indexPath.row]
+        teacher.currentClass = theClass
+        classButton.setTitle(theClass.name, for: UIControlState())
+        
+        studentArray = theClass.students
+        studentsNotPickedArray = theClass.students
+        removeSectorsFromWheel()
+        placeSectorsOverWheel()
+        classTableView.isHidden = true
+        print("You selected cell #\(indexPath.row)!")
+    }
+    
+    
+
+
     @objc func switchValueDidChange(sender:UISwitch!)
     {
-        
         allowsRepeats = !allowsRepeats
         if allowsRepeats
         {
