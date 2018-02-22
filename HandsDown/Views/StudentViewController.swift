@@ -21,20 +21,27 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
     @IBOutlet weak var imageCollectionView: UICollectionView!
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var selectedAvatarLabel: UILabel!
-    
+    @IBOutlet weak var colorCollectionView: UICollectionView!
     // MARK: Properties
     var delegate: AddStudentDelegate?
     var student: Student?
     var teacher = Teacher()
     let screenSize = UIScreen.main.bounds
+    var avatarBackgroundView: UIView = UIView()
     
     var avatars: [UIImage] = []
+    var colors: [UIColor] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        avatars = [#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "Monkey"), #imageLiteral(resourceName: "elmoImage"), #imageLiteral(resourceName: "pigTailGirl")]
+        avatars = [#imageLiteral(resourceName: "elephantAvatar"),#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "Monkey"), #imageLiteral(resourceName: "elmoImage"), #imageLiteral(resourceName: "pigTailGirl")]
+        colors = [.aquaDark,.aquaLight,.bitterSweetDark,.bitterSweetLight,.blueJeansDark,.blueJeansLight,.grapefruitDark,.grapefruitLight,.grassDark,.grassLight,.lavendarDark,.lavendarLight,.mintDark,.mintLight,.sunFlowerDark,.sunFlowerLight]
         setUpViews()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+
     }
     
     func setUpViews() {
@@ -50,6 +57,24 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
             nameTextField.text = ""
             nameTextField.becomeFirstResponder()
         }
+        
+
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        avatarBackgroundView.frame = avatarImageView.frameForImageInImageViewAspectFit()
+        avatarBackgroundView.center = CGPoint(x: avatarImageView.center.x, y: avatarImageView.center.y + 40.0)
+        self.view.addSubview(avatarBackgroundView)
+        view.sendSubview(toBack: avatarBackgroundView)
+        avatarImageView.backgroundColor = UIColor.clear
+    }
+    
+    func adjustAvatarBackgroundView() {
+        avatarBackgroundView.frame = avatarImageView.frameForImageInImageViewAspectFit()
+        // having trouble finding center of imageview in popover form sheet.  THe line below works on iPad, but on iPhone it gets adjusted by 40.0.  Dont know why I need to adjust.  Might be navbar
+        //        avatarBackgroundView.center = avatarImageView.center
+        avatarBackgroundView.center = CGPoint(x: avatarImageView.center.x, y: avatarImageView.center.y + 40.0)
     }
 
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
@@ -151,13 +176,20 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         }
     }
     // MARK: CollectionView Methods
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        // change this math to adjust size of cells after you get the size of the avatars from Karen
-        let width = (screenSize.width - 4.0) / 3.0
-
-        return CGSize(width: width, height: width + 75)
+        if collectionView == imageCollectionView {
+            // change this math to adjust size of cells after you get the size of the avatars from Karen
+            let width = (screenSize.width - 4.0) / 3.0
+            
+            return CGSize(width: width, height: width + 75)
+        } else {
+            // its the color collectionView
+            let width = (screenSize.width - 6.0) / 5.0
+            
+            return CGSize(width: width, height: width)
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -166,24 +198,50 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
     
     func collectionView(_ collectionView: UICollectionView, layout
         collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1.0
+        return 4.0
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return avatars.count
+        if collectionView == imageCollectionView {
+            return avatars.count
+        }
+        else {
+            return colors.count
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell", for: indexPath) as! AvatarCollectionViewCell
-        
-        let avatarImage = avatars[indexPath.row]
-        cell.avatarImageView.image = avatarImage
-        
-        return cell
+        if collectionView == imageCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell", for: indexPath) as! AvatarCollectionViewCell
+            
+            let avatarImage = avatars[indexPath.row]
+            cell.avatarImageView.image = avatarImage
+            
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath)
+            
+            let color = colors[indexPath.row]
+            
+            cell.contentView.backgroundColor = color
+            let viewSize = cell.contentView.frame.width
+            cell.contentView.layer.cornerRadius = viewSize / 2.0
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let photo = avatars[indexPath.row]
-        avatarImageView.image = photo
+        if collectionView == imageCollectionView {
+            let photo = avatars[indexPath.row]
+            avatarImageView.image = photo
+        } else {
+            let color = colors[indexPath.row]
+
+//            avatarImageView.backgroundColor = color
+            avatarBackgroundView.backgroundColor = color
+        }
+        adjustAvatarBackgroundView()
+        
     }
     
     
