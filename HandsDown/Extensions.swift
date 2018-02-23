@@ -70,6 +70,46 @@ extension UIImageView{
     }
 }
 
+// these UIColor extensions can be used to save colors to cloudkit as a string and load the color as a hex string
+extension UIColor {
+    var toHexString: String {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        
+        self.getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        return String(
+            format: "%02X%02X%02X",
+            Int(r * 0xff),
+            Int(g * 0xff),
+            Int(b * 0xff)
+        )
+    }
+}
+
+extension UIColor {
+    convenience init(hex: String) {
+        let scanner = Scanner(string: hex)
+        scanner.scanLocation = 0
+        
+        var rgbValue: UInt64 = 0
+        
+        scanner.scanHexInt64(&rgbValue)
+        
+        let r = (rgbValue & 0xff0000) >> 16
+        let g = (rgbValue & 0xff00) >> 8
+        let b = rgbValue & 0xff
+        
+        self.init(
+            red: CGFloat(r) / 0xff,
+            green: CGFloat(g) / 0xff,
+            blue: CGFloat(b) / 0xff, alpha: 1
+        )
+    }
+}
+
 
 
 extension UIColor{
@@ -81,6 +121,7 @@ extension UIColor{
     
     
     // see http://bootflat.github.io/documentation.html for colors
+
     static let blueJeansLight = UIColor(red: 93/255, green: 156/255, blue: 236/255, alpha: 1.0) /* #5d9cec */
     static let blueJeansDark = UIColor(red: 74/255, green: 137/255, blue: 220/255, alpha: 1.0) /* #4a89dc */
     static let aquaDark = UIColor(red: 59/255, green: 175/255, blue: 218/255, alpha: 1.0) /* #3bafda */

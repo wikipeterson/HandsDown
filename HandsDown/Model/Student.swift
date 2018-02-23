@@ -15,6 +15,8 @@ class Student
     var photo: UIImage = #imageLiteral(resourceName: "sampleStudentImage")
     var classID: String = ""
     var picked = false
+    var hexColor: String
+    var color: UIColor
     var record: CKRecord?
     var recordName: String
     
@@ -25,11 +27,15 @@ class Student
         self.classID = ""
         record = nil
         recordName = ""
+        self.hexColor = "ffffff" // this is white as a hexColor
+        self.color = UIColor.white
     }
     
     init(record: CKRecord) {
         self.name = record["name"] as? String ?? ""
         self.classID = record["classID"] as? String ?? ""
+        self.hexColor = record["hexColor"] as? String ?? "ffffff"
+        self.color = UIColor(hex: hexColor)
         self.record = record
         self.recordName = record.recordID.recordName
         // load photo, it is saved as a CKAsset

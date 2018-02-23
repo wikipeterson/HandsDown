@@ -40,11 +40,8 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         setUpViews()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-
-    }
-    
     func setUpViews() {
+        avatarImageView.backgroundColor = UIColor.clear
         nameTextField.layer.borderWidth = 3.0
         nameTextField.layer.borderColor = UIColor.lightGray.cgColor
         // if there is a student, populate everything with student details, else make nameTF first Responder and populate imageview with random avatar
@@ -57,17 +54,22 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
             nameTextField.text = ""
             nameTextField.becomeFirstResponder()
         }
-        
-
-
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+
+    override func viewDidLayoutSubviews() {
+        addAvatarBackgroundView()
+    }
+    func addAvatarBackgroundView() {
         avatarBackgroundView.frame = avatarImageView.frameForImageInImageViewAspectFit()
         avatarBackgroundView.center = CGPoint(x: avatarImageView.center.x, y: avatarImageView.center.y + 40.0)
+        if let myStudent = student {
+            avatarBackgroundView.backgroundColor = myStudent.color
+        } else {
+            avatarBackgroundView.backgroundColor = UIColor.white
+        }
         self.view.addSubview(avatarBackgroundView)
         view.sendSubview(toBack: avatarBackgroundView)
-        avatarImageView.backgroundColor = UIColor.clear
     }
     
     func adjustAvatarBackgroundView() {
@@ -86,11 +88,18 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         // save student to cloudKit.
         if student != nil {
             // update student
-            guard let name = nameTextField.text, let photo = avatarImageView.image , let myStudent = student else {return}
+            guard let name = nameTextField.text, let photo = avatarImageView.image , let color = avatarBackgroundView.backgroundColor, let myStudent = student else {return}
             // only update if name or photo changed
-            if myStudent.name != name || myStudent.photo != photo {
+            if myStudent.name != name || myStudent.photo != photo || myStudent.color != color{
                 myStudent.name = name
                 myStudent.photo = photo
+                if let color = avatarBackgroundView.backgroundColor {
+                    myStudent.color = color
+                    myStudent.hexColor = color.toHexString
+                } else {
+                    myStudent.color = UIColor.white
+                    myStudent.hexColor = UIColor.white.toHexString
+                }
                 updateStudentInCloudKit(theStudent: myStudent)
             }
         } else {
@@ -106,8 +115,8 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         let newName = nameTextField.text ?? ""
         if let record = theStudent.record {
             record["name"] = newName as NSString
+            record["hexColor"] = theStudent.hexColor as NSString
             let photo = avatarImageView.image ?? #imageLiteral(resourceName: "Monkey")
-            
             guard let url = convertUIImageToURL(photo: photo) else {return}
             
             record["photo"] = CKAsset(fileURL: url)
@@ -122,9 +131,7 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
                 }
                 // insert successfully saved record code...
                 DispatchQueue.main.async(execute: {
-                    
                     self.delegate?.updateStudent(student: theStudent)
-
                 })
                 // delete temp file for image data
                 self.deleteTempImageURL(url: url)
@@ -139,7 +146,12 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         let recordID = CKRecordID(recordName: uid)
         let newStudentRecord = CKRecord(recordType: "Student", recordID: recordID)
         newStudentRecord["name"] = name as NSString
-        
+        if let backgroundColor = avatarBackgroundView.backgroundColor {
+            let hexColor = backgroundColor.toHexString
+            newStudentRecord["hexColor"] = hexColor as NSString
+        } else {
+            newStudentRecord["hexColor"] = "ffffff" as NSString
+        }
         // save classID to Student, so that we can fetch the students by classID
         guard let currentClass = teacher.currentClass, let classRecord = currentClass.record else {return}
         
@@ -186,10 +198,8 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         } else {
             // its the color collectionView
             let width = (screenSize.width - 6.0) / 5.0
-            
             return CGSize(width: width, height: width)
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
