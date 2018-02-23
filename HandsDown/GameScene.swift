@@ -12,9 +12,6 @@ import AVFoundation
 
 class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
 {
-
-    
-    
     let student1 = Student(name: "Bryn", photo: #imageLiteral(resourceName: "foxImage"))
     let student2 = Student(name: "Lucky", photo: #imageLiteral(resourceName: "beeImage"))
     let student3 = Student(name: "Cameron", photo: #imageLiteral(resourceName: "pigTailGirl"))
@@ -155,9 +152,19 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")! as UITableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         let theClass = self.teacher.classes[indexPath.row]
+//        let nameLabel: UILabel = {
+//            let label = UILabel(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.width))
+//            label.text = theClass.name
+//
+//            return label
+//        }()
+//        nameLabel.center = cell.center
+//        cell.addSubview(nameLabel)
+//        cell.backgroundColor = UIColor(displayP3Red: 0.95, green: 0.95, blue: 0.95, alpha: 0.5)
         cell.textLabel?.text = theClass.name
+        cell.backgroundColor = UIColor(displayP3Red: 0.95, green: 0.95, blue: 0.95, alpha: 0.3)
         return cell
     }
     
@@ -165,6 +172,11 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         
         let theClass = teacher.classes[indexPath.row]
         teacher.currentClass = theClass
+        updateGameScene(theClass: theClass)
+        print("You selected cell #\(indexPath.row)!")
+    }
+    
+    func updateGameScene(theClass: Class) {
         classButton.setTitle(theClass.name, for: UIControlState())
         
         studentArray = theClass.students
@@ -172,11 +184,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         removeSectorsFromWheel()
         placeSectorsOverWheel()
         classTableView.isHidden = true
-        print("You selected cell #\(indexPath.row)!")
     }
-    
-    
-
 
     @objc func switchValueDidChange(sender:UISwitch!)
     {
@@ -363,6 +371,9 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
     {
+        if classTableView.isHidden == false {
+            classTableView.isHidden = true
+        }
         let touchLocation = touches.first?.location(in: self)
         
         if wheelSprite.frame.contains(touchLocation!)

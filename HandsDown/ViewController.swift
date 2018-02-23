@@ -24,11 +24,14 @@ class ViewController: UIViewController, SetTeacherDelegate {
     var screenHeight: CGFloat = 0.0
     var myFont = "Helvetica Neue"
     var player : AVAudioPlayer!
+    var defaultClass: Class = Class()
  
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        createDefaultClass()
         screenWidth = self.view.frame.width
         screenHeight = self.view.frame.height
         
@@ -48,16 +51,24 @@ class ViewController: UIViewController, SetTeacherDelegate {
         
         // this observer is used to detect if user signs in or signs out of icloud account.  If account changes
         NotificationCenter.default.addObserver(self, selector: #selector(iCloudAccountChanged), name: NSNotification.Name.NSUbiquityIdentityDidChange, object: nil)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-
         loadGameScene()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        mySKView.scene?.isPaused = true
+    override func viewWillAppear(_ animated: Bool) {
+        updateGameScene()
     }
+    
+    func createDefaultClass() {
+        let student1 = Student(name: "Bryn", photo: #imageLiteral(resourceName: "foxImage"))
+        let student2 = Student(name: "Lucky", photo: #imageLiteral(resourceName: "beeImage"))
+        let student3 = Student(name: "Cameron", photo: #imageLiteral(resourceName: "pigTailGirl"))
+        let student4 = Student(name: "Steve", photo: #imageLiteral(resourceName: "questionMarkImage"))
+        let student5 = Student(name: "Zoey", photo: #imageLiteral(resourceName: "elmoImage"))
+        let student6 = Student(name: "Amy", photo: #imageLiteral(resourceName: "sampleStudentImage"))
+        let studentArray = [student1, student2, student3, student4, student5, student6]
+        defaultClass = Class(name: "Default", students: studentArray)
+    }
+
     
     @objc func iCloudAccountChanged() {
         tryToLoadCloudKitData()
@@ -110,11 +121,24 @@ class ViewController: UIViewController, SetTeacherDelegate {
     // this gets called from notification after classes get loaded.
     @objc func handleStudentsLoaded() {
         updateUIElements()
+        updateGameScene()
+    }
+    
+    func updateGameScene() {
+        let scene = mySKView.scene as! GameScene
+        scene.teacher = teacher
+        if let currentClass = teacher.currentClass {
+            scene.updateGameScene(theClass: currentClass)
+        } else {
+            scene.updateGameScene(theClass: defaultClass)
+        }
     }
     
     func loadGameScene() {
         // load the spritekit view
         print("gamescene loaded")
+        
+        mySKView.scene?.isPaused = true
         if let view = self.mySKView
         {
             // Load the SKScene from 'GameScene.sks'
