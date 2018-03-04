@@ -385,6 +385,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Hands Down" id="qrE-y3-YX6"/>
                     <connections>
+                        <outlet property="addStudentButton" destination="meZ-Yy-Oif" id="tjb-zX-XY6"/>
                         <outlet property="nameTextField" destination="taL-l7-Gnm" id="kQW-td-tzz"/>
                         <outlet property="tableView" destination="GcQ-YG-69Q" id="a6T-V8-6GL"/>
                         <outlet property="tableViewNavBar" destination="QJG-m3-rXc" id="Y3u-8g-JpV"/>

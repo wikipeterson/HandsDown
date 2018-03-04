@@ -19,6 +19,8 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var tableViewNavBar: UINavigationBar!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
+    
+    @IBOutlet weak var addStudentButton: UIBarButtonItem!
     var editSwitch = true
     var teacher = Teacher() // this should get passed over from classVC
     var currentClass: Class?
@@ -42,11 +44,11 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             nameTextField.becomeFirstResponder()
         }
     }
-    
+    // we might not need this anymore.
     override func viewWillDisappear(_ animated: Bool) {
-        let name = nameTextField.text ?? ""
-        saveOrUpdateClassToCloudKit(name: name)
+//        let name = nameTextField.text ?? ""
         teacher.currentClass = currentClass
+//        saveOrUpdateClassToCloudKit(name: name)
         delegate?.updateTeacher(teacher: teacher)
     }
     
@@ -107,6 +109,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
         // create a new record in cloudkit if nil
         if currentClass == nil {
             // create the CKRecord that gets saved to the database
+
             let uid = UUID().uuidString // get a uniqueID
             let recordID = CKRecordID(recordName: uid)
             let newClassRecord = CKRecord(recordType: "Class", recordID: recordID)
@@ -128,6 +131,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
                 
                 DispatchQueue.main.async(execute: {
                     self.delegate?.updateTeacher(teacher: self.teacher)
+                    print("created new class:\(newClass.name)")
                 })
             }
         } else {
