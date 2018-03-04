@@ -27,6 +27,7 @@ class Student
         self.classID = ""
         record = nil
         recordName = ""
+        
         self.hexColor = "ffffff" // this is white as a hexColor
         self.color = UIColor.white
     }

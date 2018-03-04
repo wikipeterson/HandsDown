@@ -192,6 +192,7 @@ class ClassDetailViewController: UIViewController, UITableViewDelegate, UITableV
             let student = theClass.students[indexPath.row]
             cell.student = student // properties are set in didSet method in studentTVC
             cell.numberLabel.text = "\(indexPath.row + 1)"
+            
         }
         return cell
     }

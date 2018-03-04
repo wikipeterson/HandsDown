@@ -27,7 +27,6 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
     var student: Student?
     var teacher = Teacher()
     let screenSize = UIScreen.main.bounds
-    var avatarBackgroundView: UIView = UIView()
     
     var avatars: [UIImage] = []
     var colors: [UIColor] = []
@@ -35,8 +34,8 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        avatars = [#imageLiteral(resourceName: "elephantAvatar"),#imageLiteral(resourceName: "beeImage"),#imageLiteral(resourceName: "sampleStudentImage"), #imageLiteral(resourceName: "foxImage"), #imageLiteral(resourceName: "Monkey"), #imageLiteral(resourceName: "elmoImage"), #imageLiteral(resourceName: "pigTailGirl")]
-        colors = [.aquaDark,.aquaLight,.bitterSweetDark,.bitterSweetLight,.blueJeansDark,.blueJeansLight,.grapefruitDark,.grapefruitLight,.grassDark,.grassLight,.lavendarDark,.lavendarLight,.mintDark,.mintLight,.sunFlowerDark,.sunFlowerLight]
+        avatars = [#imageLiteral(resourceName: "ElephantAvatar"), #imageLiteral(resourceName: "BearAvatar"), #imageLiteral(resourceName: "DogAvatar"), #imageLiteral(resourceName: "BirdAvatar"), #imageLiteral(resourceName: "CatAvatar")]
+        colors = [.aquaDark,.aquaLight,.bitterSweetDark,.bitterSweetLight,.blueJeansDark,.blueJeansLight,.grapefruitDark,.grapefruitLight,.grassDark,.grassLight,.lavendarDark,.lavendarLight,.mintDark,.mintLight,.sunFlowerDark,.sunFlowerLight, .lightGray, .white, .darkGray]
         setUpViews()
     }
     
@@ -48,6 +47,7 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         if let myStudent = student {
             nameTextField.text = myStudent.name
             avatarImageView.image = myStudent.photo
+            avatarImageView.backgroundColor = myStudent.color
         } else {
             let randIndex = Int(arc4random_uniform(UInt32(avatars.count)))
             avatarImageView.image = avatars[randIndex]
@@ -57,27 +57,10 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
     }
     
 
-    override func viewDidLayoutSubviews() {
-        addAvatarBackgroundView()
-    }
-    func addAvatarBackgroundView() {
-        avatarBackgroundView.frame = avatarImageView.frameForImageInImageViewAspectFit()
-        avatarBackgroundView.center = CGPoint(x: avatarImageView.center.x, y: avatarImageView.center.y + 40.0)
-        if let myStudent = student {
-            avatarBackgroundView.backgroundColor = myStudent.color
-        } else {
-            avatarBackgroundView.backgroundColor = UIColor.white
-        }
-        self.view.addSubview(avatarBackgroundView)
-        view.sendSubview(toBack: avatarBackgroundView)
-    }
-    
-    func adjustAvatarBackgroundView() {
-        avatarBackgroundView.frame = avatarImageView.frameForImageInImageViewAspectFit()
-        // having trouble finding center of imageview in popover form sheet.  THe line below works on iPad, but on iPhone it gets adjusted by 40.0.  Dont know why I need to adjust.  Might be navbar
-        //        avatarBackgroundView.center = avatarImageView.center
-        avatarBackgroundView.center = CGPoint(x: avatarImageView.center.x, y: avatarImageView.center.y + 40.0)
-    }
+//    override func viewDidLayoutSubviews() {
+////        addAvatarBackgroundView()
+//    }
+
 
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
@@ -88,12 +71,12 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         // save student to cloudKit.
         if student != nil {
             // update student
-            guard let name = nameTextField.text, let photo = avatarImageView.image , let color = avatarBackgroundView.backgroundColor, let myStudent = student else {return}
+            guard let name = nameTextField.text, let photo = avatarImageView.image , let color = avatarImageView.backgroundColor, let myStudent = student else {return}
             // only update if name or photo changed
             if myStudent.name != name || myStudent.photo != photo || myStudent.color != color{
                 myStudent.name = name
                 myStudent.photo = photo
-                if let color = avatarBackgroundView.backgroundColor {
+                if let color = avatarImageView.backgroundColor {
                     myStudent.color = color
                     myStudent.hexColor = color.toHexString
                 } else {
@@ -146,7 +129,7 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         let recordID = CKRecordID(recordName: uid)
         let newStudentRecord = CKRecord(recordType: "Student", recordID: recordID)
         newStudentRecord["name"] = name as NSString
-        if let backgroundColor = avatarBackgroundView.backgroundColor {
+        if let backgroundColor = avatarImageView.backgroundColor {
             let hexColor = backgroundColor.toHexString
             newStudentRecord["hexColor"] = hexColor as NSString
         } else {
@@ -227,15 +210,22 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
             let avatarImage = avatars[indexPath.row]
             cell.avatarImageView.image = avatarImage
             
+            // get randomColor to place as background
+            let randomIndex = Int(arc4random_uniform(UInt32(colors.count)))
+            cell.avatarImageView.backgroundColor = colors[randomIndex]
+            
+            
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath)
             
             let color = colors[indexPath.row]
-            
-            cell.contentView.backgroundColor = color
-            let viewSize = cell.contentView.frame.width
-            cell.contentView.layer.cornerRadius = viewSize / 2.0
+            cell.backgroundColor = color
+            let viewSize = cell.frame.width
+//            cell.contentView.backgroundColor = color
+//            let viewSize = cell.contentView.frame.width
+            cell.layer.cornerRadius = viewSize / 2.0
+//            cell.contentView.layer.cornerRadius = viewSize / 2.0
             return cell
         }
     }
@@ -247,10 +237,9 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         } else {
             let color = colors[indexPath.row]
 
-//            avatarImageView.backgroundColor = color
-            avatarBackgroundView.backgroundColor = color
+            avatarImageView.backgroundColor = color
         }
-        adjustAvatarBackgroundView()
+
         
     }
     

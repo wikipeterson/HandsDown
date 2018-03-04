@@ -12,12 +12,7 @@ import AVFoundation
 
 class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
 {
-    let student1 = Student(name: "Bryn", photo: #imageLiteral(resourceName: "foxImage"))
-    let student2 = Student(name: "Lucky", photo: #imageLiteral(resourceName: "beeImage"))
-    let student3 = Student(name: "Cameron", photo: #imageLiteral(resourceName: "pigTailGirl"))
-    let student4 = Student(name: "Steve", photo: #imageLiteral(resourceName: "questionMarkImage"))
-    let student5 = Student(name: "Zoey", photo: #imageLiteral(resourceName: "elmoImage"))
-    let student6 = Student(name: "Amy", photo: #imageLiteral(resourceName: "sampleStudentImage"))
+
     var teacher = Teacher()
     var referenceVC : ViewController!
     var screenWidth : CGFloat = 0.0
@@ -83,14 +78,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         
         tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
         
-        //get the teacher data from ViewController
-        if let currentClass = teacher.currentClass {
-            studentArray = currentClass.students
-        } else {
-            studentArray = [student1, student2, student3, student4, student5, student6]
-        }
-
-        studentsNotPickedArray = studentArray
+        loadStudents()
         
         //set up the node that gets the wheel sectors overlayed
         wheelSprite = childNode(withName: "wheelSprite") as! SKSpriteNode
@@ -106,6 +94,24 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         placeSectorsOverWheel()
         addRepeatsSwitch()
         addClassButtonAndTableView()
+    }
+    
+    func loadStudents() {
+        // this might not be necessary, because we error check in viewController and pass the class from there.
+        let student1 = Student(name: "Bryn", photo: #imageLiteral(resourceName: "ElephantAvatar"))
+        let student2 = Student(name: "Lucky", photo: #imageLiteral(resourceName: "BearAvatar"))
+        let student3 = Student(name: "Cameron", photo: #imageLiteral(resourceName: "BirdAvatar"))
+        let student4 = Student(name: "Steve", photo: #imageLiteral(resourceName: "DogAvatar"))
+        let student5 = Student(name: "Zoey", photo: #imageLiteral(resourceName: "BearAvatar"))
+        let student6 = Student(name: "Amy", photo: #imageLiteral(resourceName: "CatAvatar"))
+        //get the teacher data from ViewController
+        if let currentClass = teacher.currentClass {
+            studentArray = currentClass.students
+        } else {
+            studentArray = [student1, student2, student3, student4, student5, student6]
+        }
+        
+        studentsNotPickedArray = studentArray
     }
     
     // this is created global so that we can access it later
@@ -214,7 +220,6 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     
     func placeSectorsOverWheel()
     {
-        print(studentArray.count)
         rectArray = []
         triangleArray = []
         rectLabelArray = []
@@ -322,10 +327,12 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
             {
                 if triangleArray[i].intersects(tipOfArrow)
                 {
-                    nameLabel.text = studentsNotPickedArray[i % studentsNotPickedArray.count].name
-                    let image = studentsNotPickedArray[i % studentsNotPickedArray.count].photo
+                    let selectedStudent = studentsNotPickedArray[i % studentsNotPickedArray.count]
+                    nameLabel.text = selectedStudent.name
+                    let image = selectedStudent.photo
                     let texture = SKTexture(image: image)
                     avatarNode.texture = texture
+                    avatarNode.color = selectedStudent.color
                     
 //                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
 //                    {
@@ -346,8 +353,8 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
                         {
                         studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
                         }
-                        print(studentsNotPickedArray.count)
-                        print("stopped")
+//                        print(studentsNotPickedArray.count)
+//                        print("stopped")
                         spinning = false
                         //return
                     }

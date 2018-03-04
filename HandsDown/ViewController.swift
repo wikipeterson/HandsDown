@@ -59,12 +59,12 @@ class ViewController: UIViewController, SetTeacherDelegate {
     }
     
     func createDefaultClass() {
-        let student1 = Student(name: "Bryn", photo: #imageLiteral(resourceName: "foxImage"))
-        let student2 = Student(name: "Lucky", photo: #imageLiteral(resourceName: "beeImage"))
-        let student3 = Student(name: "Cameron", photo: #imageLiteral(resourceName: "pigTailGirl"))
-        let student4 = Student(name: "Steve", photo: #imageLiteral(resourceName: "questionMarkImage"))
-        let student5 = Student(name: "Zoey", photo: #imageLiteral(resourceName: "elmoImage"))
-        let student6 = Student(name: "Amy", photo: #imageLiteral(resourceName: "sampleStudentImage"))
+        let student1 = Student(name: "Bryn", photo: #imageLiteral(resourceName: "ElephantAvatar"))
+        let student2 = Student(name: "Lucky", photo: #imageLiteral(resourceName: "BearAvatar"))
+        let student3 = Student(name: "Cameron", photo: #imageLiteral(resourceName: "DogAvatar"))
+        let student4 = Student(name: "Steve", photo: #imageLiteral(resourceName: "BirdAvatar"))
+        let student5 = Student(name: "Zoey", photo: #imageLiteral(resourceName: "CatAvatar"))
+        let student6 = Student(name: "Amy", photo: #imageLiteral(resourceName: "BearAvatar"))
         let studentArray = [student1, student2, student3, student4, student5, student6]
         defaultClass = Class(name: "Default", students: studentArray)
     }

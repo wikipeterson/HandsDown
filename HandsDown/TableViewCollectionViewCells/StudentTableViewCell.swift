@@ -21,9 +21,11 @@ class StudentTableViewCell: UITableViewCell {
             studentImageView.layer.cornerRadius = 50.0
             nameLabel.text = student?.name
             studentImageView.image = student?.photo
+            studentImageView.backgroundColor = student?.color
             
-            let height = studentImageView.bounds.height
-            studentImageView.layer.cornerRadius = height / 2.0
+            //let height = studentImageView.bounds.height
+            studentImageView.layer.cornerRadius = 10.0
+//            studentImageView.layer.cornerRadius = height / 2.0
             studentImageView.layer.masksToBounds = true
             studentImageView.layer.borderColor = UIColor.lightGray.cgColor
             studentImageView.layer.borderWidth = 2.0
