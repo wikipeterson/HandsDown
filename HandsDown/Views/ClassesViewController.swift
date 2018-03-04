@@ -57,8 +57,8 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         tableViewNavBar.tintColor = UIColor.white
         tableViewNavBar.layer.cornerRadius = 4.0
         
-        let font = UIFont(name: "Avenir", size: 25)
-        let color = UIColor.blueJeansLight
+        let font = UIFont(name: "Avenir Book", size: 25)
+        let color = UIColor.mintDark
         tableViewNavBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: font!]
         
         // do more to customize and make it look good

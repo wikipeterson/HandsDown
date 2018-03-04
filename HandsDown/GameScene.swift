@@ -41,6 +41,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     var switchLabel = SKLabelNode()
     var titleLabel = SKLabelNode()
     var avatarNode = SKSpriteNode()
+    var avatarBackgroundNode = SKSpriteNode() // this is used to change the background color of avatar
     var colorArray = [
         UIColor.blueJeansLight,
         UIColor.grassLight,
@@ -87,6 +88,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         wheelSprite.physicsBody?.angularDamping = 1.0
         
         avatarNode = childNode(withName: "avatarNode") as! SKSpriteNode
+        avatarBackgroundNode = childNode(withName: "avatarBackgroundNode") as! SKSpriteNode
         let image = #imageLiteral(resourceName: "questionMarkImage")
         let texture = SKTexture(image: image)
         avatarNode.texture = texture
@@ -120,10 +122,16 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         button.setTitle("Default Class", for: UIControlState())
         button.setTitleColor(UIColor.blueJeansDark, for: UIControlState())
         button.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 50.0)
-//        button.backgroundColor = UIColor.bitterSweetDark
-//        button.translatesAutoresizingMaskIntoConstraints = false
+
+        button.backgroundColor = UIColor.white
+        button.layer.borderColor = UIColor.darkGray.cgColor
+        button.layer.borderWidth = 3.0
+//        button.layer.shadowOpacity = 0.8
+//        button.layer.shadowRadius = 10.0
+//        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.cornerRadius = 10.0
         button.frame = CGRect(x: 0, y: 0, width: screenWidth * 0.75, height: screenHeight * 0.1)
-        button.center = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.2)
+        button.center = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.22)
         button.addTarget(self, action: #selector(classButtonTapped(sender:)), for: .touchUpInside)
         return button
     }()
@@ -131,18 +139,27 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     lazy var classTableView: ClassTableView = {
         let rect = CGRect(x: 0, y: 0, width: screenWidth * 0.75, height: screenHeight * 0.5)
         let table = ClassTableView(frame: rect, style: UITableViewStyle.plain)
-        table.center = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.5)
+        table.center = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.54)
         table.items = teacher.classes
         // register a cell
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         table.delegate = self
         table.dataSource = self
+        // this will remove extra unsed rows from tableview
+        table.tableFooterView = UIView(frame: .zero)
+        table.backgroundColor = UIColor.clear
+        table.layer.shadowColor = UIColor.black.cgColor
+        table.layer.shadowRadius = 10.0
+        table.layer.shadowOpacity = 0.8
+        table.layer.masksToBounds = true
+
         return table
     }()
     
     func addClassButtonAndTableView() {
         print("button should appear")
         self.view?.addSubview(classButton)
+//        classButton.center = CGPoint(x: titleLabel.position.x, y: titleLabel.position.y + 100.0)
         self.view?.addSubview(classTableView)
         classTableView.isHidden = true
     }
@@ -153,6 +170,9 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     }
     
     // MARK: TableView Methods
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50.0
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return teacher.classes.count
     }
@@ -160,17 +180,17 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         let theClass = self.teacher.classes[indexPath.row]
-//        let nameLabel: UILabel = {
-//            let label = UILabel(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.width))
-//            label.text = theClass.name
-//
-//            return label
-//        }()
-//        nameLabel.center = cell.center
-//        cell.addSubview(nameLabel)
-//        cell.backgroundColor = UIColor(displayP3Red: 0.95, green: 0.95, blue: 0.95, alpha: 0.5)
+        cell.layer.cornerRadius = 5.0
+        cell.layer.borderColor = UIColor.darkGray.cgColor
+        cell.layer.borderWidth = 2.0
+        cell.layer.masksToBounds = true
+        cell.textLabel?.font = UIFont(name: "Avenir Book", size: 30.0)
+        cell.backgroundColor = UIColor.white
+        cell.textLabel?.textColor = UIColor.mintDark
+        cell.textLabel?.adjustsFontSizeToFitWidth = true
+        cell.textLabel?.textAlignment = .center
         cell.textLabel?.text = theClass.name
-        cell.backgroundColor = UIColor(displayP3Red: 0.95, green: 0.95, blue: 0.95, alpha: 0.3)
+//        cell.backgroundColor = UIColor(displayP3Red: 0.99, green: 0.99, blue: 0.99, alpha: 1.0)
         return cell
     }
     
@@ -332,7 +352,10 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
                     let image = selectedStudent.photo
                     let texture = SKTexture(image: image)
                     avatarNode.texture = texture
-                    avatarNode.color = selectedStudent.color
+
+                    avatarBackgroundNode.color = selectedStudent.color
+                    avatarBackgroundNode.colorBlendFactor = 1.0
+
                     
 //                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
 //                    {

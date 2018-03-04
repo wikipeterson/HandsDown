@@ -232,8 +232,11 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == imageCollectionView {
+            let cell = imageCollectionView.cellForItem(at: indexPath) as! AvatarCollectionViewCell
+            let color = cell.avatarImageView.backgroundColor
             let photo = avatars[indexPath.row]
             avatarImageView.image = photo
+            avatarImageView.backgroundColor = color
         } else {
             let color = colors[indexPath.row]
 
