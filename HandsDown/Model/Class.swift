@@ -56,7 +56,7 @@ class Class
                 print("Error querying records: ", error as Any)
                 return
             }
-            print("Found \(records.count) student records matching query")
+//            print("Found \(records.count) student records matching query")
 
             for record in records {
                 // create a student from the record

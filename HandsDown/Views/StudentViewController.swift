@@ -171,19 +171,19 @@ class StudentViewController: UIViewController, UITextFieldDelegate, UICollection
         }
     }
     // MARK: CollectionView Methods
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        if collectionView == imageCollectionView {
-            // change this math to adjust size of cells after you get the size of the avatars from Karen
-            let width = (screenSize.width - 4.0) / 3.0
-            
-            return CGSize(width: width, height: width + 75)
-        } else {
-            // its the color collectionView
-            let width = (screenSize.width - 6.0) / 5.0
-            return CGSize(width: width, height: width)
-        }
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        
+//        if collectionView == imageCollectionView {
+//            // change this math to adjust size of cells after you get the size of the avatars from Karen
+//            let width = (screenSize.width - 4.0) / 3.0
+//            
+//            return CGSize(width: width, height: width + 75)
+//        } else {
+//            // its the color collectionView
+//            let width = (screenSize.width - 6.0) / 5.0
+//            return CGSize(width: width, height: width)
+//        }
+//    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 1.0

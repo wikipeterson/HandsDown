@@ -78,6 +78,11 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         nameLabel.text = "???"
         
         tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
+        tipOfArrow.color = UIColor.black
+        tipOfArrow.colorBlendFactor = 1.0
+        tipOfArrow.size = CGSize(width: 40, height: 8)
+        tipOfArrowPoint = CGPoint(x: tipOfArrow.position.x, y: tipOfArrow.position.y)
+        print(tipOfArrowPoint)
         
         loadStudents()
         
@@ -339,8 +344,50 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
 //    }
     
     
-    override func update(_ currentTime: TimeInterval)
-    {
+    override func update(_ currentTime: TimeInterval) {
+        if spinning {
+
+            // get location of tip of arrow and figure out which sector its in.
+            for i in 0..<triangleArray.count {
+                if triangleArray[i].intersects(tipOfArrow) {
+                    let selectedStudent = studentsNotPickedArray[i % studentsNotPickedArray.count]
+                    nameLabel.text = selectedStudent.name
+                    let image = selectedStudent.photo
+                    let texture = SKTexture(image: image)
+                    avatarNode.texture = texture
+                    avatarBackgroundNode.color = selectedStudent.color
+                    avatarBackgroundNode.colorBlendFactor = 1.0
+                    if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.01) && spinning == true {
+                        
+                        wheelSprite.physicsBody?.angularVelocity = 0.01
+                        
+                        AudioServicesPlaySystemSound(fanfareSystemSoundID)
+                        AudioServicesPlaySystemSound(4095)
+                        nameLabel.text = selectedStudent.name + "!"
+                        nameLabel.fontSize = 90.0
+                        speak(textToSpeak: selectedStudent.name)
+                        if !allowsRepeats && studentsNotPickedArray.count > 1
+                        {
+                            studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
+                        }
+                        
+                        spinning = false
+                        //return
+                        break
+                    }
+                }
+            }
+
+
+
+
+
+
+        }
+
+    }
+    
+    func updateChosenOne() {
         if spinning
         {
             for i in 0..<(triangleArray.count)
@@ -352,19 +399,19 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
                     let image = selectedStudent.photo
                     let texture = SKTexture(image: image)
                     avatarNode.texture = texture
-
+                    
                     avatarBackgroundNode.color = selectedStudent.color
                     avatarBackgroundNode.colorBlendFactor = 1.0
-
                     
-//                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
-//                    {
-//                        AudioServicesPlaySystemSound(tockSystemSoundID)
-//                    }
-//                    holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
-//
-                    if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.1)
-                    {
+                    
+                    //                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
+                    //                    {
+                    //                        AudioServicesPlaySystemSound(tockSystemSoundID)
+                    //                    }
+                    //                    holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
+                    //
+                    if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.01) && spinning == true {
+                        
                         wheelSprite.physicsBody?.angularVelocity = 0
                         
                         AudioServicesPlaySystemSound(fanfareSystemSoundID)
@@ -374,12 +421,12 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
                         speak(textToSpeak: nameLabel.text!)
                         if !allowsRepeats && studentsNotPickedArray.count > 1
                         {
-                        studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
+                            studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
                         }
-//                        print(studentsNotPickedArray.count)
-//                        print("stopped")
+
                         spinning = false
                         //return
+                        break
                     }
                 }
             }
@@ -388,6 +435,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     
     func speak(textToSpeak: String)
     {
+        print("speaking: \(textToSpeak)")
         let utterance = AVSpeechUtterance(string: textToSpeak)
         //utterance.voice = AVSpeechSynthesisVoice(language: "us-au") //choose voice
         synth.speak(utterance)
