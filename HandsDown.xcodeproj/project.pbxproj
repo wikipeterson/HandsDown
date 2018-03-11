@@ -11,6 +11,7 @@
 		83038EB7202164290068045E /* ClassesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83038EB6202164290068045E /* ClassesTableViewCell.swift */; };
 		83038EBB202175B80068045E /* StudentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83038EBA202175B80068045E /* StudentTableViewCell.swift */; };
 		8332120B20240DCF00EAE94D /* AvatarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8332120A20240DCF00EAE94D /* AvatarCollectionViewCell.swift */; };
+		833E166D204CDEB00027ED75 /* WheelTriangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833E166C204CDEB00027ED75 /* WheelTriangle.swift */; };
 		83519FAF2006544800214DA3 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FAE2006544800214DA3 /* Group.swift */; };
 		83519FB12006548400214DA3 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83519FB02006548400214DA3 /* Student.swift */; };
 		83A9724E202D3AEE00905498 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83A9724D202D3AEE00905498 /* Assets.xcassets */; };
@@ -58,6 +59,7 @@
 		83038EB6202164290068045E /* ClassesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesTableViewCell.swift; sourceTree = "<group>"; };
 		83038EBA202175B80068045E /* StudentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentTableViewCell.swift; sourceTree = "<group>"; };
 		8332120A20240DCF00EAE94D /* AvatarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCollectionViewCell.swift; sourceTree = "<group>"; };
+		833E166C204CDEB00027ED75 /* WheelTriangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelTriangle.swift; sourceTree = "<group>"; };
 		83519FAE2006544800214DA3 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		83519FB02006548400214DA3 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
 		83A9724D202D3AEE00905498 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				F13C853E2009BFFB00BAFC51 /* Class.swift */,
 				F1C40040200B03C100CEEC05 /* Teacher.swift */,
 				83519FAE2006544800214DA3 /* Group.swift */,
+				833E166C204CDEB00027ED75 /* WheelTriangle.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				F124C6FA20055B8C0026C7CB /* ViewController.swift in Sources */,
 				83519FAF2006544800214DA3 /* Group.swift in Sources */,
 				83038EB520215DB30068045E /* CloudKitStuffViewController.swift in Sources */,
+				833E166D204CDEB00027ED75 /* WheelTriangle.swift in Sources */,
 				F13C853F2009BFFC00BAFC51 /* Class.swift in Sources */,
 				F1C4003D200A894B00CEEC05 /* GroupsViewController.swift in Sources */,
 				83038EB7202164290068045E /* ClassesTableViewCell.swift in Sources */,

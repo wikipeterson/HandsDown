@@ -52,6 +52,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         UIColor.grapefruitLight,
         UIColor.lavendarLight
     ]
+    var wheelTriangleArray: [WheelTriangle] = []
 
     
     override func didMove(to view: SKView)
@@ -60,7 +61,16 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         screenHeight = (self.view?.frame.height)!
         
         print("did move")
+        loadStudents()
         
+        setUpViews()
+        
+        placeSectorsOverWheel()
+        addRepeatsSwitch()
+        addClassButtonAndTableView()
+    }
+    
+    func setUpViews() {
         titleLabel = childNode(withName: "titleLabel")  as! SKLabelNode
         titleLabel.fontColor = UIColor.blueJeansDark
         
@@ -80,12 +90,19 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
         tipOfArrow.color = UIColor.black
         tipOfArrow.colorBlendFactor = 1.0
-        tipOfArrow.size = CGSize(width: 40, height: 8)
+        tipOfArrow.size = CGSize(width: 60, height: 10)
+        
+//        tipOfArrow.position = CGPoint(x: tipOfArrow.position.x , y: tipOfArrow.position.y)
         tipOfArrowPoint = CGPoint(x: tipOfArrow.position.x, y: tipOfArrow.position.y)
-        print(tipOfArrowPoint)
+        print("tip of Arrow point: \(tipOfArrowPoint)")
         
-        loadStudents()
+        // place a red square at the tip of Arrow.
         
+        let testNode = SKShapeNode(circleOfRadius: 5)
+        testNode.fillColor = UIColor.red
+        testNode.position = tipOfArrowPoint
+        
+        addChild(testNode)
         //set up the node that gets the wheel sectors overlayed
         wheelSprite = childNode(withName: "wheelSprite") as! SKSpriteNode
         wheelSprite.position = CGPoint(x: (scene?.frame.width)! * -0.38, y: 0)
@@ -97,10 +114,6 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         let image = #imageLiteral(resourceName: "questionMarkImage")
         let texture = SKTexture(image: image)
         avatarNode.texture = texture
-        
-        placeSectorsOverWheel()
-        addRepeatsSwitch()
-        addClassButtonAndTableView()
     }
     
     func loadStudents() {
@@ -205,6 +218,9 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         teacher.currentClass = theClass
         updateGameScene(theClass: theClass)
         print("You selected cell #\(indexPath.row)!")
+        
+        wheelSprite.physicsBody?.angularVelocity = 0
+        spinning = false
     }
     
     func updateGameScene(theClass: Class) {
@@ -248,6 +264,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         rectArray = []
         triangleArray = []
         rectLabelArray = []
+        wheelTriangleArray = []
         
         switch studentsNotPickedArray.count
         {
@@ -290,7 +307,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
             var points = [CGPoint(x: 0, y: 0), topEdge, bottomEdge]
             //let hue = CGFloat(Double(num) / Double(numberOfSectors))
             let triangleShapeNode = SKShapeNode(points: &points, count: points.count)
-            triangleShapeNode.zPosition = 3
+            triangleShapeNode.zPosition = 5
             //triangleShapeNode.fillColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
             triangleShapeNode.fillColor = colorArray[num % colorArray.count]
             triangleShapeNode.strokeColor = UIColor.darkGray
@@ -299,9 +316,11 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
             
             triangleArray.append(triangleShapeNode)
             wheelSprite.addChild(triangleShapeNode)
+    
             
             let rectLabel = SKLabelNode(text: "")
-            rectLabel.text = studentsNotPickedArray[num % studentsNotPickedArray.count].name
+            let currentStudent = studentsNotPickedArray[num % studentsNotPickedArray.count]
+            rectLabel.text = currentStudent.name
             rectLabel.position = CGPoint(x: sizeFactor - 30.0, y: -10)
             rectLabel.fontColor = UIColor.white
             rectLabel.fontName = "HelveticaNeue"
@@ -311,11 +330,15 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
             rect.addChild(rectLabel)
             rect.name = "labelNode"
             rectLabelArray.append(rectLabel)
+            
+            let newWheelTriangle = WheelTriangle(triangle: triangleShapeNode, label: rectLabel, student: currentStudent)
+            wheelTriangleArray.append(newWheelTriangle)
         }
     }
     
     func removeSectorsFromWheel()
     {
+        spinning = false
         for label in rectLabelArray
         {
             label.removeFromParent()
@@ -327,6 +350,10 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         for rect in rectArray
         {
             rect.removeFromParent()
+        }
+        for wheel in wheelTriangleArray {
+            wheel.label.removeFromParent()
+            wheel.triangle.removeFromParent()
         }
     }
     
@@ -346,92 +373,92 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     
     override func update(_ currentTime: TimeInterval) {
         if spinning {
-
-            // get location of tip of arrow and figure out which sector its in.
-            for i in 0..<triangleArray.count {
-                if triangleArray[i].intersects(tipOfArrow) {
-                    let selectedStudent = studentsNotPickedArray[i % studentsNotPickedArray.count]
-                    nameLabel.text = selectedStudent.name
-                    let image = selectedStudent.photo
-                    let texture = SKTexture(image: image)
-                    avatarNode.texture = texture
-                    avatarBackgroundNode.color = selectedStudent.color
-                    avatarBackgroundNode.colorBlendFactor = 1.0
-                    if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.01) && spinning == true {
+            if let node = atPoint(tipOfArrowPoint) as? SKShapeNode {
+                for i in 0..<wheelTriangleArray.count {
+                    if wheelTriangleArray[i].triangle == node {
+                        // we found the wheel!
+                        let foundWheel = wheelTriangleArray[i]
+                        let currentStudent = foundWheel.student
+                        nameLabel.text = currentStudent.name
+                        let image = currentStudent.photo
+                        let texture = SKTexture(image: image)
+                        avatarNode.texture = texture
+                        avatarBackgroundNode.color = currentStudent.color
+                        avatarBackgroundNode.colorBlendFactor = 1.0
+                        print(currentStudent.name)
                         
-                        wheelSprite.physicsBody?.angularVelocity = 0.01
-                        
-                        AudioServicesPlaySystemSound(fanfareSystemSoundID)
-                        AudioServicesPlaySystemSound(4095)
-                        nameLabel.text = selectedStudent.name + "!"
-                        nameLabel.fontSize = 90.0
-                        speak(textToSpeak: selectedStudent.name)
-                        if !allowsRepeats && studentsNotPickedArray.count > 1
-                        {
-                            studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
+                        if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.01) && spinning == true {
+                            // the wheel stopped!
+                            print("jumped in with selectedStudent: \(currentStudent.name)")
+                            wheelSprite.physicsBody?.angularVelocity = 0.01
+    
+                            AudioServicesPlaySystemSound(fanfareSystemSoundID)
+                            AudioServicesPlaySystemSound(4095)
+    
+                            nameLabel.text = currentStudent.name + "!"
+                            nameLabel.fontSize = 90.0
+                            speak(textToSpeak: currentStudent.name)
+                            if !allowsRepeats && studentsNotPickedArray.count > 1
+                            {
+                                studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
+                            }
+                            spinning = false
+                            //return
+                            break
                         }
-                        
-                        spinning = false
-                        //return
-                        break
                     }
                 }
             }
-
-
-
-
-
-
         }
 
     }
     
-    func updateChosenOne() {
-        if spinning
-        {
-            for i in 0..<(triangleArray.count)
-            {
-                if triangleArray[i].intersects(tipOfArrow)
-                {
-                    let selectedStudent = studentsNotPickedArray[i % studentsNotPickedArray.count]
-                    nameLabel.text = selectedStudent.name
-                    let image = selectedStudent.photo
-                    let texture = SKTexture(image: image)
-                    avatarNode.texture = texture
-                    
-                    avatarBackgroundNode.color = selectedStudent.color
-                    avatarBackgroundNode.colorBlendFactor = 1.0
-                    
-                    
-                    //                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
-                    //                    {
-                    //                        AudioServicesPlaySystemSound(tockSystemSoundID)
-                    //                    }
-                    //                    holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
-                    //
-                    if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.01) && spinning == true {
-                        
-                        wheelSprite.physicsBody?.angularVelocity = 0
-                        
-                        AudioServicesPlaySystemSound(fanfareSystemSoundID)
-                        AudioServicesPlaySystemSound(4095)
-                        nameLabel.text = nameLabel.text! + "!"
-                        nameLabel.fontSize = 90.0
-                        speak(textToSpeak: nameLabel.text!)
-                        if !allowsRepeats && studentsNotPickedArray.count > 1
-                        {
-                            studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
-                        }
-
-                        spinning = false
-                        //return
-                        break
-                    }
-                }
-            }
-        }
-    }
+    // this no longer gets used.  Im just saving it to show to steve.  I changed from intersects with to node contains point of tip of the arrow.  I also had to change the z position of the triangles so that they were on top.  Nodecontains point will grab the node with the highest z position.
+//    func updateChosenOne() {
+//        if spinning
+//        {
+//            for i in 0..<(triangleArray.count)
+//            {
+//                if triangleArray[i].intersects(tipOfArrow)
+//                {
+//                    let selectedStudent = studentsNotPickedArray[i % studentsNotPickedArray.count]
+//                    nameLabel.text = selectedStudent.name
+//                    let image = selectedStudent.photo
+//                    let texture = SKTexture(image: image)
+//                    avatarNode.texture = texture
+//
+//                    avatarBackgroundNode.color = selectedStudent.color
+//                    avatarBackgroundNode.colorBlendFactor = 1.0
+//
+//
+//                    //                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
+//                    //                    {
+//                    //                        AudioServicesPlaySystemSound(tockSystemSoundID)
+//                    //                    }
+//                    //                    holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
+//                    //
+//                    if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.01) && spinning == true {
+//
+//                        wheelSprite.physicsBody?.angularVelocity = 0
+//
+//                        AudioServicesPlaySystemSound(fanfareSystemSoundID)
+//                        AudioServicesPlaySystemSound(4095)
+//                        nameLabel.text = nameLabel.text! + "!"
+//                        nameLabel.fontSize = 90.0
+//                        speak(textToSpeak: nameLabel.text!)
+//                        if !allowsRepeats && studentsNotPickedArray.count > 1
+//                        {
+//                            studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
+//                        }
+//
+//                        spinning = false
+//                        //return
+//                        break
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     func speak(textToSpeak: String)
     {
@@ -457,8 +484,8 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         if wheelSprite.frame.contains(touchLocation!)
         {
             wheelSprite.zRotation = 0
-            removeSectorsFromWheel()
-            placeSectorsOverWheel()
+//            removeSectorsFromWheel()
+//            placeSectorsOverWheel()
             let randomSpin = CGFloat(arc4random_uniform(1200)+500)
             wheelSprite.physicsBody?.applyAngularImpulse(-1.0 * CGFloat(randomSpin))
             spinning = true
