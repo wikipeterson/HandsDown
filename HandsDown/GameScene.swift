@@ -304,6 +304,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
             triangleShapeNode.zPosition = 5
             //triangleShapeNode.fillColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
             triangleShapeNode.fillColor = colorArray[num % colorArray.count]
+//            triangleShapeNode.fillColor = UIColor.clear
             triangleShapeNode.strokeColor = UIColor.darkGray
             triangleShapeNode.lineWidth = 3.0
             triangleShapeNode.name = "triangleNode"
@@ -368,6 +369,8 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     override func update(_ currentTime: TimeInterval) {
         if spinning {
             guard let node = atPoint(tipOfArrowPoint) as? SKShapeNode else {return}
+
+                
             for i in 0..<wheelTriangleArray.count {
                 if wheelTriangleArray[i].triangle == node {
                     // we found the wheel!
