@@ -74,6 +74,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UITableViewDelegate, UITable
     {
         print("contact")
         run(tickSound)
+        for triangle in wheelTriangleArray {
+            if contact.bodyA == triangle.peg || contact.bodyB == triangle.peg {
+                print(triangle.student.name)
+            }
+        }
     }
     
     
@@ -360,7 +365,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UITableViewDelegate, UITable
             wheelSprite.addChild(peg)
             //triangleShapeNode.addChild(peg)
             
-            let newWheelTriangle = WheelTriangle(triangle: triangleShapeNode, label: nameLabel, student: currentStudent)
+            let newWheelTriangle = WheelTriangle(triangle: triangleShapeNode, label: nameLabel, student: currentStudent, peg: peg)
             wheelTriangleArray.append(newWheelTriangle)
         }
         
@@ -402,6 +407,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UITableViewDelegate, UITable
                     avatarBackgroundNode.colorBlendFactor = 1.0
                     print(currentStudent.name)
                     
+                    /*
                     print(wheelSprite.physicsBody?.angularVelocity ?? 100)
                     if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(1.0) && spinning == true {
                         
@@ -424,6 +430,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UITableViewDelegate, UITable
                         //return
                         break
                     }
+                    */
                 }
             }
         }
