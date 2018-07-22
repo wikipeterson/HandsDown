@@ -358,6 +358,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UITableViewDelegate, UITable
             peg.physicsBody?.contactTestBitMask = flapperCategory
             physicsBodyArray.append(peg.physicsBody!)
             wheelSprite.addChild(peg)
+            //triangleShapeNode.addChild(peg)
             
             let newWheelTriangle = WheelTriangle(triangle: triangleShapeNode, label: nameLabel, student: currentStudent)
             wheelTriangleArray.append(newWheelTriangle)
@@ -388,7 +389,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UITableViewDelegate, UITable
             
             guard let node = atPoint(tipOfFlapper) as? SKShapeNode else {return}
             
-            
             for i in 0..<wheelTriangleArray.count {
                 if wheelTriangleArray[i].triangle == node {
                     // we found the wheel!
@@ -402,7 +402,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UITableViewDelegate, UITable
                     avatarBackgroundNode.colorBlendFactor = 1.0
                     print(currentStudent.name)
                     
-                    if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.01) && spinning == true {
+                    print(wheelSprite.physicsBody?.angularVelocity ?? 100)
+                    if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(1.0) && spinning == true {
                         
                         // the wheel stopped!
                         spinning = false
