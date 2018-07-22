@@ -33,7 +33,8 @@ class Class
     }
     init(record: CKRecord) {
         self.name = record["name"] as? String ?? ""
-        self.recordID = record["referenceName"] as? String ?? ""
+        self.recordID = record.recordID.recordName 
+//        self.recordID = record["recordName"] as? String ?? ""
 
         self.record = record
         self.students = []

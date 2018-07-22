@@ -25,7 +25,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
     var myFont = "Helvetica Neue"
     var player : AVAudioPlayer!
     var defaultClass: Class = Class()
- 
+    
     
     override func viewDidLoad()
     {
@@ -39,7 +39,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
         mySKView.center = CGPoint(x: screenWidth / 2, y: screenHeight * 0.5)
         
         // load classes from cloudkit.  If there are no classes, a demo class will be created
-
+        
         updateUIElements()
         setupNavBar()
         
@@ -68,7 +68,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
         let studentArray = [student1, student2, student3, student4, student5, student6]
         defaultClass = Class(name: "Default", students: studentArray)
     }
-
+    
     
     @objc func iCloudAccountChanged() {
         tryToLoadCloudKitData()
@@ -94,7 +94,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
             }
             if UIApplication.shared.canOpenURL(settingsUrl) {
                 UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-//                    print("Settings opened: \(success)") // Prints true
+                    //                    print("Settings opened: \(success)") // Prints true
                 })
             }
         })
@@ -108,12 +108,12 @@ class ViewController: UIViewController, SetTeacherDelegate {
     func setupNavBar() {
         let navBar = navigationController?.navigationBar
         let color = UIColor.mintLight
-//        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
-//        navBar?.backgroundColor = UIColor.gray
+        //        let color = UIColor(red: 27.0/255.0, green: 176.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        //        navBar?.backgroundColor = UIColor.gray
         navBar?.tintColor = color
-
+        
         let font = UIFont(name: "Avenir", size: 25)
-
+        
         navBar?.titleTextAttributes = [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: font!]
         
         // do more to customize and make it look good
@@ -143,15 +143,22 @@ class ViewController: UIViewController, SetTeacherDelegate {
         {
             // Load the SKScene from 'GameScene.sks'
             
-            if let scene = GameScene(fileNamed: "GameScene") {
-                scene.teacher = teacher
-                //scene.referenceVC = self
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
-                // Present the scene
-                
-                view.presentScene(scene)
-            }
+            //            if let scene = GameScene(fileNamed: "GameScene") {
+            //                scene.teacher = teacher
+            //                //scene.referenceVC = self
+            //                // Set the scale mode to scale to fit the window
+            //                scene.scaleMode = .aspectFill
+            //                // Present the scene
+            //
+            //                view.presentScene(scene)
+            //            }
+            
+            let scene = GameScene(size: view.bounds.size)
+            let SKView = view
+            scene.scaleMode = .aspectFill
+            scene.teacher = teacher
+            scene.referenceVC = self
+            SKView.presentScene(scene)
             view.ignoresSiblingOrder = true
             view.showsFPS = false
             view.showsNodeCount = false
@@ -178,7 +185,7 @@ class ViewController: UIViewController, SetTeacherDelegate {
             if records.count == 0 {
                 //self.createDemoClass()
             } else {
-
+                
                 for record in records {
                     // create a class from the record...  This will also load the students for each class.
                     let foundClass = Class(record: record)
@@ -209,20 +216,20 @@ class ViewController: UIViewController, SetTeacherDelegate {
         settingsButton.isHidden = true
     }
     
-  
+    
     override var shouldAutorotate: Bool {
         return false
     }
     
     
     // change these orientation options
-//    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-//        if UIDevice.current.userInterfaceIdiom == .phone {
-//            return .allButUpsideDown
-//        } else {
-//            return .all
-//        }
-//    }
+    //    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    //        if UIDevice.current.userInterfaceIdiom == .phone {
+    //            return .allButUpsideDown
+    //        } else {
+    //            return .all
+    //        }
+    //    }
     
     
     override var prefersStatusBarHidden: Bool {
@@ -248,12 +255,3 @@ class ViewController: UIViewController, SetTeacherDelegate {
         
     }
 }
-
-
-
-    
-
-    
-
-
-

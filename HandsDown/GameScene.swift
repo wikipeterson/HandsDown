@@ -10,29 +10,22 @@ import SpriteKit
 import GameplayKit
 import AVFoundation
 
-class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
+class GameScene: SKScene, SKPhysicsContactDelegate, UITableViewDelegate, UITableViewDataSource
 {
-
     var teacher = Teacher()
     var referenceVC : ViewController!
     var screenWidth : CGFloat = 0.0
     var screenHeight: CGFloat = 0.0
     var studentArray = [Student]()
     var nameLabel = SKLabelNode()
-    var wheelSprite = SKSpriteNode()
-    var spinButton = SKSpriteNode()
-    var tipOfArrow = SKSpriteNode()
-    var tipOfArrowPoint = CGPoint()
+    var tipOfFlapper = CGPoint(x: 0, y: 0)
+    var wheelSprite = SKShapeNode()
     var angle = 0.0
     var numberOfSectors = 0
     var angleTracker : CGFloat = 0
-    var rectArray = [SKSpriteNode]()
     var triangleArray = [SKShapeNode]()
-    var rectLabelArray = [SKLabelNode]()
+    var nameArray = [String]()
     var spinning = false
-    var player = AVAudioPlayer()
-    let tockSystemSoundID: SystemSoundID = 1105
-    let fanfareSystemSoundID: SystemSoundID = 1103
     var holder = Student(name: "", photo: #imageLiteral(resourceName: "sampleStudentImage")) //this is for controlling the click sounds
     var loopFactor = 1 //this is for duplicating small classes on the wheel
     var synth = AVSpeechSynthesizer()
@@ -53,61 +46,61 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         UIColor.lavendarLight
     ]
     var wheelTriangleArray: [WheelTriangle] = []
-
+    var tickSound : SKAction!
+    let pegCategory: UInt32 = 0x1 << 1
+    let flapperCategory: UInt32 = 0x1 << 2
+    let ignoreCategory: UInt32 = 0x1 << 3
     
     override func didMove(to view: SKView)
     {
-        screenWidth = (self.view?.frame.width)!
-        screenHeight = (self.view?.frame.height)!
-        
+        //screenWidth = (self.view?.frame.width)!
+        //screenHeight = (self.view?.frame.height)!
+        anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        screenWidth = (self.size.width)
+        screenHeight = (self.size.height)
+        backgroundColor = UIColor.white
         print("did move")
         loadStudents()
-        
         setUpViews()
-        
-        placeSectorsOverWheel()
-        addRepeatsSwitch()
+        createWheel()
+        //addRepeatsSwitch()
+        makeFlapper()
         addClassButtonAndTableView()
+        tickSound = SKAction.playSoundFileNamed("Tick.mp3", waitForCompletion: true)
+        physicsWorld.contactDelegate = self
     }
     
+    func didBegin(_ contact: SKPhysicsContact)
+    {
+        print("contact")
+        run(tickSound)
+    }
+    
+    
     func setUpViews() {
-        titleLabel = childNode(withName: "titleLabel")  as! SKLabelNode
-        titleLabel.fontColor = UIColor.blueJeansDark
-        
-        switchLabel = childNode(withName: "switchLabel") as! SKLabelNode
-        switchLabel.text = "Repeats allowed"
-        //switchLabel.position = CGPoint(x: screenWidth * -0.35, y: screenHeight * -0.41)
-        //switchLabel.fontColor = SKColor.white
-        switchLabel.fontSize = 25.0
-        switchLabel.zPosition = 50
-        switchLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.left
-        
-        nameLabel = childNode(withName: "nameLabel") as! SKLabelNode
-        nameLabel.fontColor = UIColor.mintDark
-        nameLabel.fontSize = 50.0
-        nameLabel.text = "???"
-        
-        tipOfArrow = childNode(withName: "tipOfArrow") as! SKSpriteNode
-        tipOfArrow.color = UIColor.black
-        tipOfArrow.colorBlendFactor = 1.0
-        tipOfArrow.size = CGSize(width: 60, height: 10)
-        
-//        tipOfArrow.position = CGPoint(x: tipOfArrow.position.x , y: tipOfArrow.position.y)
-        tipOfArrowPoint = CGPoint(x: tipOfArrow.position.x, y: tipOfArrow.position.y)
-        print("tip of Arrow point: \(tipOfArrowPoint)")
-        
-
-        //set up the node that gets the wheel sectors overlayed
-        wheelSprite = childNode(withName: "wheelSprite") as! SKSpriteNode
-        wheelSprite.position = CGPoint(x: (scene?.frame.width)! * -0.38, y: 0)
-        wheelSprite.anchorPoint = CGPoint(x: 0.5, y: 0.5  )
-        wheelSprite.physicsBody?.angularDamping = 1.0
-        
-        avatarNode = childNode(withName: "avatarNode") as! SKSpriteNode
-        avatarBackgroundNode = childNode(withName: "avatarBackgroundNode") as! SKSpriteNode
         let image = #imageLiteral(resourceName: "questionMarkImage")
         let texture = SKTexture(image: image)
-        avatarNode.texture = texture
+        
+        //        CGSize(width: size.width/2, height: (size.width/2)*2)
+        let avatarSize = CGSize(width: size.width/2.5, height: size.width/4*3)
+        avatarNode = SKSpriteNode(texture: texture)
+        avatarNode.size = avatarSize
+        
+        avatarNode.position = CGPoint(x: size.width/4, y: 0)
+        addChild(avatarNode)
+        avatarBackgroundNode = SKSpriteNode(color: UIColor.clear, size: avatarSize)
+        avatarBackgroundNode.position = avatarNode.position
+        addChild(avatarBackgroundNode)
+        
+        // create label node
+        nameLabel = SKLabelNode(text: "???")
+        nameLabel.name = "nameLabel"
+        nameLabel.fontColor = UIColor.mintDark
+        nameLabel.fontSize = 50.0
+        nameLabel.zPosition = 12
+        nameLabel.fontName = "Avenir Medium"
+        nameLabel.position = CGPoint(x: 0, y: size.height / -2.0 + 100)
+        self.addChild(nameLabel)
     }
     
     func loadStudents() {
@@ -134,16 +127,14 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         button.setTitle("Default Class", for: UIControlState())
         button.setTitleColor(UIColor.blueJeansDark, for: UIControlState())
         button.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 50.0)
-
+        
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.backgroundColor = UIColor.white
         button.layer.borderColor = UIColor.darkGray.cgColor
         button.layer.borderWidth = 3.0
-//        button.layer.shadowOpacity = 0.8
-//        button.layer.shadowRadius = 10.0
-//        button.layer.shadowColor = UIColor.black.cgColor
         button.layer.cornerRadius = 10.0
         button.frame = CGRect(x: 0, y: 0, width: screenWidth * 0.75, height: screenHeight * 0.1)
-        button.center = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.22)
+        button.center = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.14)
         button.addTarget(self, action: #selector(classButtonTapped(sender:)), for: .touchUpInside)
         return button
     }()
@@ -151,7 +142,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     lazy var classTableView: ClassTableView = {
         let rect = CGRect(x: 0, y: 0, width: screenWidth * 0.75, height: screenHeight * 0.5)
         let table = ClassTableView(frame: rect, style: UITableViewStyle.plain)
-        table.center = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.54)
+        table.center = CGPoint(x: screenWidth * 0.5, y: screenHeight * 0.45)
         table.items = teacher.classes
         // register a cell
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -164,14 +155,14 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         table.layer.shadowRadius = 10.0
         table.layer.shadowOpacity = 0.8
         table.layer.masksToBounds = true
-
+        
         return table
     }()
     
     func addClassButtonAndTableView() {
         print("button should appear")
         self.view?.addSubview(classButton)
-//        classButton.center = CGPoint(x: titleLabel.position.x, y: titleLabel.position.y + 100.0)
+        //classButton.center = CGPoint(x: titleLabel.position.x, y: titleLabel.position.y + 100.0)
         self.view?.addSubview(classTableView)
         classTableView.isHidden = true
     }
@@ -202,7 +193,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.textLabel?.textAlignment = .center
         cell.textLabel?.text = theClass.name
-//        cell.backgroundColor = UIColor(displayP3Red: 0.99, green: 0.99, blue: 0.99, alpha: 1.0)
+        //        cell.backgroundColor = UIColor(displayP3Red: 0.99, green: 0.99, blue: 0.99, alpha: 1.0)
         return cell
     }
     
@@ -219,14 +210,15 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     
     func updateGameScene(theClass: Class) {
         classButton.setTitle(theClass.name, for: UIControlState())
-        
         studentArray = theClass.students
         studentsNotPickedArray = theClass.students
-        removeSectorsFromWheel()
-        placeSectorsOverWheel()
+        removeWheel()
+        createWheel()
+        //        placeSectorsOverWheel()
         classTableView.isHidden = true
+        
     }
-
+    
     @objc func switchValueDidChange(sender:UISwitch!)
     {
         allowsRepeats = !allowsRepeats
@@ -241,136 +233,162 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         
     }
     
-    func addRepeatsSwitch()
+    func makeFlapper()
     {
-        let repeatSwitch = UISwitch()
-        repeatSwitch.center = CGPoint(x: screenWidth * 0.1, y: screenHeight * 0.9)
-        repeatSwitch.isOn = false
-        repeatSwitch.setOn(false, animated: true)
-        repeatSwitch.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
-        self.view?.addSubview(repeatSwitch)
-        print("added a switch")
+        let flapperTexture = SKTexture(imageNamed: "flapper")
+        let flapper = SKSpriteNode(texture: flapperTexture, size: flapperTexture.size())
+        addChild(flapper)
+        
+        flapper.size = CGSize(width: 80, height: 40)
+        flapper.position = CGPoint(x: wheelSprite.position.x + size.width/2 + 18, y: 0)
+        flapper.zPosition = 10
+        flapper.physicsBody = SKPhysicsBody(texture: flapperTexture, size: flapper.size)
+        flapper.physicsBody?.isDynamic = true
+        flapper.physicsBody?.allowsRotation = true
+        flapper.physicsBody?.angularDamping = 1
+        //flapper.physicsBody?.friction = 100
+        flapper.physicsBody?.pinned = true
+        flapper.physicsBody?.affectedByGravity = false
+        flapper.physicsBody?.categoryBitMask = flapperCategory
+        flapper.physicsBody?.collisionBitMask = pegCategory
+        flapper.physicsBody?.contactTestBitMask = pegCategory
+        
+        //make the flapper springy
+        let fixedPoint = SKSpriteNode(color: UIColor.blue, size: CGSize(width: 10, height: 10))
+        fixedPoint.position = CGPoint(x: -size.width - 15, y: 0)
+        fixedPoint.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: 10))
+        fixedPoint.zPosition = 15
+        fixedPoint.physicsBody?.allowsRotation = true
+        fixedPoint.physicsBody?.isDynamic = false
+        fixedPoint.physicsBody?.affectedByGravity = false
+        addChild(fixedPoint)
+        
+        
+        let spring = SKPhysicsJointSpring.joint(withBodyA: fixedPoint.physicsBody!,
+                                                bodyB: flapper.physicsBody!,
+                                                anchorA: fixedPoint.position,
+                                                anchorB: CGPoint(x: flapper.position.x - 30, y: flapper.position.y))
+        spring.frequency = 20
+        spring.damping = 0.5
+        physicsWorld.add(spring)
+        
+        // this point should
+        tipOfFlapper = CGPoint(x: wheelSprite.position.x + size.width/2 - 10, y: 0)
+        print(tipOfFlapper)
     }
     
-    
-    func placeSectorsOverWheel()
+    func createWheel()
     {
-        rectArray = []
         triangleArray = []
-        rectLabelArray = []
+        nameArray = []
         wheelTriangleArray = []
         
         switch studentsNotPickedArray.count
         {
-            case 0:
-                studentArray.append(Student(name: "empty class", photo: #imageLiteral(resourceName: "foxImage")))
-                loopFactor = 9
-            case 1:
-                loopFactor = 9
-            case 2:
-                loopFactor = 5
-            case 3:
-                loopFactor = 4
-            case 4...5:
-                loopFactor = 3
-            case 6...10:
-                loopFactor = 2
-            default:
-                loopFactor = 1
+        case 0:
+            studentArray.append(Student(name: "empty class", photo: #imageLiteral(resourceName: "foxImage")))
+            loopFactor = 9
+        case 1:
+            loopFactor = 9
+        case 2:
+            loopFactor = 5
+        case 3:
+            loopFactor = 4
+        case 4...6:
+            loopFactor = 3
+        case 7...10:
+            loopFactor = 2
+        default:
+            loopFactor = 1
         }
-
+        
         let numberOfSectors = studentsNotPickedArray.count * loopFactor
         angle = 2 * Double.pi / Double(numberOfSectors)
-        let theta = 2.0 * Double.pi / Double(numberOfSectors) / 2.0
         
-        //set the rects, tris, and labels on wheel
-        for num in 0..<Int(numberOfSectors)
+        let sizeFactor = Double(size.width/2.1) //determines radius of wheel
+        let sectorRotationAngle = 2 * Double.pi / Double(numberOfSectors)
+        var physicsBodyArray = [SKPhysicsBody]()
+        
+        //this is an invisible node that the sectors of the wheel get attched to
+        wheelSprite = SKShapeNode(circleOfRadius: size.width/2)
+        wheelSprite.position = CGPoint(x: -size.width/2, y: 0)
+        wheelSprite.fillColor = UIColor.clear
+        addChild(wheelSprite)
+        
+        // setup coordinates for traingles
+        let top = CGPoint(x: sizeFactor * cos(sectorRotationAngle / 2.0), y: sizeFactor * sin(sectorRotationAngle / 2.0))
+        let bottom = CGPoint(x: sizeFactor * cos( sectorRotationAngle / -2.0 ), y: sizeFactor * sin(sectorRotationAngle / -2.0 ))
+        var points = [CGPoint(x: 0, y: 0), top, bottom]
+        
+        //add the sectors around the wheel
+        for i in 0..<numberOfSectors
         {
-            let sizeFactor = 250.0
-            let rect = SKSpriteNode(color: UIColor.white, size: CGSize(width: sizeFactor, height: 2 * sizeFactor * tan(theta)))
-            rect.position = CGPoint(x: 0, y: 0)
-            rect.zPosition = 1
-            rect.anchorPoint = CGPoint(x: 0, y: 0.5)
-            rect.zRotation = CGFloat(angle * Double(num))
-            rectArray.append(rect)
-            rect.name = "rectNode"
-            wheelSprite.addChild(rect)
-            
-            let topEdge = CGPoint(x: sizeFactor * cos(angle / 2.0 + angle * Double(num)), y: sizeFactor * sin(angle / 2.0 + angle * Double(num)))
-            let bottomEdge = CGPoint(x: sizeFactor * cos(angle * Double(num) - angle / 2.0 ), y: sizeFactor * sin(angle * Double(num) - angle / 2.0 ))
-            var points = [CGPoint(x: 0, y: 0), topEdge, bottomEdge]
-            //let hue = CGFloat(Double(num) / Double(numberOfSectors))
+            //make a triangle
             let triangleShapeNode = SKShapeNode(points: &points, count: points.count)
-            triangleShapeNode.zPosition = 5
-            //triangleShapeNode.fillColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
-            triangleShapeNode.fillColor = colorArray[num % colorArray.count]
-//            triangleShapeNode.fillColor = UIColor.clear
+            triangleShapeNode.zRotation = CGFloat(sectorRotationAngle * Double(i))
+            triangleShapeNode.fillColor = colorArray[i % colorArray.count]
             triangleShapeNode.strokeColor = UIColor.darkGray
             triangleShapeNode.lineWidth = 3.0
-            triangleShapeNode.name = "triangleNode"
-            
-            triangleArray.append(triangleShapeNode)
+            triangleShapeNode.zPosition = 5
             wheelSprite.addChild(triangleShapeNode)
-    
             
-            let rectLabel = SKLabelNode(text: "")
-            let currentStudent = studentsNotPickedArray[num % studentsNotPickedArray.count]
-            rectLabel.text = currentStudent.name
-            rectLabel.position = CGPoint(x: sizeFactor - 30.0, y: -10)
-            rectLabel.fontColor = UIColor.white
-            rectLabel.fontName = "HelveticaNeue"
-            rectLabel.fontSize = CGFloat(20.0 + Double(loopFactor) * 2.0)
-            rectLabel.zPosition = 4
-            rectLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.right
-            rect.addChild(rectLabel)
-            rect.name = "labelNode"
-            rectLabelArray.append(rectLabel)
+            // add a name to the triangle
+            let nameLabel = SKLabelNode(text: "")
             
-            let newWheelTriangle = WheelTriangle(triangle: triangleShapeNode, label: rectLabel, student: currentStudent)
+            let currentStudent = studentsNotPickedArray[i % studentsNotPickedArray.count]
+            nameLabel.text = currentStudent.name
+            nameLabel.fontColor = UIColor.white
+            nameLabel.fontSize = CGFloat(28.0 - Double(loopFactor) * 2.0)
+            nameLabel.fontName = "HelveticaNeue-Bold"
+            nameLabel.position = CGPoint(x: size.width/3, y: -10.0)
+            triangleShapeNode.addChild(nameLabel)
+            
+            //make a peg
+            let pegCenter = CGPoint(x: sizeFactor * cos(sectorRotationAngle / 2.0 + sectorRotationAngle * Double(i)), y: sizeFactor * sin(sectorRotationAngle / 2.0 + sectorRotationAngle * Double(i)))
+            let peg = SKShapeNode(circleOfRadius: 5)
+            peg.fillColor = UIColor.black
+            peg.zPosition = 10
+            peg.position = pegCenter
+            peg.physicsBody = SKPhysicsBody(circleOfRadius: 5, center: pegCenter)
+            peg.physicsBody?.isDynamic = true
+            peg.physicsBody?.affectedByGravity = false
+            //peg.physicsBody?.friction = 100
+            peg.physicsBody?.categoryBitMask = pegCategory
+            peg.physicsBody?.collisionBitMask = flapperCategory
+            peg.physicsBody?.contactTestBitMask = flapperCategory
+            physicsBodyArray.append(peg.physicsBody!)
+            wheelSprite.addChild(peg)
+            
+            let newWheelTriangle = WheelTriangle(triangle: triangleShapeNode, label: nameLabel, student: currentStudent)
             wheelTriangleArray.append(newWheelTriangle)
         }
+        
+        wheelSprite.physicsBody = SKPhysicsBody(circleOfRadius: size.width/2 - 25)
+        physicsBodyArray.append(wheelSprite.physicsBody!)
+        wheelSprite.physicsBody = SKPhysicsBody(bodies: physicsBodyArray)
+        wheelSprite.physicsBody?.affectedByGravity = false
+        wheelSprite.physicsBody?.allowsRotation = true
+        wheelSprite.physicsBody?.pinned = true
+        wheelSprite.physicsBody?.angularDamping = 1
+        wheelSprite.physicsBody?.isDynamic = true
+        
     }
     
-    func removeSectorsFromWheel()
+    func removeWheel()
     {
         spinning = false
-        for label in rectLabelArray
-        {
-            label.removeFromParent()
-        }
-        for tri in triangleArray
-        {
-            tri.removeFromParent()
-        }
-        for rect in rectArray
-        {
-            rect.removeFromParent()
-        }
-        for wheel in wheelTriangleArray {
-            wheel.label.removeFromParent()
-            wheel.triangle.removeFromParent()
-        }
+        
+        wheelTriangleArray.removeAll()
+        wheelSprite.removeFromParent()
+        
     }
-    
-//    func playSound(soundName: String)
-//    {
-//        let path = Bundle.main.path(forResource: soundName, ofType:nil)!
-//        let url = URL(fileURLWithPath: path)
-//
-//        do {
-//            player = try AVAudioPlayer(contentsOf: url)
-//            player.play()
-//        } catch {
-//            // couldn't load file :(
-//        }
-//    }
-    
     
     override func update(_ currentTime: TimeInterval) {
         if spinning {
-            guard let node = atPoint(tipOfArrowPoint) as? SKShapeNode else {return}
-
-                
+            
+            guard let node = atPoint(tipOfFlapper) as? SKShapeNode else {return}
+            
+            
             for i in 0..<wheelTriangleArray.count {
                 if wheelTriangleArray[i].triangle == node {
                     // we found the wheel!
@@ -390,10 +408,10 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
                         spinning = false
                         print("jumped in with selectedStudent: \(currentStudent.name)")
                         wheelSprite.physicsBody?.angularVelocity = 0.01
-
-                        AudioServicesPlaySystemSound(fanfareSystemSoundID)
-                        AudioServicesPlaySystemSound(4095)
-
+                        
+                        //                        AudioServicesPlaySystemSound(fanfareSystemSoundID)
+                        //                        AudioServicesPlaySystemSound(4095)
+                        
                         nameLabel.text = currentStudent.name + "!"
                         nameLabel.fontSize = 90.0
                         speak(textToSpeak: currentStudent.name)
@@ -401,7 +419,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
                         {
                             studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
                         }
-
+                        
                         //return
                         break
                     }
@@ -410,52 +428,6 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         }
     }
     
-    // this no longer gets used.  Im just saving it to show to steve.  I changed from intersects with to node contains point of tip of the arrow.  I also had to change the z position of the triangles so that they were on top.  Nodecontains point will grab the node with the highest z position.
-//    func updateChosenOne() {
-//        if spinning
-//        {
-//            for i in 0..<(triangleArray.count)
-//            {
-//                if triangleArray[i].intersects(tipOfArrow)
-//                {
-//                    let selectedStudent = studentsNotPickedArray[i % studentsNotPickedArray.count]
-//                    nameLabel.text = selectedStudent.name
-//                    let image = selectedStudent.photo
-//                    let texture = SKTexture(image: image)
-//                    avatarNode.texture = texture
-//
-//                    avatarBackgroundNode.color = selectedStudent.color
-//                    avatarBackgroundNode.colorBlendFactor = 1.0
-//
-//
-//                    //                    if studentsNotPickedArray[i % studentsNotPickedArray.count].name != holder.name
-//                    //                    {
-//                    //                        AudioServicesPlaySystemSound(tockSystemSoundID)
-//                    //                    }
-//                    //                    holder = studentsNotPickedArray[i % studentsNotPickedArray.count]
-//                    //
-//                    if (wheelSprite.physicsBody?.angularVelocity)!.magnitude < CGFloat(0.01) && spinning == true {
-//
-//                        wheelSprite.physicsBody?.angularVelocity = 0
-//
-//                        AudioServicesPlaySystemSound(fanfareSystemSoundID)
-//                        AudioServicesPlaySystemSound(4095)
-//                        nameLabel.text = nameLabel.text! + "!"
-//                        nameLabel.fontSize = 90.0
-//                        speak(textToSpeak: nameLabel.text!)
-//                        if !allowsRepeats && studentsNotPickedArray.count > 1
-//                        {
-//                            studentsNotPickedArray.remove(at: i % studentsNotPickedArray.count)
-//                        }
-//
-//                        spinning = false
-//                        //return
-//                        break
-//                    }
-//                }
-//            }
-//        }
-//    }
     
     func speak(textToSpeak: String)
     {
@@ -468,7 +440,7 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
     func resetPicks()
     {
         studentsNotPickedArray = studentArray
-        placeSectorsOverWheel()
+        createWheel()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
@@ -481,12 +453,12 @@ class GameScene: SKScene, UITableViewDelegate, UITableViewDataSource
         if wheelSprite.frame.contains(touchLocation!)
         {
             wheelSprite.zRotation = 0
-            if !allowsRepeats && studentsNotPickedArray.count > 1 {
-                removeSectorsFromWheel()
-                placeSectorsOverWheel()
+            if !allowsRepeats && studentsNotPickedArray.count > 1
+            {
+                
             }
-
-            let randomSpin = CGFloat(arc4random_uniform(1200)+500)
+            
+            let randomSpin = CGFloat(arc4random_uniform(100)+200)
             wheelSprite.physicsBody?.applyAngularImpulse(-1.0 * CGFloat(randomSpin))
             spinning = true
             nameLabel.fontSize = 50.0

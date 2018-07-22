@@ -18,7 +18,6 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: Outlets
     @IBOutlet weak var currentClassLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var tableViewNavBar: UINavigationBar!
     
     // MARK:  Properties
@@ -50,6 +49,15 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
             currentClassLabel.text = currentClass.name
         }
         tableView.reloadData()
+        // add a checkmark to the row of the selected class.
+        for index in 0..<teacher.classes.count {
+            
+            if teacher.classes[index].recordID == teacher.currentClass?.recordID {
+                let indexPath = IndexPath(row: index, section: 0)
+                self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+            }
+        }
+        
     }
     
     func setUpNavBar () {
@@ -104,12 +112,10 @@ class ClassesViewController: UIViewController, UITableViewDelegate, UITableViewD
         let thisClass = teacher.classes[indexPath.row]
         cell.theClass = thisClass // properties of cell will be set up in didSet Method in ClassesTVC
         cell.numberLabel.text = "\(indexPath.row + 1)"
-
-
+        
+        
         // set current class to selected state... Find a better way to do this
-//        if thisClass.recordID == teacher.currentClass?.recordID {
-//            self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
-//        }
+
         return cell
     }
     
