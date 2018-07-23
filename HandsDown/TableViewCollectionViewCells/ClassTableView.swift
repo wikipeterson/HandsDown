@@ -34,10 +34,26 @@ class ClassTableView: UITableView, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50.0
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell")! as UITableViewCell
-        //let theClass = self.items[indexPath.row]
+//        let theClass = self.items[indexPath.row]
 //        cell.textLabel?.text = theClass.name
+        let theClass = self.items[indexPath.row]
+        cell.layer.cornerRadius = 5.0
+        cell.layer.borderColor = UIColor.darkGray.cgColor
+        cell.layer.borderWidth = 2.0
+        cell.layer.masksToBounds = true
+        cell.textLabel?.font = UIFont(name: "Avenir Book", size: 30.0)
+        cell.backgroundColor = UIColor.white
+        cell.textLabel?.textColor = UIColor.mintDark
+        cell.textLabel?.adjustsFontSizeToFitWidth = true
+        cell.textLabel?.textAlignment = .center
+        cell.textLabel?.text = theClass.name
+        
         return cell
     }
 //    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
