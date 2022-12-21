@@ -66,7 +66,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, UITableViewDataSource, UITab
         //addRepeatsSwitch()
         makeFlapper()
         addClassButtonAndTableView()
-        tickSound = SKAction.playSoundFileNamed("Tick.mp3", waitForCompletion: true)
+        tickSound = SKAction.playSoundFileNamed("clickSound.mp3", waitForCompletion: true)
         physicsWorld.contactDelegate = self
     }
     
